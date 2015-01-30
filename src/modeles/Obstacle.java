@@ -1,5 +1,5 @@
 package modeles;
 
-public class Obstacle {
+public class Obstacle extends ModeleGraphique{
 
 }
