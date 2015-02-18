@@ -8,19 +8,19 @@
       <Valeur>0</Valeur>
     </ConfEntry>
     <ConfEntry name="Distance_cible_lancepierre">
-      <Valeur>10</Valeur>
+      <Valeur>0</Valeur>
     </ConfEntry>
     <ConfEntry name="Gravite">
       <Valeur>0</Valeur>
     </ConfEntry>
     <ConfEntry name="Rigidite_lancepierre">
-      <Valeur>0</Valeur>
+      <Valeur>50</Valeur>
     </ConfEntry>
     <ConfEntry name="Nb_lancers">
       <Valeur>0</Valeur>
     </ConfEntry>
     <ConfEntry name="Taille_projectile">
-      <Valeur>50</Valeur>
+      <Valeur>0</Valeur>
     </ConfEntry>
     <ConfEntry name="Afficher_le_score">
       <Valeur>True</Valeur>
