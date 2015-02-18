@@ -12,38 +12,48 @@ public class UIManagerScript : MonoBehaviour {
 	public InputField IF_Taille_cible;
 	public InputField IF_Hauteur_cible;
 	public InputField IF_Distance_cible_lancepierre;
-	public InputField IF_Gravité;
-	public InputField IF_Rigidité_lancepierre;
-	public InputField IF_Nombre_de_lancers;
-	public InputField IF_Taille_du_projectile;
+	public InputField IF_Gravite;
+	public InputField IF_Rigidite_lancepierre;
+	public InputField IF_Nb_lancers;
+	public InputField IF_Taille_projectile;
 	public Toggle T_Afficher_le_score;
 	public InputField IF_Nb_points_gagnes_par_cible;
 	public InputField IF_Delai_lancer_projectile;
-	public InputField IF_Delai_Evaluation_cible;
-	
+	public InputField IF_Delai_evaluation_cible;
+	public Text Label_fichier_config;
+
 	void Start () {
+		//Création du modèle Jeu au lancement de l'application
 		GameController.Jeu = new Jeu ();
-		IF_Taille_cible.text = Convert.ToString(GameController.Jeu.Taille_cible);
-		IF_Hauteur_cible.text = Convert.ToString(GameController.Jeu.Hauteur_cible);
-		IF_Distance_cible_lancepierre.text = Convert.ToString(GameController.Jeu.Distance_cible_lancepierre);
-		IF_Gravité.text = Convert.ToString(GameController.Jeu.Gravite);
-		IF_Rigidité_lancepierre.text = Convert.ToString(GameController.Jeu.Rigidite_lancepierre);
-		IF_Nombre_de_lancers.text = Convert.ToString(GameController.Jeu.Nb_lancers);
-		IF_Taille_du_projectile.text = Convert.ToString(GameController.Jeu.Taille_projectile);
-		T_Afficher_le_score.enabled = GameController.Jeu.Afficher_le_score;
-		IF_Nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Nb_points_gagnes_par_cible);
-		IF_Delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Delai_lancer_projectile);
-		IF_Delai_Evaluation_cible.text = Convert.ToString(GameController.Jeu.Delai_evaluation_cible);
+		refreshGUIFields ();
 	}
 	
 	void Update () {
 	
 	}
-	
+
+	/**
+	 * Met à jour les champs du menu principal avec la configuration actuelle du jeu 
+	 */
+	public void refreshGUIFields(){
+		//Assignation des valeurs par défaut au modèle config
+		IF_Taille_cible.text = Convert.ToString(GameController.Jeu.Config.Taille_cible);
+		IF_Hauteur_cible.text = Convert.ToString(GameController.Jeu.Config.Hauteur_cible);
+		IF_Distance_cible_lancepierre.text = Convert.ToString(GameController.Jeu.Config.Distance_cible_lancepierre);
+		IF_Gravite.text = Convert.ToString(GameController.Jeu.Config.Gravite);
+		IF_Rigidite_lancepierre.text = Convert.ToString(GameController.Jeu.Config.Rigidite_lancepierre);
+		IF_Nb_lancers.text = Convert.ToString(GameController.Jeu.Config.Nb_lancers);
+		IF_Taille_projectile.text = Convert.ToString(GameController.Jeu.Config.Taille_projectile);
+		T_Afficher_le_score.enabled = GameController.Jeu.Config.Afficher_le_score;
+		IF_Nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
+		IF_Delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
+		IF_Delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
+	}
+
 	public void onValueChangeTaille_cible(){
 		int res;
 		if (int.TryParse (IF_Taille_cible.text, out res)) {
-			GameController.Jeu.Taille_cible = res;
+			GameController.Jeu.Config.Taille_cible = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
 		}
@@ -52,7 +62,7 @@ public class UIManagerScript : MonoBehaviour {
 	public void onValueChangeHauteur_cible(){
 		int res;
 		if (int.TryParse (IF_Hauteur_cible.text, out res)) {
-			GameController.Jeu.Hauteur_cible = res;
+			GameController.Jeu.Config.Hauteur_cible = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
 		}
@@ -61,7 +71,7 @@ public class UIManagerScript : MonoBehaviour {
 	public void onValueChangeDistance_cible_lancepierre(){
 		int res;
 		if (int.TryParse (IF_Distance_cible_lancepierre.text, out res)) {
-			GameController.Jeu.Distance_cible_lancepierre = res;
+			GameController.Jeu.Config.Distance_cible_lancepierre = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
 		}
@@ -69,8 +79,8 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void onValueChangeGravite(){
 		int res;
-		if (int.TryParse (IF_Gravité.text, out res)) {
-			GameController.Jeu.Gravite = res;
+		if (int.TryParse (IF_Gravite.text, out res)) {
+			GameController.Jeu.Config.Gravite = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
 		}
@@ -78,8 +88,8 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void onValueChangeRigidité_lancepierre(){
 		int res;
-		if (int.TryParse (IF_Rigidité_lancepierre.text, out res)) {
-			GameController.Jeu.Rigidite_lancepierre = res;
+		if (int.TryParse (IF_Rigidite_lancepierre.text, out res)) {
+			GameController.Jeu.Config.Rigidite_lancepierre = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
 		}
@@ -87,8 +97,8 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void onValueChangeNombre_de_lancer(){
 		int res;
-		if (int.TryParse (IF_Nombre_de_lancers.text, out res)) {
-			GameController.Jeu.Nb_lancers = res;
+		if (int.TryParse (IF_Nb_lancers.text, out res)) {
+			GameController.Jeu.Config.Nb_lancers = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
 		}
@@ -96,21 +106,21 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void onValueChangeTaille_du_projectile(){
 		int res;
-		if (int.TryParse (IF_Taille_du_projectile.text, out res)) {
-			GameController.Jeu.Taille_projectile = res;
+		if (int.TryParse (IF_Taille_projectile.text, out res)) {
+			GameController.Jeu.Config.Taille_projectile = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
 		}
 	}
 
 	public void onValueChangeAfficher_le_score(){
-		GameController.Jeu.Afficher_le_score = T_Afficher_le_score.enabled;
+		GameController.Jeu.Config.Afficher_le_score = T_Afficher_le_score.enabled;
 	}
 
 	public void onValueChangeNb_points_gagnes_par_cible(){
 		int res;
 		if (int.TryParse (IF_Nb_points_gagnes_par_cible.text, out res)) {
-			GameController.Jeu.Nb_points_gagnes_par_cible = res;
+			GameController.Jeu.Config.Nb_points_gagnes_par_cible = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
 		}
@@ -119,7 +129,7 @@ public class UIManagerScript : MonoBehaviour {
 	public void onValueChangeDelai_lancer_projectile(){
 		int res;
 		if (int.TryParse (IF_Delai_lancer_projectile.text, out res)) {
-			GameController.Jeu.Delai_lancer_projectile = res;
+			GameController.Jeu.Config.Delai_lancer_projectile = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
 		}
@@ -127,8 +137,8 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void onValueChangeDelai_evaluation_cible(){
 		int res;
-		if (int.TryParse (IF_Delai_Evaluation_cible.text, out res)) {
-			GameController.Jeu.Delai_evaluation_cible = res;
+		if (int.TryParse (IF_Delai_evaluation_cible.text, out res)) {
+			GameController.Jeu.Config.Delai_evaluation_cible = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
 		}
@@ -138,6 +148,9 @@ public class UIManagerScript : MonoBehaviour {
 		Debug.Log (GameController.Jeu);
 	}
 
+	/**
+	 * Charge un fichier de configuration 
+	 */
 	public void onClickParamsModifier(){
 		Debug.Log ("Modifier!");
 
@@ -146,14 +159,45 @@ public class UIManagerScript : MonoBehaviour {
 			"",
 			"xml");
 
-		Debug.Log ("Fichier choisi:" + path);
+		if (path.Length != 0) {
+			string filename = Path.GetFileNameWithoutExtension (path);
+			Debug.Log ("Fichier choisi:" + path);
 
-		ConfContainer confContainer = new ConfContainer ();
-		confContainer.ConfEntries = new ConfEntry[2];
-		confContainer.ConfEntries [0] = new ConfEntry ("test", "val");
-		confContainer.ConfEntries [1] = new ConfEntry ("test2", "val2");
-		Debug.Log (Application.persistentDataPath);
-		confContainer.Save (Path.Combine (Application.dataPath, "test.xml"));
+			//Chargement du fichier
+			GameController.Jeu.loadConfig(path);
+
+			//Mis à jour du GUI avec la nouvelle config
+			refreshGUIFields ();
+
+			Label_fichier_config.text = filename;
+		}
+
+
+
+
+	}
+
+	/**
+	 * Sauvegarde la configuration actuelle dans  un fichier de configuration 
+	 */
+	public void onClickParamsSauvegarder(){
+		Debug.Log ("Sauvegarder!");
+
+		var path = EditorUtility.SaveFilePanel(
+			"Sauvegarder un fichier de configuration",
+			"",
+			"test.xml",
+			"xml");
+
+
+		if(path.Length != 0) {
+			string filename = Path.GetFileNameWithoutExtension (path);
+			Debug.Log ("Fichier choisi:" + path);
+			GameController.Jeu.saveConfig(path);
+			Label_fichier_config.text = filename;
+		}
+
+
 
 	}
 }
