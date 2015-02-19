@@ -153,12 +153,14 @@ public class UIManagerScript : MonoBehaviour {
 	 */
 	public void onClickParamsModifier(){
 		Debug.Log ("Modifier!");
-
+		
+		#if UNITY_EDITOR
 		var path = EditorUtility.OpenFilePanel(
 			"Sélectionner un fichier de configuration",
 			"",
 			"xml");
 
+		
 		if (path.Length != 0) {
 			string filename = Path.GetFileNameWithoutExtension (path);
 			Debug.Log ("Fichier choisi:" + path);
@@ -171,7 +173,7 @@ public class UIManagerScript : MonoBehaviour {
 
 			Label_fichier_config.text = filename;
 		}
-
+		#endif
 
 
 
@@ -183,6 +185,7 @@ public class UIManagerScript : MonoBehaviour {
 	public void onClickParamsSauvegarder(){
 		Debug.Log ("Sauvegarder!");
 
+		#if UNITY_EDITOR
 		var path = EditorUtility.SaveFilePanel(
 			"Sauvegarder un fichier de configuration",
 			"",
@@ -196,7 +199,7 @@ public class UIManagerScript : MonoBehaviour {
 			GameController.Jeu.saveConfig(path);
 			Label_fichier_config.text = filename;
 		}
-
+		#endif
 
 
 	}
