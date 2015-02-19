@@ -7,6 +7,7 @@ using System.Collections;
 using System;
 using System.IO;
 using System.Text;
+using System.Diagnostics;
 
 public class Results : MonoBehaviour {
 
@@ -84,7 +85,7 @@ public class Results : MonoBehaviour {
 
 	public void writeCSV() {
 		string text ; 
-		FileStream fs = File.Open("../resultats.csv", FileMode.Append);
+		FileStream fs = File.Open("resultats.csv", FileMode.Append);
 		text = "Configuration;\n"; // Partie configuration
 
 		text = text + "Nom du fichier de configuration;maConfig;\n"; //à remplacer par le bon nom de config
@@ -168,5 +169,12 @@ public class Results : MonoBehaviour {
 		Byte[] info = new UTF8Encoding(true).GetBytes(text);
 		fs.Write(info, 0, text.Length);
 		fs.Close();
+	}
+
+	public void onClickOpenCSV() {
+		//Process.Start("excel.exe" + "../resultats.csv");
+		/*Process.StartInfo.FileName = "excel.exe";
+		Process.Start();*/
+		Process.Start ("resultats.csv");
 	}
 }
