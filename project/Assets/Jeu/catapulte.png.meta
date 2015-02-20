@@ -1,7 +1,9 @@
 fileFormatVersion: 2
-guid: 34c8cbbff8de87c4c8253161ff8e8267
+guid: cd566e91bb1b64e42b0c9fb2436477db
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: catapulte_0
+    21300002: catapulte_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -31,7 +33,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -42,6 +44,26 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: catapulte_0
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 31
+        width: 41
+        height: 192
+      alignment: 9
+      pivot: {x: .195501745, y: .877133906}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: catapulte_1
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 110
+        width: 46
+        height: 113
+      alignment: 9
+      pivot: {x: .0549027808, y: .734221339}
+      border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
