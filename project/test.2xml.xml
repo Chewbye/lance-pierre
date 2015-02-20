@@ -2,37 +2,37 @@
 <Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ConfEntries>
     <ConfEntry name="Taille_cible">
-      <Valeur>0</Valeur>
+      <Valeur>5.21</Valeur>
     </ConfEntry>
     <ConfEntry name="Hauteur_cible">
-      <Valeur>0</Valeur>
+      <Valeur>5.2</Valeur>
     </ConfEntry>
     <ConfEntry name="Distance_cible_lancepierre">
-      <Valeur>0</Valeur>
+      <Valeur>10.1</Valeur>
     </ConfEntry>
     <ConfEntry name="Gravite">
-      <Valeur>0</Valeur>
+      <Valeur>9.81</Valeur>
     </ConfEntry>
     <ConfEntry name="Rigidite_lancepierre">
-      <Valeur>40</Valeur>
+      <Valeur>1</Valeur>
     </ConfEntry>
     <ConfEntry name="Nb_lancers">
-      <Valeur>0</Valeur>
+      <Valeur>1</Valeur>
     </ConfEntry>
     <ConfEntry name="Taille_projectile">
-      <Valeur>0</Valeur>
+      <Valeur>1</Valeur>
     </ConfEntry>
     <ConfEntry name="Afficher_le_score">
       <Valeur>True</Valeur>
     </ConfEntry>
     <ConfEntry name="Nb_points_gagnes_par_cible">
-      <Valeur>0</Valeur>
+      <Valeur>1</Valeur>
     </ConfEntry>
     <ConfEntry name="Delai_lancer_projectile">
-      <Valeur>0</Valeur>
+      <Valeur>1</Valeur>
     </ConfEntry>
     <ConfEntry name="Delai_evaluation_cible">
-      <Valeur>0</Valeur>
+      <Valeur>1</Valeur>
     </ConfEntry>
   </ConfEntries>
 </Configuration>

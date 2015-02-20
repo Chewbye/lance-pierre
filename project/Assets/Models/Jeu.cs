@@ -31,7 +31,7 @@ public class Jeu{
 	 */
 	public Jeu(Conf configuration){
 		_Config = configuration;
-		_Nb_lancers = 0;
+		_Nb_lancers = _Config.Nb_lancers;
 	}
 
 	/**

@@ -5,9 +5,9 @@ using System;
 using System.Reflection;
 
 public class Conf{
-	private int _Taille_cible;
+	private float _Taille_cible;
 	
-	public int Taille_cible {
+	public float Taille_cible {
 		get {
 			return _Taille_cible;
 		}
@@ -16,9 +16,9 @@ public class Conf{
 		}
 	}
 	
-	private int _Hauteur_cible;
+	private float _Hauteur_cible;
 	
-	public int Hauteur_cible {
+	public float Hauteur_cible {
 		get {
 			return _Hauteur_cible;
 		}
@@ -27,9 +27,9 @@ public class Conf{
 		}
 	}
 	
-	private int _Distance_cible_lancepierre;
+	private float _Distance_cible_lancepierre;
 	
-	public int Distance_cible_lancepierre {
+	public float Distance_cible_lancepierre {
 		get {
 			return _Distance_cible_lancepierre;
 		}
@@ -38,9 +38,9 @@ public class Conf{
 		}
 	}
 	
-	private int _Gravite;
+	private float _Gravite;
 	
-	public int Gravite {
+	public float Gravite {
 		get {
 			return _Gravite;
 		}
@@ -49,9 +49,9 @@ public class Conf{
 		}
 	}
 	
-	private int _Rigidite_lancepierre;
+	private float _Rigidite_lancepierre;
 	
-	public int Rigidite_lancepierre {
+	public float Rigidite_lancepierre {
 		get {
 			return _Rigidite_lancepierre;
 		}
@@ -71,9 +71,9 @@ public class Conf{
 		}
 	}
 	
-	private int _Taille_projectile;
+	private float _Taille_projectile;
 	
-	public int Taille_projectile {
+	public float Taille_projectile {
 		get {
 			return _Taille_projectile;
 		}
@@ -104,9 +104,9 @@ public class Conf{
 		}
 	}
 	
-	private int _Delai_lancer_projectile;
+	private float _Delai_lancer_projectile;
 	
-	public int Delai_lancer_projectile {
+	public float Delai_lancer_projectile {
 		get {
 			return _Delai_lancer_projectile;
 		}
@@ -115,9 +115,9 @@ public class Conf{
 		}
 	}
 	
-	private int _Delai_evaluation_cible;
+	private float _Delai_evaluation_cible;
 	
-	public int Delai_evaluation_cible {
+	public float Delai_evaluation_cible {
 		get {
 			return _Delai_evaluation_cible;
 		}
@@ -137,17 +137,17 @@ public class Conf{
 	 * Créé un modèle Conf avec des valeurs par défaut
 	 */
 	public Conf(){
-		_Taille_cible = 0;
-		_Hauteur_cible = 0;
-		_Distance_cible_lancepierre = 0;
-		_Gravite = 0;
-		_Rigidite_lancepierre = 0;
-		_Nb_lancers = 0;
-		_Taille_projectile = 0;
+		_Taille_cible = 1.0f;
+		_Hauteur_cible = 3.0f;
+		_Distance_cible_lancepierre = 10.0f;
+		_Gravite = 9.81f;
+		_Rigidite_lancepierre = 1.0f;
+		_Nb_lancers = 1;
+		_Taille_projectile = 1.0f;
 		_Afficher_le_score = true;
-		_Nb_points_gagnes_par_cible = 0;
-		_Delai_lancer_projectile = 0;
-		_Delai_evaluation_cible = 0;
+		_Nb_points_gagnes_par_cible = 1;
+		_Delai_lancer_projectile = 1.0f;
+		_Delai_evaluation_cible = 1.0f;
 	}
 	
 	
@@ -193,11 +193,15 @@ public class Conf{
 		foreach (ConfEntry confEntry in confContainer.ConfEntries){
 
 			pi = type.GetProperty(confEntry.Attribut);
-			UnityEngine.Debug.Log(confEntry.Attribut + " " + confEntry.Valeur + " " + (pi.GetType()));
+			UnityEngine.Debug.Log(confEntry.Attribut + " " + confEntry.Valeur + " " + (pi));
 			int resInt;
 			bool resBool;
+			float resFloat;
+
 			if (int.TryParse (confEntry.Valeur, out resInt)) {
 				pi.SetValue(this, resInt, null);
+			} else if (float.TryParse (confEntry.Valeur, out resFloat)) {
+				pi.SetValue(this, resFloat, null); 
 			} else if(bool.TryParse (confEntry.Valeur, out resBool)){
 				pi.SetValue(this, resBool, null);
 			}

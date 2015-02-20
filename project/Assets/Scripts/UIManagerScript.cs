@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using System.Collections;
 using System.IO;
 using System;
@@ -59,8 +56,8 @@ public class UIManagerScript : MonoBehaviour {
 	}
 	
 	public void onValueChangeTaille_cible(){
-		int res;
-		if (int.TryParse (IF_Taille_cible.text, out res)) {
+		float res;
+		if (float.TryParse (IF_Taille_cible.text, out res)) {
 			GameController.Jeu.Config.Taille_cible = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
@@ -68,8 +65,8 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	public void onValueChangeHauteur_cible(){
-		int res;
-		if (int.TryParse (IF_Hauteur_cible.text, out res)) {
+		float res;
+		if (float.TryParse (IF_Hauteur_cible.text, out res)) {
 			GameController.Jeu.Config.Hauteur_cible = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
@@ -77,8 +74,8 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	public void onValueChangeDistance_cible_lancepierre(){
-		int res;
-		if (int.TryParse (IF_Distance_cible_lancepierre.text, out res)) {
+		float res;
+		if (float.TryParse (IF_Distance_cible_lancepierre.text, out res)) {
 			GameController.Jeu.Config.Distance_cible_lancepierre = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
@@ -86,8 +83,8 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	public void onValueChangeGravite(){
-		int res;
-		if (int.TryParse (IF_Gravite.text, out res)) {
+		float res;
+		if (float.TryParse (IF_Gravite.text, out res)) {
 			GameController.Jeu.Config.Gravite = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
@@ -95,8 +92,8 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	public void onValueChangeRigidité_lancepierre(){
-		int res;
-		if (int.TryParse (IF_Rigidite_lancepierre.text, out res)) {
+		float res;
+		if (float.TryParse (IF_Rigidite_lancepierre.text, out res)) {
 			GameController.Jeu.Config.Rigidite_lancepierre = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
@@ -113,8 +110,8 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	public void onValueChangeTaille_du_projectile(){
-		int res;
-		if (int.TryParse (IF_Taille_projectile.text, out res)) {
+		float res;
+		if (float.TryParse (IF_Taille_projectile.text, out res)) {
 			GameController.Jeu.Config.Taille_projectile = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
@@ -135,8 +132,8 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	public void onValueChangeDelai_lancer_projectile(){
-		int res;
-		if (int.TryParse (IF_Delai_lancer_projectile.text, out res)) {
+		float res;
+		if (float.TryParse (IF_Delai_lancer_projectile.text, out res)) {
 			GameController.Jeu.Config.Delai_lancer_projectile = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");
@@ -144,8 +141,8 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	public void onValueChangeDelai_evaluation_cible(){
-		int res;
-		if (int.TryParse (IF_Delai_evaluation_cible.text, out res)) {
+		float res;
+		if (float.TryParse (IF_Delai_evaluation_cible.text, out res)) {
 			GameController.Jeu.Config.Delai_evaluation_cible = res;
 		} else {
 			Debug.Log ("Ceci n'est pas un entier!");

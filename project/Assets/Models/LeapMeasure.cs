@@ -20,7 +20,7 @@ public class LeapMeasure : MonoBehaviour{
 
 	protected int timer;
 	protected float ancienneDistance;
-	protected static int TIMER_MAX;
+	protected static float TIMER_MAX;
 	protected static float BORNE;
 
 	public int Timer {
