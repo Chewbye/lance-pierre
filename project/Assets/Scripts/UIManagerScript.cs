@@ -153,7 +153,7 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	public void onClickPreTest(){
-		Debug.Log (GameController.Jeu);
+		Application.LoadLevel ("jeu");
 	}
 
 	/**
