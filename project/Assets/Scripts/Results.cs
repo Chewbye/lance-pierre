@@ -10,7 +10,7 @@ using System.Text;
 using System.Diagnostics;
 
 public class Results : MonoBehaviour {
-
+	
 	//Configuration
 	public Text taille_cible;
 	public Text hauteur_cible;
@@ -23,7 +23,7 @@ public class Results : MonoBehaviour {
 	public Text nb_points_gagnes_par_cible;
 	public Text delai_lancer_projectile;
 	public Text delai_evaluation_cible;
-
+	
 	//Récapitulatif
 	public Text score_final;
 	public Text nombre_cibles_touchees;
@@ -38,7 +38,7 @@ public class Results : MonoBehaviour {
 	public Text temps_evaluation_cible;
 	
 	string fichierCourant;
-
+	
 	// Use this for initialization
 	void Start () {
 		if (GameController.Jeu == null) 
@@ -48,9 +48,9 @@ public class Results : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
 	}
-
+	
 	/**
 	 * Met à jour les champs du menu principal avec la configuration actuelle du jeu 
 	 */
@@ -67,7 +67,7 @@ public class Results : MonoBehaviour {
 		nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
 		delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
-
+		
 		//Assignation des valeurs par traitement des résultats obtenus durant la partie
 		//A remplacer par les résultats stockés par Pierre
 		score_final.text = Convert.ToString(GameController.Jeu.Score_final);
@@ -82,13 +82,13 @@ public class Results : MonoBehaviour {
 		nombre_evaluations_sup_5cm_inf_10cm.text = "0"; //entre 5 et 9,9cm
 		nombre_evaluations_sup_10cm.text = "0"; //+ 10cm
 		temps_evaluation_cible.text = "2"; //Ici on fera une moyenne des temps*/
-
+		
 		writeCSV();
 	}
-
+	
 	public void writeCSV() {
 		string text; 
-
+		
 		// Version 1
 		/*
 		FileStream fs = File.Open("resultats.csv", FileMode.Append);
@@ -175,7 +175,7 @@ public class Results : MonoBehaviour {
 		Byte[] info = new UTF8Encoding(true).GetBytes(text);
 		fs.Write(info, 0, text.Length);
 		*/
-
+		
 		//Version 3
 		string nomFichier; 
 		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
@@ -183,9 +183,9 @@ public class Results : MonoBehaviour {
 		nomFichier = "resultats" + dateFichier + ".csv";
 		FileStream fs = File.Open(nomFichier, FileMode.Create);
 		fichierCourant = nomFichier;
-
+		
 		text = "Date;" + date + ";\n\n";
-
+		
 		text = text + "Configuration;\n\n"; // Partie configuration
 		
 		text = text + "Nom du fichier de configuration;maConfig;\n"; //à remplacer par le bon nom de config
@@ -240,7 +240,7 @@ public class Results : MonoBehaviour {
 		text = text +  nombre_cibles_manquees.text + ";\n\n";
 		
 		text = text + "Details des lancers;\n\n";
-
+		
 		int count = 0;
 		foreach (bool tir in GameController.Jeu._Un_tir) {
 			count++;
@@ -252,10 +252,10 @@ public class Results : MonoBehaviour {
 		}
 		Byte[] info = new UTF8Encoding(true).GetBytes(text);
 		fs.Write(info, 0, text.Length);
-
+		
 		fs.Close();
 	}
-
+	
 	public void onClickOpenCSV() {
 		Process.Start (fichierCourant);
 	}
