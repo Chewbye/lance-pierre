@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ConfEntries>
+    <ConfEntry name="Taille_cible">
+      <Valeur>2</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Hauteur_cible">
+      <Valeur>5</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Distance_cible_lancepierre">
+      <Valeur>0</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Gravite">
+      <Valeur>0</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Rigidite_lancepierre">
+      <Valeur>0</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Nb_lancers">
+      <Valeur>0</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Taille_projectile">
+      <Valeur>0</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Afficher_le_score">
+      <Valeur>True</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Nb_points_gagnes_par_cible">
+      <Valeur>0</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Delai_lancer_projectile">
+      <Valeur>0</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Delai_evaluation_cible">
+      <Valeur>0</Valeur>
+    </ConfEntry>
+  </ConfEntries>
+</Configuration>
