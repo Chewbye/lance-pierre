@@ -24,30 +24,10 @@ public class GestionDegats : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter2D (Collision2D collision) {
-		//	Check the colliding object's tag, and if it is not "Damager", exit this function
-		if (collision.collider.tag != "Damager")
-			return;
-		
-		//	Check the colliding object's velocity's Square Magnitude, and if it is less than the threshold, exit this function
-		if (collision.relativeVelocity.sqrMagnitude < damageImpactSpeedSqr)
-			return;
-		//	We have taken damage, so change the sprite to the damaged sprite
-		spriteRenderer.sprite = damagedSprite;
-		//	Decriment the Current Health of the target
-		currentHitPoints--;
-
-		//	If the Current Health is less than or equal to zero, call the Kill() function
-		if(currentHitPoints <= 0)
-			Kill ();
-	}
-	
-	void Kill () {
-		//	As the particle system is attached to this GameObject, when Killed, switch off all of the visible behaviours...
-		spriteRenderer.enabled = false;
-		collider2D.enabled = false;
-		rigidbody2D.isKinematic = true;
-
-		//	... and Play the particle system
-		particleSystem.Play();
+		// On incrémente le nombre de cibles touchées
+		GameController.Jeu.Nb_cible_touchees ++;
+		Debug.Log(GameController.Jeu);
+		//	On recharge la meme scène
+		Application.LoadLevel (Application.loadedLevel);
 	}
 }

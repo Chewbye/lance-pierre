@@ -41,7 +41,10 @@ public class ReinitProjectile : MonoBehaviour {
 	}
 	
 	void Reset () {
-		//	The reset function will Reset the game by reloading the same level
+		// On incrémente le nombre de cibles manquées
+		GameController.Jeu.Nb_cible_manquees ++;
+		Debug.Log(GameController.Jeu);
+		//	On recharge la meme scène
 		Application.LoadLevel (Application.loadedLevel);
 	}
 }
