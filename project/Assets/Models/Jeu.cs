@@ -16,7 +16,6 @@ public class Jeu{
 	}
 
 	private int _Nb_lancers;
-
 	public int Nb_lancers {
 		get {
 			return _Nb_lancers;
@@ -27,7 +26,6 @@ public class Jeu{
 	}
 
 	private int _Score_final;
-	
 	public int Score_final {
 		get {
 			return _Score_final;
@@ -38,7 +36,6 @@ public class Jeu{
 	}
 
 	private int _Nb_cible_touchees;
-	
 	public int Nb_cible_touchees {
 		get {
 			return _Nb_cible_touchees;
@@ -49,13 +46,32 @@ public class Jeu{
 	}
 
 	private int _Nb_cible_manquees;
-	
 	public int Nb_cible_manquees {
 		get {
 			return _Nb_cible_manquees;
 		}
 		set {
 			_Nb_cible_manquees = value;
+		}
+	}
+
+	private int _Tir_courant;
+	public int Tir_courant {
+		get {
+			return _Tir_courant;
+		}
+		set {
+			_Tir_courant = value;
+		}
+	}
+
+	private bool[] _Ensemble_tirs;
+	public bool[] _Un_tir {
+		get {
+			return _Ensemble_tirs;
+		}
+		set {
+			_Ensemble_tirs = value;
 		}
 	}
 
@@ -68,6 +84,8 @@ public class Jeu{
 		_Score_final = 0;
 		_Nb_cible_manquees = 0;
 		_Nb_cible_touchees = 0;
+		_Ensemble_tirs = new bool[_Nb_lancers];
+		_Tir_courant = 0;
 	}
 
 	/**
@@ -79,15 +97,19 @@ public class Jeu{
 		_Score_final = 0;
 		_Nb_cible_manquees = 0;
 		_Nb_cible_touchees = 0;
+		_Ensemble_tirs = new bool[_Nb_lancers];
+		_Tir_courant = 0;
 	}
 
 
 	public override string ToString(){
 		string res = "";
-		res += _Nb_lancers + System.Environment.NewLine 
-			+ _Score_final + System.Environment.NewLine 
-			+ _Nb_cible_touchees + System.Environment.NewLine 
-			+ _Nb_cible_manquees + System.Environment.NewLine;
+		res +=  "NB_lancers=" + _Nb_lancers + System.Environment.NewLine 
+			    + "ScoreFinal=" + _Score_final + System.Environment.NewLine 
+				+ "NBCiblesTouchees=" + _Nb_cible_touchees + System.Environment.NewLine 
+				+ "NBCiblesManquees=" + _Nb_cible_manquees + System.Environment.NewLine
+				+ "TirCourant=" + _Tir_courant + System.Environment.NewLine;
+			
 
 		return res;
 	}
