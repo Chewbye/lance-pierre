@@ -36,10 +36,13 @@ public class Results : MonoBehaviour {
 	public Text nombre_evaluations_sup_5cm_inf_10cm;
 	public Text nombre_evaluations_sup_10cm;
 	public Text temps_evaluation_cible;
+	
+	string fichierCourant;
 
 	// Use this for initialization
 	void Start () {
-		GameController.Jeu = new Jeu ();
+		if (GameController.Jeu == null) 
+			GameController.Jeu = new Jeu ();
 		setFields ();
 	}
 	
@@ -67,24 +70,27 @@ public class Results : MonoBehaviour {
 
 		//Assignation des valeurs par traitement des résultats obtenus durant la partie
 		//A remplacer par les résultats stockés par Pierre
-		score_final.text = "50";
-		nombre_cibles_touchees.text = "10";
-		nombre_cibles_manquees.text = "10";
+		score_final.text = Convert.ToString(GameController.Jeu.Score_final);
+		nombre_cibles_touchees.text = Convert.ToString(GameController.Jeu.Nb_cible_touchees);
+		nombre_cibles_manquees.text = Convert.ToString(GameController.Jeu.Nb_cible_manquees);
 		//Ici on comptera le nombre de valeurs correspondantes
-		nombre_evaluations_moins_1cm.text = "2"; //- 1cm
+		/*nombre_evaluations_moins_1cm.text = "2"; //- 1cm
 		nombre_evaluations_environ_2cm.text = "5"; //entre 1 et 2,4cm
 		nombre_evaluations_environ_3cm.text = "10"; //entre 2,5 et 3,4cm
 		nombre_evaluations_environ_4cm.text = "3"; //entre 3,5 et 4,4cm
 		nombre_evaluations_environ_5cm.text = "0"; //entre 4,5 et 4,9cm
 		nombre_evaluations_sup_5cm_inf_10cm.text = "0"; //entre 5 et 9,9cm
 		nombre_evaluations_sup_10cm.text = "0"; //+ 10cm
-		temps_evaluation_cible.text = "2"; //Ici on fera une moyenne des temps
+		temps_evaluation_cible.text = "2"; //Ici on fera une moyenne des temps*/
 
 		writeCSV();
 	}
 
 	public void writeCSV() {
-		string text ; 
+		string text; 
+
+		// Version 1
+		/*
 		FileStream fs = File.Open("resultats.csv", FileMode.Append);
 		text = "Configuration;\n"; // Partie configuration
 
@@ -168,13 +174,89 @@ public class Results : MonoBehaviour {
 		text = text + "\n\n\n"; 
 		Byte[] info = new UTF8Encoding(true).GetBytes(text);
 		fs.Write(info, 0, text.Length);
+		*/
+
+		//Version 3
+		string nomFichier; 
+		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
+		String dateFichier = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year + "-" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second;
+		nomFichier = "resultats" + dateFichier + ".csv";
+		FileStream fs = File.Open(nomFichier, FileMode.Create);
+		fichierCourant = nomFichier;
+
+		text = "Date;" + date + ";\n\n";
+
+		text = text + "Configuration;\n\n"; // Partie configuration
+		
+		text = text + "Nom du fichier de configuration;maConfig;\n"; //à remplacer par le bon nom de config
+		
+		text = text + "Taille de la cible (cm);";
+		text = text +  taille_cible.text + ";\n";
+		
+		text = text + "Hauteur de la cible (cm);";
+		text = text +  hauteur_cible.text + ";\n";
+		
+		text = text + "Distance separant la cible du lance-pierre (cm);";
+		text = text +  distance_cible_lancepierre.text + ";\n";
+		
+		text = text + "Gravite;";
+		text = text +  gravite.text + ";\n";
+		
+		text = text + "Rigidite du lance-pierre;";
+		text = text +  rigidite_lancepierre.text + ";\n";
+		
+		text = text + "Nombre de lancers;";
+		text = text +  nb_lancers.text + ";\n";
+		
+		text = text + "Taille des projectiles (cm);";
+		text = text +  taille_projectile.text + ";\n";
+		
+		text = text + "Afficher le score;";
+		
+		if (afficher_le_score.enabled == true) {
+			text = text + "Oui;\n";
+		} else {
+			text = text + "Non;\n";
+		}
+		
+		text = text + "Nombre de points gagnes par cible (points);";
+		text = text +  nb_points_gagnes_par_cible.text + ";\n";
+		
+		text = text + "Delai avant de pouvoir lancer le projectile (secondes);";
+		text = text +  delai_lancer_projectile.text + ";\n";
+		
+		text = text + "Delai avant de pouvoir evaluer la taille de la cible (secondes);";
+		text = text +  delai_evaluation_cible.text + ";\n\n";
+		
+		text = text + "Recapitulatif;\n\n"; // Partie récapitulatif
+		
+		text = text + "Score final (points);";
+		text = text +  score_final.text + ";\n";
+		
+		text = text + "Nombre de cibles touchees;";
+		text = text +  nombre_cibles_touchees.text + ";\n";
+		
+		text = text + "Nombre de cibles manquees;";
+		text = text +  nombre_cibles_manquees.text + ";\n\n";
+		
+		text = text + "Details des lancers;\n\n";
+
+		int count = 0;
+		foreach (bool tir in GameController.Jeu._Un_tir) {
+			count++;
+			text = text + "Tir numero " + count + ";";
+			if (tir == true) 
+				text = text + "Touche !;\n";
+			else 
+				text = text + "Manque !;\n";
+		}
+		Byte[] info = new UTF8Encoding(true).GetBytes(text);
+		fs.Write(info, 0, text.Length);
+
 		fs.Close();
 	}
 
 	public void onClickOpenCSV() {
-		//Process.Start("excel.exe" + "../resultats.csv");
-		/*Process.StartInfo.FileName = "excel.exe";
-		Process.Start();*/
-		Process.Start ("resultats.csv");
+		Process.Start (fichierCourant);
 	}
 }
