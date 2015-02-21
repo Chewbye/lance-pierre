@@ -38,6 +38,7 @@ public class Results : MonoBehaviour {
 	public Text temps_evaluation_cible;
 	
 	string fichierCourant;
+	string nomDossier;
 	
 	// Use this for initialization
 	void Start () {
@@ -179,10 +180,17 @@ public class Results : MonoBehaviour {
 		//Version 3
 		string nomFichier; 
 		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
+		string dateRepertoire = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year;
 		String dateFichier = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year + "-" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second;
+
+		if (!Directory.Exists(dateRepertoire)) {
+			System.IO.Directory.CreateDirectory(dateRepertoire);
+		}
 		nomFichier = "resultats" + dateFichier + ".csv";
-		FileStream fs = File.Open(nomFichier, FileMode.Create);
+		string cheminNomFichier = dateRepertoire + "/resultats" + dateFichier + ".csv";
+		FileStream fs = File.Open(cheminNomFichier, FileMode.Create);
 		fichierCourant = nomFichier;
+		nomDossier = dateRepertoire;
 		
 		text = "Date;" + date + ";\n\n";
 		
@@ -257,6 +265,16 @@ public class Results : MonoBehaviour {
 	}
 	
 	public void onClickOpenCSV() {
-		Process.Start (fichierCourant);
+		Directory.SetCurrentDirectory(nomDossier);
+
+		String[] fichiers = Directory.GetFiles (".");
+
+		//Process.Start (fichierCourant);
+
+		foreach (String fichier in fichiers) {
+			Process.Start (fichier);
+		}
+
+		Directory.SetCurrentDirectory("..");
 	}
 }
