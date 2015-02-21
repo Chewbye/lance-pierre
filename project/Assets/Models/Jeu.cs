@@ -75,6 +75,16 @@ public class Jeu{
 		}
 	}
 
+	private double[] _Ensemble_distances;
+	public double[] _Une_distance {
+		get {
+			return _Ensemble_distances;
+		}
+		set {
+			_Ensemble_distances = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Jeu à partir d'un fichier de configuation
 	 */
@@ -85,6 +95,7 @@ public class Jeu{
 		_Nb_cible_manquees = 0;
 		_Nb_cible_touchees = 0;
 		_Ensemble_tirs = new bool[_Nb_lancers];
+		_Ensemble_distances = new double[_Nb_lancers];
 		_Tir_courant = 0;
 	}
 
@@ -98,6 +109,7 @@ public class Jeu{
 		_Nb_cible_manquees = 0;
 		_Nb_cible_touchees = 0;
 		_Ensemble_tirs = new bool[_Nb_lancers];
+		_Ensemble_distances = new double[_Nb_lancers];
 		_Tir_courant = 0;
 	}
 
