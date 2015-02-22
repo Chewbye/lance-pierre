@@ -23,7 +23,7 @@ public class PositionCible : MonoBehaviour {
 		distance = Math.Sqrt (Math.Pow(((double)positionCible.x - (double)positionCatapulte.x), 2) + Math.Pow(((double)positionCible.y - (double)positionCatapulte.y), 2));
 
 		// On enregistre la distance dans le tableau des distances
-		GameController.Jeu._Une_distance [GameController.Jeu.Tir_courant] = distance;
+		//GameController.Jeu._Une_distance [GameController.Jeu.Tir_courant] = distance;
 	}
 
 	// Update is called once per frame

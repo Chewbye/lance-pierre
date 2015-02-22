@@ -19,16 +19,20 @@ public class ReinitProjectile : MonoBehaviour {
 	}
 	
 	void Update () {
-		//	If we hold down the "R" key...
-		if (Input.GetKeyDown (KeyCode.R)) {
-			//	... call the Reset() function
-			Reset ();
-		}
+		if (GameController.Jeu.Tir_courant == GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel ("results");
+		} else {
+			//	If we hold down the "R" key...
+			if (Input.GetKeyDown (KeyCode.R)) {
+				//	... call the Reset() function
+				Reset ();
+			}
 
-		//	If the spring had been destroyed (indicating we have launched the projectile) and our projectile's velocity is below the threshold...
-		if (spring == null && projectile.velocity.sqrMagnitude < resetSpeedSqr) {
-			//	... call the Reset() function
-			Reset ();
+			//	If the spring had been destroyed (indicating we have launched the projectile) and our projectile's velocity is below the threshold...
+			if (spring == null && projectile.velocity.sqrMagnitude < resetSpeedSqr) {
+				//	... call the Reset() function
+				Reset ();
+			}
 		}
 	}
 	
