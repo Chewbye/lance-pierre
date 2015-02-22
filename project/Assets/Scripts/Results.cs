@@ -177,7 +177,7 @@ public class Results : MonoBehaviour {
 		fs.Write(info, 0, text.Length);
 		*/
 		
-		//Version 3
+		//Version 2
 		string nomFichier; 
 		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
 		string dateRepertoire = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year;
@@ -263,13 +263,19 @@ public class Results : MonoBehaviour {
 		
 		fs.Close();
 	}
+
+	public void onClickOpenOneCSV() {
+		Directory.SetCurrentDirectory(nomDossier);
+
+		Process.Start (fichierCourant);
+
+		Directory.SetCurrentDirectory("..");
+	}
 	
-	public void onClickOpenCSV() {
+	public void onClickOpenDayCSVs() {
 		Directory.SetCurrentDirectory(nomDossier);
 
 		String[] fichiers = Directory.GetFiles (".");
-
-		//Process.Start (fichierCourant);
 
 		foreach (String fichier in fichiers) {
 			Process.Start (fichier);
