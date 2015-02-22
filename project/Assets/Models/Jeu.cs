@@ -85,6 +85,26 @@ public class Jeu{
 		}
 	}
 
+	private double[] _Ensemble_tailleCible;
+	public double[] _Une_tailleCible {
+		get {
+			return _Ensemble_tailleCible;
+		}
+		set {
+			_Ensemble_tailleCible = value;
+		}
+	}
+
+	private double[] _Ensemble_temps;
+	public double[] _Un_temps {
+		get {
+			return _Ensemble_temps;
+		}
+		set {
+			_Ensemble_temps = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Jeu à partir d'un fichier de configuation
 	 */
@@ -96,6 +116,8 @@ public class Jeu{
 		_Nb_cible_touchees = 0;
 		_Ensemble_tirs = new bool[_Nb_lancers];
 		_Ensemble_distances = new double[_Nb_lancers];
+		_Ensemble_tailleCible = new double[_Nb_lancers];
+		_Ensemble_temps = new double[_Nb_lancers];
 		_Tir_courant = 0;
 	}
 
@@ -110,6 +132,8 @@ public class Jeu{
 		_Nb_cible_touchees = 0;
 		_Ensemble_tirs = new bool[_Nb_lancers];
 		_Ensemble_distances = new double[_Nb_lancers];
+		_Ensemble_tailleCible = new double[_Nb_lancers];
+		_Ensemble_temps = new double[_Nb_lancers];
 		_Tir_courant = 0;
 	}
 
