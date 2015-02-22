@@ -67,6 +67,7 @@ public class Conf{
 			return _Nb_lancers;
 		}
 		set {
+			GameController.Jeu._Un_tir = new bool[value];
 			_Nb_lancers = value;
 		}
 	}
