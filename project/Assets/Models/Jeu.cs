@@ -25,6 +25,16 @@ public class Jeu{
 		}
 	}
 
+	private int _Score_courant;
+	public int Score_courant {
+		get {
+			return _Score_courant;
+		}
+		set {
+			_Score_courant = value;
+		}
+	}
+
 	private int _Score_final;
 	public int Score_final {
 		get {
@@ -111,6 +121,7 @@ public class Jeu{
 	public Jeu(Conf configuration){
 		_Config = configuration;
 		_Nb_lancers = _Config.Nb_lancers;
+		_Score_courant = 0;
 		_Score_final = 0;
 		_Nb_cible_manquees = 0;
 		_Nb_cible_touchees = 0;
@@ -127,6 +138,7 @@ public class Jeu{
 	public Jeu(){
 		_Config = new Conf ();
 		_Nb_lancers = _Config.Nb_lancers;
+		_Score_courant = 0;
 		_Score_final = 0;
 		_Nb_cible_manquees = 0;
 		_Nb_cible_touchees = 0;
