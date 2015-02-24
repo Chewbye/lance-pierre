@@ -21,6 +21,7 @@ public class ConfContainer
 	public static ConfContainer Load(string path)
 	{
 		var serializer = new XmlSerializer(typeof(ConfContainer));
+		UnityEngine.Debug.Log(path);
 		using(var stream = new FileStream(path, FileMode.Open))
 		{
 			return serializer.Deserialize(stream) as ConfContainer;

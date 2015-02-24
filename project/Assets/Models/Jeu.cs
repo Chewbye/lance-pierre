@@ -15,6 +15,16 @@ public class Jeu{
 		}
 	}
 
+	private ArrayList _ConfigsList;
+	public ArrayList ConfigsList {
+		get {
+			return _ConfigsList;
+		}
+		set {
+			_ConfigsList = value;
+		}
+	}
+
 	private int _Nb_lancers;
 	public int Nb_lancers {
 		get {
@@ -130,6 +140,7 @@ public class Jeu{
 		_Ensemble_tailleCible = new double[_Nb_lancers];
 		_Ensemble_temps = new double[_Nb_lancers];
 		_Tir_courant = 0;
+		refreshConfigFiles ();
 	}
 
 	/**
@@ -147,6 +158,29 @@ public class Jeu{
 		_Ensemble_tailleCible = new double[_Nb_lancers];
 		_Ensemble_temps = new double[_Nb_lancers];
 		_Tir_courant = 0;
+		refreshConfigFiles ();
+	}
+
+	/**
+	 * Stocke la liste des modèles de configuration déja enregistrées dans l'attribut _ConfigsList par ordre de dates de création
+	 */
+	public void refreshConfigFiles(){
+		//Récupération des noms des fichiers de configuration
+		string[] fileNames = Directory.GetFiles(Application.dataPath, "*.xml");
+
+		//Récupération des dates de création de chaque fichier
+		DateTime[] creationTimes = new DateTime[fileNames.Length];
+		for (int i=0; i < fileNames.Length; i++)
+			creationTimes[i] = new FileInfo(fileNames[i]).CreationTime;
+
+		//Tri du tableau fileNames par date de création
+		Array.Sort(creationTimes,fileNames);
+
+		_ConfigsList = new ArrayList ();
+		//Transformation tableau vers ArrayList
+		foreach (string fileName in fileNames) {
+			_ConfigsList.Add (new Conf (fileName.Replace("/", "\\")));
+		}
 	}
 
 

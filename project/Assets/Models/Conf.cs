@@ -5,8 +5,17 @@ using System;
 using System.Reflection;
 
 public class Conf{
+	private string _Name;
+	public string Name {
+		get {
+			return _Name;
+		}
+		set {
+			_Name = value;
+		}
+	}
+
 	private float _Taille_cible;
-	
 	public float Taille_cible {
 		get {
 			return _Taille_cible;
@@ -67,7 +76,6 @@ public class Conf{
 			return _Nb_lancers;
 		}
 		set {
-			GameController.Jeu._Un_tir = new bool[value];
 			_Nb_lancers = value;
 		}
 	}
@@ -131,6 +139,7 @@ public class Conf{
 	 * Créé un modèle Conf à partir d'un fichier de configuation
 	 */
 	public Conf(string confPath){
+		_Name = Path.GetFileNameWithoutExtension (confPath);
 		this.loadConfig (confPath);
 	}
 	
@@ -138,6 +147,7 @@ public class Conf{
 	 * Créé un modèle Conf avec des valeurs par défaut
 	 */
 	public Conf(){
+		_Name = "";
 		_Taille_cible = 1.0f;
 		_Hauteur_cible = 3.0f;
 		_Distance_cible_lancepierre = 10.0f;
@@ -194,7 +204,6 @@ public class Conf{
 		foreach (ConfEntry confEntry in confContainer.ConfEntries){
 
 			pi = type.GetProperty(confEntry.Attribut);
-			UnityEngine.Debug.Log(confEntry.Attribut + " " + confEntry.Valeur + " " + (pi));
 			int resInt;
 			bool resBool;
 			float resFloat;
@@ -205,6 +214,8 @@ public class Conf{
 				pi.SetValue(this, resFloat, null); 
 			} else if(bool.TryParse (confEntry.Valeur, out resBool)){
 				pi.SetValue(this, resBool, null);
+			} else{
+				//pi.SetValue(this, confEntry.Valeur, null);
 			}
 
 

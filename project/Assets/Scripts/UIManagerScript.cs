@@ -5,6 +5,7 @@ using System.IO;
 using System;
 //using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Reflection;
 
 public class UIManagerScript : MonoBehaviour {
 	
@@ -20,6 +21,10 @@ public class UIManagerScript : MonoBehaviour {
 	public InputField IF_Delai_lancer_projectile;
 	public InputField IF_Delai_evaluation_cible;
 	public Text Label_fichier_config;
+	public GameObject Configs_List_Panel;
+	public Button prefabBoutonConfig;
+	public Rect windowConfName;
+	private bool renderWindowConfigName = false;
 
 	[DllImport("user32.dll")]
 	private static extern void OpenFileDialog(); //in your case : OpenFileDialog
@@ -28,13 +33,51 @@ public class UIManagerScript : MonoBehaviour {
 	private static extern void SaveFileDialog(); //in your case : OpenFileDialog
 	
 	void Start () {
+		windowConfName = new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 50, 400, 100);
+
 		//Création du modèle Jeu au lancement de l'application
 		GameController.Jeu = new Jeu ();
 		refreshGUIFields ();
+
+		//Affiche la liste des fichiers de configurations déja sauvegardés à l'ouverture de l'application
+		foreach (Conf conf in GameController.Jeu.ConfigsList) {
+			Button newConfigButton = CreateButton (prefabBoutonConfig, Configs_List_Panel, new Vector2 (0, 0), new Vector2 (0, 0));
+			Text buttonText= newConfigButton.GetComponent<Text>();
+			newConfigButton.GetComponentsInChildren<Text>()[0].text = conf.Name;
+		}			
 	}
 	
 	void Update () {
 	
+	}
+
+	void OnGUI() {
+		if(renderWindowConfigName)
+			windowConfName = GUI.Window(0, windowConfName, creerContenuWindowConfigName, "Sauvegarder la configuration");
+	}
+
+	public void creerContenuWindowConfigName(int windowID){
+		string stringToEdit = "Hello World";
+		stringToEdit = GUI.TextField(new Rect(10, 20, 200, 30), stringToEdit, 25);
+
+		if (GUI.Button(new Rect(10, 50, 100, 20), "Hello World"))
+			print("Got a click");
+	}
+
+	public void afficherWindowConfigName(){
+		renderWindowConfigName = true;
+	}
+
+	public static Button CreateButton(Button buttonPrefab, GameObject canvas, Vector2 cornerTopRight, Vector2 cornerBottomLeft)
+	{
+		var button = UnityEngine.Object.Instantiate(buttonPrefab, Vector3.zero, Quaternion.identity) as Button;
+		var rectTransform = button.GetComponent<RectTransform>();
+		rectTransform.SetParent(canvas.transform);
+		rectTransform.anchorMax = cornerTopRight;
+		rectTransform.anchorMin = cornerBottomLeft;
+		rectTransform.offsetMax = Vector2.zero;
+		rectTransform.offsetMin = Vector2.zero;
+		return button;
 	}
 
 	/**
@@ -59,8 +102,6 @@ public class UIManagerScript : MonoBehaviour {
 		float res;
 		if (float.TryParse (IF_Taille_cible.text, out res)) {
 			GameController.Jeu.Config.Taille_cible = res;
-		} else {
-			Debug.Log ("Ceci n'est pas un entier!");
 		}
 	}
 
@@ -68,8 +109,6 @@ public class UIManagerScript : MonoBehaviour {
 		float res;
 		if (float.TryParse (IF_Hauteur_cible.text, out res)) {
 			GameController.Jeu.Config.Hauteur_cible = res;
-		} else {
-			Debug.Log ("Ceci n'est pas un entier!");
 		}
 	}
 
@@ -77,8 +116,6 @@ public class UIManagerScript : MonoBehaviour {
 		float res;
 		if (float.TryParse (IF_Distance_cible_lancepierre.text, out res)) {
 			GameController.Jeu.Config.Distance_cible_lancepierre = res;
-		} else {
-			Debug.Log ("Ceci n'est pas un entier!");
 		}
 	}
 
@@ -86,8 +123,6 @@ public class UIManagerScript : MonoBehaviour {
 		float res;
 		if (float.TryParse (IF_Gravite.text, out res)) {
 			GameController.Jeu.Config.Gravite = res;
-		} else {
-			Debug.Log ("Ceci n'est pas un entier!");
 		}
 	}
 
@@ -95,8 +130,6 @@ public class UIManagerScript : MonoBehaviour {
 		float res;
 		if (float.TryParse (IF_Rigidite_lancepierre.text, out res)) {
 			GameController.Jeu.Config.Rigidite_lancepierre = res;
-		} else {
-			Debug.Log ("Ceci n'est pas un entier!");
 		}
 	}
 
@@ -108,8 +141,6 @@ public class UIManagerScript : MonoBehaviour {
 			GameController.Jeu._Une_tailleCible = new double[res];
 			GameController.Jeu._Une_distance = new double[res];
 			GameController.Jeu._Un_temps = new double[res];
-		} else {
-			Debug.Log ("Ceci n'est pas un entier!");
 		}
 	}
 
@@ -117,8 +148,6 @@ public class UIManagerScript : MonoBehaviour {
 		float res;
 		if (float.TryParse (IF_Taille_projectile.text, out res)) {
 			GameController.Jeu.Config.Taille_projectile = res;
-		} else {
-			Debug.Log ("Ceci n'est pas un entier!");
 		}
 	}
 
@@ -130,8 +159,6 @@ public class UIManagerScript : MonoBehaviour {
 		int res;
 		if (int.TryParse (IF_Nb_points_gagnes_par_cible.text, out res)) {
 			GameController.Jeu.Config.Nb_points_gagnes_par_cible = res;
-		} else {
-			Debug.Log ("Ceci n'est pas un entier!");
 		}
 	}
 
@@ -139,8 +166,6 @@ public class UIManagerScript : MonoBehaviour {
 		float res;
 		if (float.TryParse (IF_Delai_lancer_projectile.text, out res)) {
 			GameController.Jeu.Config.Delai_lancer_projectile = res;
-		} else {
-			Debug.Log ("Ceci n'est pas un entier!");
 		}
 	}
 
@@ -148,8 +173,6 @@ public class UIManagerScript : MonoBehaviour {
 		float res;
 		if (float.TryParse (IF_Delai_evaluation_cible.text, out res)) {
 			GameController.Jeu.Config.Delai_evaluation_cible = res;
-		} else {
-			Debug.Log ("Ceci n'est pas un entier!");
 		}
 	}
 
@@ -190,7 +213,10 @@ public class UIManagerScript : MonoBehaviour {
 	 */
 	public void onClickParamsSauvegarder(){
 		Debug.Log ("Sauvegarder!");
+		string saveDirectory = Application.dataPath;
+		string filename = Path.GetFileNameWithoutExtension ("test4.xml");
 
+		/*
 		System.Windows.Forms.SaveFileDialog saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 		
 		saveFileDialog1.InitialDirectory = Application.dataPath ;
@@ -203,6 +229,7 @@ public class UIManagerScript : MonoBehaviour {
 			GameController.Jeu.saveConfig(saveFileDialog1.FileName);
 			Label_fichier_config.text = filename;
 		}
+		*/
 
 	}
 }
