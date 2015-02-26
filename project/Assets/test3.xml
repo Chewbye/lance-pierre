@@ -20,10 +20,10 @@
       <Valeur>1</Valeur>
     </ConfEntry>
     <ConfEntry name="Nb_lancers">
-      <Valeur>40</Valeur>
+      <Valeur>10</Valeur>
     </ConfEntry>
     <ConfEntry name="Taille_projectile">
-      <Valeur>1</Valeur>
+      <Valeur>15</Valeur>
     </ConfEntry>
     <ConfEntry name="Afficher_le_score">
       <Valeur>True</Valeur>

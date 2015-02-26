@@ -182,10 +182,10 @@ public class Conf{
 	/* Sauvegarde la configuration du jeu actuel dans le fichier path */
 	public void saveConfig(string path){
 		ConfContainer confContainer = new ConfContainer ();
-		confContainer.ConfEntries = new ConfEntry[11];
-		
 		Type type = this.GetType();
 		PropertyInfo[] properties = type.GetProperties();
+
+		confContainer.ConfEntries = new ConfEntry[properties.Length];
 		int i = 0;
 		foreach (PropertyInfo property in properties){
 			confContainer.ConfEntries [i] = new ConfEntry (property.Name, Convert.ToString(property.GetValue(this, null)));

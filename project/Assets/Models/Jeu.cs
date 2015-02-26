@@ -199,6 +199,7 @@ public class Jeu{
 	/* Sauvegarde la configuration du jeu actuel dans le fichier path */
 	public void saveConfig(string path){
 		_Config.saveConfig(path);
+		refreshConfigFiles ();
 	}
 
 	/* Charge la configuration du fichier vers le jeu actuel */

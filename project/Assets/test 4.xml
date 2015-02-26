@@ -17,10 +17,10 @@
       <Valeur>9.81</Valeur>
     </ConfEntry>
     <ConfEntry name="Rigidite_lancepierre">
-      <Valeur>1</Valeur>
+      <Valeur>11</Valeur>
     </ConfEntry>
     <ConfEntry name="Nb_lancers">
-      <Valeur>40</Valeur>
+      <Valeur>15</Valeur>
     </ConfEntry>
     <ConfEntry name="Taille_projectile">
       <Valeur>1</Valeur>

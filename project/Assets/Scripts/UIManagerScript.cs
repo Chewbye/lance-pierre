@@ -3,12 +3,13 @@ using UnityEngine.UI;
 using System.Collections;
 using System.IO;
 using System;
-//using System.Windows.Forms;
+using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Reflection;
 
 public class UIManagerScript : MonoBehaviour {
-	
+
+	/* Champs du formulaire du menu */
 	public InputField IF_Taille_cible;
 	public InputField IF_Hauteur_cible;
 	public InputField IF_Distance_cible_lancepierre;
@@ -21,19 +22,17 @@ public class UIManagerScript : MonoBehaviour {
 	public InputField IF_Delai_lancer_projectile;
 	public InputField IF_Delai_evaluation_cible;
 	public Text Label_fichier_config;
+
+	/* Liste des fichiers de configuration */
 	public GameObject Configs_List_Panel;
-	public Button prefabBoutonConfig;
+	public UnityEngine.UI.Button prefabBoutonConfig;
 	public Rect windowConfName;
 	private bool renderWindowConfigName = false;
+	private string newConfigName = "";
+	public GameObject PanelBackground;
 
-	[DllImport("user32.dll")]
-	private static extern void OpenFileDialog(); //in your case : OpenFileDialog
-
-	[DllImport("user32.dll")]
-	private static extern void SaveFileDialog(); //in your case : OpenFileDialog
-	
 	void Start () {
-		windowConfName = new Rect((Screen.width / 2) - 200, (Screen.height / 2) - 50, 400, 100);
+		windowConfName = new Rect((UnityEngine.Screen.width / 2) - 150, (UnityEngine.Screen.height / 2) - 60, 300, 120);
 
 		//Création du modèle Jeu au lancement de l'application
 		GameController.Jeu = new Jeu ();
@@ -41,9 +40,11 @@ public class UIManagerScript : MonoBehaviour {
 
 		//Affiche la liste des fichiers de configurations déja sauvegardés à l'ouverture de l'application
 		foreach (Conf conf in GameController.Jeu.ConfigsList) {
-			Button newConfigButton = CreateButton (prefabBoutonConfig, Configs_List_Panel, new Vector2 (0, 0), new Vector2 (0, 0));
+			UnityEngine.UI.Button newConfigButton = CreateButton (prefabBoutonConfig, Configs_List_Panel, new Vector2 (0, 0), new Vector2 (0, 0));
 			Text buttonText= newConfigButton.GetComponent<Text>();
 			newConfigButton.GetComponentsInChildren<Text>()[0].text = conf.Name;
+			string confName = conf.Name;
+			AddListener(newConfigButton, conf.Name);
 		}			
 	}
 	
@@ -52,25 +53,42 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		if(renderWindowConfigName)
-			windowConfName = GUI.Window(0, windowConfName, creerContenuWindowConfigName, "Sauvegarder la configuration");
+		if (renderWindowConfigName) {
+			windowConfName = GUI.Window (0, windowConfName, creerContenuWindowConfigName, "Sauvegarder la configuration");
+		} else {
+			PanelBackground.SetActive (false); //Cache le panel pour "désactiver" les éléments en dessous de la fenetre
+		}
 	}
 
+	// Outside of method running the above
+	void AddListener(UnityEngine.UI.Button b, string value)
+	{
+		b.onClick.AddListener(() => chargerFichierConfiguration(value));
+	}
+	
+	/**
+	 * Créé les éléments de la fenetre demandant le nom du fichier de configuration à sauvegarder
+	 */
 	public void creerContenuWindowConfigName(int windowID){
-		string stringToEdit = "Hello World";
-		stringToEdit = GUI.TextField(new Rect(10, 20, 200, 30), stringToEdit, 25);
+		GUI.FocusWindow(windowID);
+		GUI.Label (new Rect ((windowConfName.width / 2) - 90, 20, 280, 30), "Nom du fichier de configuration:");
+		newConfigName = GUI.TextField(new Rect(10, 40, 280, 30), newConfigName, 25); //Création du champs texte pour le nom du fichier de configuration
+		PanelBackground.SetActive (true); //Affiche le panel pour "désactiver" les éléments en dessous de la fenetre
 
-		if (GUI.Button(new Rect(10, 50, 100, 20), "Hello World"))
-			print("Got a click");
+		if (GUI.Button (new Rect ((windowConfName.width / 4) - 50, 80, 100, 20), "Sauvegarder"))
+			onClickParamsSauvegarder ();
+
+		if (GUI.Button(new Rect((windowConfName.width / 4) * 3 - 50, 80, 100, 20), "Annuler"))
+			renderWindowConfigName = false;//On cache la fenetre
 	}
 
 	public void afficherWindowConfigName(){
 		renderWindowConfigName = true;
 	}
 
-	public static Button CreateButton(Button buttonPrefab, GameObject canvas, Vector2 cornerTopRight, Vector2 cornerBottomLeft)
+	public static UnityEngine.UI.Button CreateButton(UnityEngine.UI.Button buttonPrefab, GameObject canvas, Vector2 cornerTopRight, Vector2 cornerBottomLeft)
 	{
-		var button = UnityEngine.Object.Instantiate(buttonPrefab, Vector3.zero, Quaternion.identity) as Button;
+		var button = UnityEngine.Object.Instantiate(buttonPrefab, Vector3.zero, Quaternion.identity) as UnityEngine.UI.Button;
 		var rectTransform = button.GetComponent<RectTransform>();
 		rectTransform.SetParent(canvas.transform);
 		rectTransform.anchorMax = cornerTopRight;
@@ -177,15 +195,24 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	public void onClickPreTest(){
-		Application.LoadLevel ("jeu");
+		UnityEngine.Application.LoadLevel ("jeu");
 	}
 
 	/**
 	 * Charge un fichier de configuration 
 	 */
-	public void onClickParamsModifier(){
+	public void chargerFichierConfiguration(string filename){
 		Debug.Log ("Modifier!");
 
+		string saveDirectory = UnityEngine.Application.dataPath;
+
+		//Chargement du fichier
+		GameController.Jeu.loadConfig(saveDirectory + "/" + filename + ".xml");
+		
+		//Mis à jour du GUI avec la nouvelle config
+		refreshGUIFields ();
+
+		/*
 		System.Windows.Forms.OpenFileDialog openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 
 		openFileDialog1.InitialDirectory = Application.dataPath ;
@@ -204,33 +231,52 @@ public class UIManagerScript : MonoBehaviour {
 			
 			Label_fichier_config.text = filename;
 		}
+		*/
 
+	}
 
+	public void CallbackConfExistsDialog(DialogResult result){
+		Debug.Log (result.ToString ());
 	}
 
 	/**
 	 * Sauvegarde la configuration actuelle dans  un fichier de configuration 
 	 */
 	public void onClickParamsSauvegarder(){
-		Debug.Log ("Sauvegarder!");
-		string saveDirectory = Application.dataPath;
-		string filename = Path.GetFileNameWithoutExtension ("test4.xml");
+		Debug.Log ("Sauvegarder!" + UnityEngine.Application.dataPath + "/" + newConfigName + ".xml");
+		string saveDirectory = UnityEngine.Application.dataPath;
 
-		/*
-		System.Windows.Forms.SaveFileDialog saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-		
-		saveFileDialog1.InitialDirectory = Application.dataPath ;
-		saveFileDialog1.Filter = "Fichier de configuration (*.xml)|*.xml" ;
-		saveFileDialog1.RestoreDirectory = true ;
-
-		if(saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK){
-			string filename = Path.GetFileNameWithoutExtension (saveFileDialog1.FileName);
-			Debug.Log ("Fichier choisi:" + saveFileDialog1.FileName);
-			GameController.Jeu.saveConfig(saveFileDialog1.FileName);
-			Label_fichier_config.text = filename;
+		/** Vérifie si un fichier de conf avec ce nom n'existe pas déja **/
+		bool confExists = false;
+		foreach (Conf conf in GameController.Jeu.ConfigsList) {
+			if(conf.Name.Equals(newConfigName)){
+				confExists = true;
+			}
 		}
-		*/
 
+		//Un fichier de configuration existe déja avec ce nom
+		if (confExists) {
+			MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+			MessageBoxIcon icon = MessageBoxIcon.Warning;
+			MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1;
+			var result = MessageBox.Show("Un fichier de configuration possède déja le nom " + newConfigName + ". \nVoulez-vous le remplacer par celui-ci?", "Remplacer le fichier existant?", buttons, icon, defaultButton);
+			if(result == DialogResult.No){
+				renderWindowConfigName = false;
+				return;
+			}
+		}
+
+		GameController.Jeu.saveConfig(UnityEngine.Application.dataPath + "/" + newConfigName + ".xml");
+
+		//Si le fichier de conf n'existe pas déja
+		if (!confExists) {
+			/* Création et affichage de la nouvelle config dans la liste des fichiers de configuration */
+			UnityEngine.UI.Button newConfigButton = CreateButton (prefabBoutonConfig, Configs_List_Panel, new Vector2 (0, 0), new Vector2 (0, 0));
+			Text buttonText = newConfigButton.GetComponent<Text> ();
+			newConfigButton.GetComponentsInChildren<Text> () [0].text = newConfigName;
+		}
+
+		renderWindowConfigName = false; //Cache la fenetre de choix du nom de fichier de configuration
 	}
 }
 
