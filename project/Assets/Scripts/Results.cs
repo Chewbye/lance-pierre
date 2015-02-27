@@ -84,7 +84,8 @@ public class Results : MonoBehaviour {
 		nombre_evaluations_sup_10cm.text = "0"; //+ 10cm
 		temps_evaluation_cible.text = "2"; //Ici on fera une moyenne des temps*/
 		
-		writeCSV();
+		//writeCSV();
+		writeXLS ();
 	}
 	
 	public void writeCSV() {
@@ -264,6 +265,10 @@ public class Results : MonoBehaviour {
 		fs.Close();
 	}
 
+	public void writeXLS() {
+
+	}
+
 	public void onClickOpenOneCSV() {
 		Directory.SetCurrentDirectory(nomDossier);
 
@@ -282,5 +287,13 @@ public class Results : MonoBehaviour {
 		}
 
 		Directory.SetCurrentDirectory("..");
+	}
+
+	public void onClickOpenXLS() {
+
+	}
+
+	public void onClickOpenAllXLS() {
+
 	}
 }
