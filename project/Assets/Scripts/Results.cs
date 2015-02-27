@@ -85,7 +85,7 @@ public class Results : MonoBehaviour {
 		temps_evaluation_cible.text = "2"; //Ici on fera une moyenne des temps*/
 		
 		//writeCSV();
-		writeXLS ();
+		writeXML ();
 	}
 	
 	public void writeCSV() {
@@ -265,10 +265,6 @@ public class Results : MonoBehaviour {
 		fs.Close();
 	}
 
-	public void writeXLS() {
-
-	}
-
 	public void onClickOpenOneCSV() {
 		Directory.SetCurrentDirectory(nomDossier);
 
@@ -289,11 +285,69 @@ public class Results : MonoBehaviour {
 		Directory.SetCurrentDirectory("..");
 	}
 
-	public void onClickOpenXLS() {
+	public void writeXML() {
+		string nomFichier; 
+		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
 
+		nomFichier = "resultats" + ".xml";
+		FileStream fs = File.Open(nomFichier, FileMode.Create);
+		fichierCourant = nomFichier;
+		
+		string text;
+
+		text = "<?xml version=\"1.0\"?>" +
+			"<?mso-application progid=\"Excel.Sheet\"?>" +
+			"<Workbook xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\" " + 
+			"xmlns:o=\"urn:schemas-microsoft-com:office:office\" " +
+			"xmlns:x=\"urn:schemas-microsoft-com:office:excel\" " +
+			"xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\" " +
+			"xmlns:html=\"http://www.w3.org/TR/REC-html40\">" +
+			"<ExcelWorkbook xmlns=\"urn:schemas-microsoft-com:office:excel\">" +
+			"<ActiveSheet>2</ActiveSheet>" +
+			"</ExcelWorkbook>" +
+			"<Styles>" +
+			"<Style ss:ID=\"Default\" ss:Name=\"Normal\">" +
+			"<Alignment ss:Vertical=\"Bottom\"/>" +
+			"<Borders/>" +
+			"<Font ss:FontName=\"Calibri\" x:Family=\"Swiss\" ss:Size=\"11\" ss:Color=\"#000000\"/>" + 
+			"<Interior/>" +
+			"<NumberFormat/>" +
+			"<Protection/>" +
+			"</Style>" +
+			"</Styles>";
+
+		text = text + "<Worksheet ss:Name=\"Sheet1\">" + 
+			"<Table ss:ExpandedColumnCount=\"2\" ss:ExpandedRowCount=\"1\" x:FullColumns=\"1\" " +
+			"x:FullRows=\"1\" ss:DefaultRowHeight=\"15\">" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"Number\">11</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">22</Data></Cell>" +
+			"</Row>" +
+			"</Table>" +
+			"</Worksheet>";
+
+		text = text + "<Worksheet ss:Name=\"Sheet2\">" + 
+			"<Table ss:ExpandedColumnCount=\"2\" ss:ExpandedRowCount=\"1\" x:FullColumns=\"1\" " +
+				"x:FullRows=\"1\" ss:DefaultRowHeight=\"15\">" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"Number\">1</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">2</Data></Cell>" +
+				"</Row>" +
+				"</Table>" +
+				"</Worksheet>" +
+				"</Workbook>";
+
+		Byte[] info = new UTF8Encoding(true).GetBytes(text);
+		fs.Write(info, 0, text.Length);
+		
+		fs.Close();
 	}
 
-	public void onClickOpenAllXLS() {
+	public void onClickOpenXML() {
+		Process.Start (fichierCourant);
+	}
 
+	public void onClickOpenAllXML() {
+		Process.Start (fichierCourant); // à modifier par la suite
 	}
 }
