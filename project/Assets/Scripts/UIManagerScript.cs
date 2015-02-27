@@ -9,6 +9,9 @@ using System.Reflection;
 
 public class UIManagerScript : MonoBehaviour {
 
+	/* Fichier de style */
+	public GUISkin menuStyle;
+
 	/* Champs du formulaire du menu */
 	public InputField IF_Taille_cible;
 	public InputField IF_Hauteur_cible;
@@ -21,7 +24,6 @@ public class UIManagerScript : MonoBehaviour {
 	public InputField IF_Nb_points_gagnes_par_cible;
 	public InputField IF_Delai_lancer_projectile;
 	public InputField IF_Delai_evaluation_cible;
-	public Text Label_fichier_config;
 
 	/* Liste des fichiers de configuration */
 	public GameObject Configs_List_Panel;
@@ -32,6 +34,7 @@ public class UIManagerScript : MonoBehaviour {
 	public GameObject PanelBackground;
 
 	void Start () {
+
 		windowConfName = new Rect((UnityEngine.Screen.width / 2) - 150, (UnityEngine.Screen.height / 2) - 60, 300, 120);
 
 		//Création du modèle Jeu au lancement de l'application
@@ -53,6 +56,7 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	void OnGUI() {
+		GUI.skin = menuStyle;
 		if (renderWindowConfigName) {
 			windowConfName = GUI.Window (0, windowConfName, creerContenuWindowConfigName, "Sauvegarder la configuration");
 		} else {
@@ -211,28 +215,6 @@ public class UIManagerScript : MonoBehaviour {
 		
 		//Mis à jour du GUI avec la nouvelle config
 		refreshGUIFields ();
-
-		/*
-		System.Windows.Forms.OpenFileDialog openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-
-		openFileDialog1.InitialDirectory = Application.dataPath ;
-		openFileDialog1.Filter = "Fichier de configuration (*.xml)|*.xml" ;
-		openFileDialog1.RestoreDirectory = true ;
-
-		if(openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK){
-			string filename = Path.GetFileNameWithoutExtension (openFileDialog1.FileName);
-			Debug.Log ("Fichier choisi:" + openFileDialog1.FileName);
-			
-			//Chargement du fichier
-			GameController.Jeu.loadConfig(openFileDialog1.FileName);
-			
-			//Mis à jour du GUI avec la nouvelle config
-			refreshGUIFields ();
-			
-			Label_fichier_config.text = filename;
-		}
-		*/
-
 	}
 
 	public void CallbackConfExistsDialog(DialogResult result){
