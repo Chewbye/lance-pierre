@@ -20,7 +20,7 @@ public class ReinitProjectile : MonoBehaviour {
 	
 	void Update () {
 		if (GameController.Jeu.Tir_courant == GameController.Jeu.Config.Nb_lancers) {
-			Application.LoadLevel ("results");
+			Application.LoadLevel ("finDeTest");
 		} else {
 			//	If we hold down the "R" key...
 			if (Input.GetKeyDown (KeyCode.R)) {
