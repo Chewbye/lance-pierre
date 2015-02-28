@@ -221,7 +221,6 @@ public class UIManagerScript : MonoBehaviour {
 
 		// Ajout du listener à chaque champs de la nouvelle ligne
 		InputField.OnChangeEvent submitEvent = new InputField.OnChangeEvent();
-
 		submitEvent.AddListener (onValueChangeTailleCible);
 		newRowTableCibles.gameObject.transform.GetChild (1).gameObject.transform.GetChild(0).GetComponent<InputField>().onValueChange = submitEvent; 
 	}
