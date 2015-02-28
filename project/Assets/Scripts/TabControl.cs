@@ -11,19 +11,24 @@ public class TabControl : MonoBehaviour
     [SerializeField]
     private GameObject tabContainer = null;
 
-	private ArrayList tabs = new ArrayList();
-	private ArrayList panels = new ArrayList();
+	private List<Button> tabs = new List<Button>();
+	private List<GameObject> panels = new List<GameObject>();
 
-    protected virtual void Start()
-    {
+	private int currentPanel = 0;
+
+    protected virtual void Start(){
+		int i = 0;
 		//Boucle de récupération des onglets de l'interface
-		foreach (Transform tab in tabContainer.GetComponentsInChildren<Transform>()) {
+		//foreach (Transform tab in tabContainer.GetComponentsInChildren<Transform>()) {
+		foreach (Transform tab in tabContainer.transform) {
 			Button button = tab.GetComponent<Button>();
 			if(button){
 				Text t = tab.GetComponentInChildren<Text>();
-				button.onClick.AddListener(delegate () { this.tabSelect(t.text); });
+				int pos = i;
+				button.onClick.AddListener(delegate () { this.tabSelect(pos); });
 				tabs.Add(button);
 			}
+			i++;
 		}
 
 		//Boucle de récupération des panels de l'interface
@@ -35,7 +40,10 @@ public class TabControl : MonoBehaviour
 	/**
 	 * Listener lorsqu'un onglet est cliqué
 	 */
-	public void tabSelect(string text){
-		Debug.Log (text);
+	public void tabSelect(int tabPos){
+		panels [tabPos].SetActive (true);
+		panels [currentPanel].SetActive (false);
+		currentPanel = tabPos;
+		Debug.Log (tabPos);
 	}
 }

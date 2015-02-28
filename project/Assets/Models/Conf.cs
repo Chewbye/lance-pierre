@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Reflection;
@@ -15,38 +16,6 @@ public class Conf{
 		}
 	}
 
-	private float _Taille_cible;
-	public float Taille_cible {
-		get {
-			return _Taille_cible;
-		}
-		set {
-			_Taille_cible = value;
-		}
-	}
-	
-	private float _Hauteur_cible;
-	
-	public float Hauteur_cible {
-		get {
-			return _Hauteur_cible;
-		}
-		set {
-			_Hauteur_cible = value;
-		}
-	}
-	
-	private float _Distance_cible_lancepierre;
-	
-	public float Distance_cible_lancepierre {
-		get {
-			return _Distance_cible_lancepierre;
-		}
-		set {
-			_Distance_cible_lancepierre = value;
-		}
-	}
-	
 	private float _Gravite;
 	
 	public float Gravite {
@@ -79,18 +48,7 @@ public class Conf{
 			_Nb_lancers = value;
 		}
 	}
-	
-	private float _Taille_projectile;
-	
-	public float Taille_projectile {
-		get {
-			return _Taille_projectile;
-		}
-		set {
-			_Taille_projectile = value;
-		}
-	}
-	
+
 	private bool _Afficher_le_score;
 	
 	public bool Afficher_le_score {
@@ -134,7 +92,18 @@ public class Conf{
 			_Delai_evaluation_cible = value;
 		}
 	}
-	
+
+	private List<Cible> _Cibles;
+	public List<Cible> Cibles {
+		get {
+			return _Cibles;
+		}
+		set {
+			_Cibles = value;
+		}
+	}
+
+
 	/**
 	 * Créé un modèle Conf à partir d'un fichier de configuation
 	 */
@@ -148,29 +117,22 @@ public class Conf{
 	 */
 	public Conf(){
 		_Name = "";
-		_Taille_cible = 1.0f;
-		_Hauteur_cible = 3.0f;
-		_Distance_cible_lancepierre = 10.0f;
 		_Gravite = 9.81f;
 		_Rigidite_lancepierre = 1.0f;
 		_Nb_lancers = 1;
-		_Taille_projectile = 1.0f;
 		_Afficher_le_score = true;
 		_Nb_points_gagnes_par_cible = 1;
 		_Delai_lancer_projectile = 1.0f;
 		_Delai_evaluation_cible = 1.0f;
+		_Cibles = new List<Cible> ();
 	}
 	
 	
 	public override string ToString(){
 		string res = "";
-		res += _Taille_cible + System.Environment.NewLine;
-		res += _Hauteur_cible + System.Environment.NewLine;
-		res += _Distance_cible_lancepierre + System.Environment.NewLine;
 		res += _Gravite + System.Environment.NewLine;
 		res += _Rigidite_lancepierre + System.Environment.NewLine;
 		res += _Nb_lancers + System.Environment.NewLine;
-		res += _Taille_projectile + System.Environment.NewLine;
 		res += Convert.ToString(_Afficher_le_score) + System.Environment.NewLine;
 		res += _Nb_points_gagnes_par_cible + System.Environment.NewLine;
 		res += _Delai_lancer_projectile + System.Environment.NewLine;

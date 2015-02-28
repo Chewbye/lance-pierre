@@ -57,13 +57,13 @@ public class Results : MonoBehaviour {
 	 */
 	public void setFields(){
 		//Assignation des valeurs définies dans le fichier de config choisi initialement
-		taille_cible.text = Convert.ToString(GameController.Jeu.Config.Taille_cible);
+/*		taille_cible.text = Convert.ToString(GameController.Jeu.Config.Taille_cible);
 		hauteur_cible.text = Convert.ToString(GameController.Jeu.Config.Hauteur_cible);
 		distance_cible_lancepierre.text = Convert.ToString(GameController.Jeu.Config.Distance_cible_lancepierre);
-		gravite.text = Convert.ToString(GameController.Jeu.Config.Gravite);
+*/		gravite.text = Convert.ToString(GameController.Jeu.Config.Gravite);
 		rigidite_lancepierre.text = Convert.ToString(GameController.Jeu.Config.Rigidite_lancepierre);
 		nb_lancers.text = Convert.ToString(GameController.Jeu.Config.Nb_lancers);
-		taille_projectile.text = Convert.ToString(GameController.Jeu.Config.Taille_projectile);
+//		taille_projectile.text = Convert.ToString(GameController.Jeu.Config.Taille_projectile);
 		afficher_le_score.enabled = GameController.Jeu.Config.Afficher_le_score;
 		nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
 		delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);

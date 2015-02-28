@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using System.Reflection;
 
 public class UIManagerScript : MonoBehaviour {
@@ -13,17 +13,21 @@ public class UIManagerScript : MonoBehaviour {
 	public GUISkin menuStyle;
 
 	/* Champs du formulaire du menu */
-	public InputField IF_Taille_cible;
-	public InputField IF_Hauteur_cible;
-	public InputField IF_Distance_cible_lancepierre;
+	/* Onglet Général */
 	public InputField IF_Gravite;
-	public InputField IF_Rigidite_lancepierre;
 	public InputField IF_Nb_lancers;
-	public InputField IF_Taille_projectile;
 	public Toggle T_Afficher_le_score;
+
+	/* Onglet Cibles */
 	public InputField IF_Nb_points_gagnes_par_cible;
-	public InputField IF_Delai_lancer_projectile;
 	public InputField IF_Delai_evaluation_cible;
+	public GameObject Table_cibles;
+	public UnityEngine.GameObject prefabRowTableCible;
+
+	/* Onglet Lance-pierre */
+	public InputField IF_Rigidite_lancepierre;
+	public InputField IF_Delai_lancer_projectile;
+
 
 	/* Liste des fichiers de configuration */
 	public GameObject Configs_List_Panel;
@@ -90,9 +94,29 @@ public class UIManagerScript : MonoBehaviour {
 		renderWindowConfigName = true;
 	}
 
+	/** 
+	 * Créé un bouton de chargement d'un fichier de configuration 
+	 * @return le bouton de chargement d'un fichier de configuration 
+	 **/
 	public static UnityEngine.UI.Button CreateButton(UnityEngine.UI.Button buttonPrefab, GameObject canvas, Vector2 cornerTopRight, Vector2 cornerBottomLeft)
 	{
 		var button = UnityEngine.Object.Instantiate(buttonPrefab, Vector3.zero, Quaternion.identity) as UnityEngine.UI.Button;
+		var rectTransform = button.GetComponent<RectTransform>();
+		rectTransform.SetParent(canvas.transform);
+		rectTransform.anchorMax = cornerTopRight;
+		rectTransform.anchorMin = cornerBottomLeft;
+		rectTransform.offsetMax = Vector2.zero;
+		rectTransform.offsetMin = Vector2.zero;
+		return button;
+	}
+
+	/** 
+	 * Créé une ligne pouvant etre ajoutée dans le tableau des cibles 
+	 * @return la ligne pouvant etre ajoutée dans le tableau des cibles 
+	 **/
+	public static UnityEngine.GameObject CreateRowCible(UnityEngine.GameObject prefabRowTableCible, GameObject canvas, Vector2 cornerTopRight, Vector2 cornerBottomLeft)
+	{
+		var button = UnityEngine.GameObject.Instantiate(prefabRowTableCible, Vector3.zero, Quaternion.identity) as UnityEngine.GameObject;
 		var rectTransform = button.GetComponent<RectTransform>();
 		rectTransform.SetParent(canvas.transform);
 		rectTransform.anchorMax = cornerTopRight;
@@ -107,38 +131,13 @@ public class UIManagerScript : MonoBehaviour {
 	 */
 	public void refreshGUIFields(){
 		//Assignation des valeurs par défaut au modèle config
-		IF_Taille_cible.text = Convert.ToString(GameController.Jeu.Config.Taille_cible);
-		IF_Hauteur_cible.text = Convert.ToString(GameController.Jeu.Config.Hauteur_cible);
-		IF_Distance_cible_lancepierre.text = Convert.ToString(GameController.Jeu.Config.Distance_cible_lancepierre);
 		IF_Gravite.text = Convert.ToString(GameController.Jeu.Config.Gravite);
 		IF_Rigidite_lancepierre.text = Convert.ToString(GameController.Jeu.Config.Rigidite_lancepierre);
 		IF_Nb_lancers.text = Convert.ToString(GameController.Jeu.Config.Nb_lancers);
-		IF_Taille_projectile.text = Convert.ToString(GameController.Jeu.Config.Taille_projectile);
 		T_Afficher_le_score.enabled = GameController.Jeu.Config.Afficher_le_score;
 		IF_Nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
 		IF_Delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		IF_Delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
-	}
-	
-	public void onValueChangeTaille_cible(){
-		float res;
-		if (float.TryParse (IF_Taille_cible.text, out res)) {
-			GameController.Jeu.Config.Taille_cible = res;
-		}
-	}
-
-	public void onValueChangeHauteur_cible(){
-		float res;
-		if (float.TryParse (IF_Hauteur_cible.text, out res)) {
-			GameController.Jeu.Config.Hauteur_cible = res;
-		}
-	}
-
-	public void onValueChangeDistance_cible_lancepierre(){
-		float res;
-		if (float.TryParse (IF_Distance_cible_lancepierre.text, out res)) {
-			GameController.Jeu.Config.Distance_cible_lancepierre = res;
-		}
 	}
 
 	public void onValueChangeGravite(){
@@ -166,13 +165,6 @@ public class UIManagerScript : MonoBehaviour {
 		}
 	}
 
-	public void onValueChangeTaille_du_projectile(){
-		float res;
-		if (float.TryParse (IF_Taille_projectile.text, out res)) {
-			GameController.Jeu.Config.Taille_projectile = res;
-		}
-	}
-
 	public void onValueChangeAfficher_le_score(){
 		GameController.Jeu.Config.Afficher_le_score = T_Afficher_le_score.enabled;
 	}
@@ -196,6 +188,42 @@ public class UIManagerScript : MonoBehaviour {
 		if (float.TryParse (IF_Delai_evaluation_cible.text, out res)) {
 			GameController.Jeu.Config.Delai_evaluation_cible = res;
 		}
+	}
+
+	public void onValueChangeTailleCible(string text){
+		Debug.Log ("aaa");
+	}
+	
+	/** 
+	 * Ajoute une ligne à la table des cibles
+	 */
+	public void onClickAjouterUneCible(){
+		Transform boutonAjout = Table_cibles.transform.GetChild (Table_cibles.transform.childCount-1);
+		//Récupération dernière ligne du tableau
+		Transform lastRow = Table_cibles.transform.GetChild (Table_cibles.transform.childCount-2);
+
+		//Création de la nouvelle ligne du tableau
+		UnityEngine.GameObject newRowTableCibles = CreateRowCible (prefabRowTableCible, Table_cibles, new Vector2 (0, 0), new Vector2 (0, 0));
+
+		//Récupération du numéro de cible précédent
+		string lastNumCibleString = lastRow.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text;
+
+		int lastNumCible;
+		if (int.TryParse (lastNumCibleString, out lastNumCible)) {
+			lastNumCible ++;
+			//Modification du numéro de cible de la nouvelle ligne en l'incrémentant
+			newRowTableCibles.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = lastNumCible.ToString();
+		}
+
+		GameController.Jeu.Config.Cibles.Add (new Cible ());
+
+		boutonAjout.SetAsLastSibling (); //Descend le bouton d'ajout à la fin du tableau
+
+		// Ajout du listener à chaque champs de la nouvelle ligne
+		InputField.OnChangeEvent submitEvent = new InputField.OnChangeEvent();
+
+		submitEvent.AddListener (onValueChangeTailleCible);
+		newRowTableCibles.gameObject.transform.GetChild (1).gameObject.transform.GetChild(0).GetComponent<InputField>().onValueChange = submitEvent; 
 	}
 
 	public void onClickPreTest(){
