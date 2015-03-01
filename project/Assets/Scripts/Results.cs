@@ -425,11 +425,22 @@ public class Results : MonoBehaviour {
 			"</Worksheet>";
 
 		//Ici on aura N-Participations
+		int dernierLancer = -3;
+		//int premierLancer = dernierLancer - (nb_lancers.text - 1); A Decommenter !!!
+		int premierLancer = dernierLancer  - (2 - 1);
 		text += "<Worksheet ss:Name=\"Participant1\">" + 
 			"<Table>" +
-			"<Column ss:Width=\"150\"/><Column ss:Width=\"80\"/><Column ss:Width=\"90\"/><Column ss:Width=\"90\"/>" +
+			"<Column ss:Width=\"150\"/><Column ss:Width=\"105\"/><Column ss:Width=\"90\"/><Column ss:Width=\"90\"/>" +
 			"<Column ss:Width=\"90\"/><Column ss:Width=\"75\"/><Column ss:Width=\"120\"/><Column ss:Width=\"130\"/>" +
 			"<Column ss:Width=\"60\"/><Column ss:Width=\"80\"/><Column ss:Width=\"90\"/><Column ss:Width=\"55\"/>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Date" + 
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			date + 
+			"</Data></Cell>" +
+			"</Row>" +
 			"<Row>" +
 			"<Cell><Data ss:Type=\"String\">" +
 			"Numero de participant" + 
@@ -508,7 +519,7 @@ public class Results : MonoBehaviour {
 			"Evaluation" +
 			"</Data></Cell>" +
 			"</Row>" +
-			// Faire pour le bon nombre de lancers
+		// Faire pour le bon nombre de lancers
 			"<Row>" +
 			"<Cell><Data ss:Type=\"String\">" +
 			"Lancer 1" + 
@@ -547,6 +558,45 @@ public class Results : MonoBehaviour {
 			"1" + // Mettre la bonne evaluation
 			"</Data></Cell>" +
 			"</Row>" +
+		// Faire pour le bon nombre de lancers
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Lancer 2" + 
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			"3" + // Mettre la vraie taille de la cible
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			"3" + // Mettre la vraie position de la cible
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			"3" + // Mettre la vraie taille du projectile
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			"3" + // Mettre le vrai poids du projectile
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			"3" + // Mettre le bon nombre de points
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			"3" + // Mettre le bon temps imparti pour lancer 
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			"3" + // Mettre le bon temps imparti pour evaluation 
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			"3" + // Mettre le bon temps pour lancer 
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			"3" + // Mettre le bon temps pour evaluer
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			"3" + // Mettre le bon résultat du lancer
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			"3" + // Mettre la bonne evaluation
+			"</Data></Cell>" +
+			"</Row>" +
 			"<Row></Row>" +
 			"<Row>" +
 			"<Cell></Cell>" +
@@ -583,6 +633,19 @@ public class Results : MonoBehaviour {
 			"<Cell><Data ss:Type=\"String\">" +
 			"Moyenne" +
 			"</Data></Cell>" +
+			"</Row>" +
+			"<Row><Cell></Cell>" +
+			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 			"</Row>" +
 			"</Table>" +
 			"</Worksheet>";
