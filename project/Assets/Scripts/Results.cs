@@ -290,6 +290,7 @@ public class Results : MonoBehaviour {
 		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
 
 		nomFichier = "resultats" + ".xml";
+
 		FileStream fs = File.Open(nomFichier, FileMode.Create);
 		fichierCourant = nomFichier;
 		
@@ -303,7 +304,7 @@ public class Results : MonoBehaviour {
 			"xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\" " +
 			"xmlns:html=\"http://www.w3.org/TR/REC-html40\">" +
 			"<ExcelWorkbook xmlns=\"urn:schemas-microsoft-com:office:excel\">" +
-			"<ActiveSheet>2</ActiveSheet>" +
+			//"<ActiveSheet>3</ActiveSheet>" +
 			"</ExcelWorkbook>" +
 			"<Styles>" +
 			"<Style ss:ID=\"Default\" ss:Name=\"Normal\">" +
@@ -316,17 +317,123 @@ public class Results : MonoBehaviour {
 			"</Style>" +
 			"</Styles>";
 
-		text = text + "<Worksheet ss:Name=\"Sheet1\">" + 
-			"<Table ss:ExpandedColumnCount=\"2\" ss:ExpandedRowCount=\"1\" x:FullColumns=\"1\" " +
-			"x:FullRows=\"1\" ss:DefaultRowHeight=\"15\">" +
+		text = text + "<Worksheet ss:Name=\"Configuration\">" + 
+			"<Table>" +
+			"<Column ss:Width=\"150\"/><Column ss:Width=\"120\"/>" +
 			"<Row>" +
-			"<Cell><Data ss:Type=\"Number\">11</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">22</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Configuration" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"vraiNomDeConfig" + // à changer par le bon nom de config
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Taille de la cible" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			taille_cible.text + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Hauteur de la cible" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			hauteur_cible.text + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Distance cible/LP" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			distance_cible_lancepierre.text + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Gravite" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			gravite.text + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Rigidite du LP" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			rigidite_lancepierre.text + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Nombre de lancers" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			nb_lancers.text + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Taille du projectile" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			taille_projectile.text + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Affichage du score" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">";
+			if (afficher_le_score.enabled == true) {
+				text = text + "Oui";
+			} else {
+				text = text + "Non";
+			}
+			text = text + "</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Nombre de points par cible" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			nb_points_gagnes_par_cible.text + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Delai pour lancer le projectile" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			delai_lancer_projectile.text + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Delai pour evaluer la cible" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			delai_evaluation_cible.text + 
+			"</Data></Cell>" +
 			"</Row>" +
 			"</Table>" +
 			"</Worksheet>";
 
-		text = text + "<Worksheet ss:Name=\"Sheet2\">" + 
+		text = text + "<Worksheet ss:Name=\"Participant1\">" + 
+			"<Table ss:ExpandedColumnCount=\"2\" ss:ExpandedRowCount=\"1\" x:FullColumns=\"1\" " +
+				"x:FullRows=\"1\" ss:DefaultRowHeight=\"15\">" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"Number\">3</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">4</Data></Cell>" +
+				"</Row>" +
+				"</Table>" +
+				"</Worksheet>";
+
+		text = text + "<Worksheet ss:Name=\"Statistiques\">" + 
 			"<Table ss:ExpandedColumnCount=\"2\" ss:ExpandedRowCount=\"1\" x:FullColumns=\"1\" " +
 				"x:FullRows=\"1\" ss:DefaultRowHeight=\"15\">" +
 				"<Row>" +
