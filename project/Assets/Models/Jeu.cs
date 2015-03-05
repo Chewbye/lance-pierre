@@ -35,6 +35,16 @@ public class Jeu{
 		}
 	}
 
+	private double _Ratio_echelle;
+	public double Ratio_echelle {
+		get {
+			return _Ratio_echelles;
+		}
+		set {
+			_Ratio_echelle = value;
+		}
+	}
+
 	private int _Score_courant;
 	public int Score_courant {
 		get {
