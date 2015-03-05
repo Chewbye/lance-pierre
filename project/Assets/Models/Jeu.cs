@@ -38,7 +38,7 @@ public class Jeu{
 	private double _Ratio_echelle;
 	public double Ratio_echelle {
 		get {
-			return _Ratio_echelles;
+			return _Ratio_echelle;
 		}
 		set {
 			_Ratio_echelle = value;
