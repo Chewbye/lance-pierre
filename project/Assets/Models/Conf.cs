@@ -103,6 +103,16 @@ public class Conf{
 		}
 	}
 
+	private List<TailleCible> _Tailles_Cibles;
+	public List<TailleCible> Tailles_Cibles {
+		get {
+			return _Tailles_Cibles;
+		}
+		set {
+			_Tailles_Cibles = value;
+		}
+	}
+
 
 	/**
 	 * Créé un modèle Conf à partir d'un fichier de configuation
@@ -111,6 +121,7 @@ public class Conf{
 		_Name = Path.GetFileNameWithoutExtension (confPath);
 		this.loadConfig (confPath);
 		_Positions_Cibles = new List<PositionCible> (); //TEMPORAIRE
+		_Tailles_Cibles = new List<TailleCible> (); //TEMPORAIRE
 	}
 	
 	/**
@@ -126,22 +137,28 @@ public class Conf{
 		_Delai_lancer_projectile = 1.0f;
 		_Delai_evaluation_cible = 1.0f;
 		_Positions_Cibles = new List<PositionCible> ();
+		_Tailles_Cibles = new List<TailleCible> ();
 	}
 	
 	
 	public override string ToString(){
 		string res = "";
-		res += _Gravite + System.Environment.NewLine;
-		res += _Rigidite_lancepierre + System.Environment.NewLine;
-		res += _Nb_lancers + System.Environment.NewLine;
-		res += Convert.ToString(_Afficher_le_score) + System.Environment.NewLine;
-		res += _Nb_points_gagnes_par_cible + System.Environment.NewLine;
-		res += _Delai_lancer_projectile + System.Environment.NewLine;
-		res += _Delai_evaluation_cible + System.Environment.NewLine;
+		res += "_Gravite: " + _Gravite + System.Environment.NewLine;
+		res += "_Rigidite_lancepierre: " +_Rigidite_lancepierre + System.Environment.NewLine;
+		res += "_Nb_lancers: " +_Nb_lancers + System.Environment.NewLine;
+		res += "_Afficher_le_score: " + Convert.ToString(_Afficher_le_score) + System.Environment.NewLine;
+		res += "_Nb_points_gagnes_par_cible: " + _Nb_points_gagnes_par_cible + System.Environment.NewLine;
+		res += "_Delai_lancer_projectile: " + _Delai_lancer_projectile + System.Environment.NewLine;
+		res += "_Delai_evaluation_cible: " + _Delai_evaluation_cible + System.Environment.NewLine;
 
 		foreach (PositionCible poscible in _Positions_Cibles) {
 			res += "POSITION CIBLE: " + System.Environment.NewLine;
 			res += poscible.toString();
+		}
+
+		foreach (TailleCible taillecible in _Tailles_Cibles) {
+			res += "TAILLE CIBLE: " + System.Environment.NewLine;
+			res += taillecible.toString();
 		}
 
 		return res;
@@ -188,5 +205,13 @@ public class Conf{
 
 
 		}
+	}
+
+	/*
+	 * Met à jour le nombre de lancers
+	 */
+	public void updateNB_Lancers(){
+		_Nb_lancers = _Positions_Cibles.Count * _Tailles_Cibles.Count;
+
 	}
 }
