@@ -4,19 +4,7 @@ using System.IO;
 using System;
 using System.Reflection;
 
-public class Cible{
-	private float _Taille_Cible;
-	
-	public float Taille_Cible {
-		get {
-			return _Taille_Cible;
-		}
-		set {
-			_Taille_Cible = value;
-		}
-	}
-
-
+public class PositionCible{
 	private float _DistanceX;
 	
 	public float DistanceX {
@@ -40,10 +28,21 @@ public class Cible{
 	}
 
 
-	public Cible (){
-		_Taille_Cible = 1;
+	public PositionCible (){
 		_DistanceX = 1;
 		_DistanceY = 1;
+	}
+
+	public PositionCible (float distanceX, float distanceY){
+		_DistanceX = distanceX;
+		_DistanceY = distanceY;
+	}
+
+	public String toString(){
+		String res = "";
+		res += "Distance X: " + _DistanceX.ToString() + System.Environment.NewLine;
+		res += "Distance Y: " + _DistanceY.ToString() + System.Environment.NewLine;
+		return res;
 	}
 }
 

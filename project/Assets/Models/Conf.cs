@@ -93,13 +93,13 @@ public class Conf{
 		}
 	}
 
-	private List<Cible> _Cibles;
-	public List<Cible> Cibles {
+	private List<PositionCible> _Positions_Cibles;
+	public List<PositionCible> Positions_Cibles {
 		get {
-			return _Cibles;
+			return _Positions_Cibles;
 		}
 		set {
-			_Cibles = value;
+			_Positions_Cibles = value;
 		}
 	}
 
@@ -110,6 +110,7 @@ public class Conf{
 	public Conf(string confPath){
 		_Name = Path.GetFileNameWithoutExtension (confPath);
 		this.loadConfig (confPath);
+		_Positions_Cibles = new List<PositionCible> (); //TEMPORAIRE
 	}
 	
 	/**
@@ -124,7 +125,7 @@ public class Conf{
 		_Nb_points_gagnes_par_cible = 1;
 		_Delai_lancer_projectile = 1.0f;
 		_Delai_evaluation_cible = 1.0f;
-		_Cibles = new List<Cible> ();
+		_Positions_Cibles = new List<PositionCible> ();
 	}
 	
 	
@@ -137,7 +138,12 @@ public class Conf{
 		res += _Nb_points_gagnes_par_cible + System.Environment.NewLine;
 		res += _Delai_lancer_projectile + System.Environment.NewLine;
 		res += _Delai_evaluation_cible + System.Environment.NewLine;
-		
+
+		foreach (PositionCible poscible in _Positions_Cibles) {
+			res += "POSITION CIBLE: " + System.Environment.NewLine;
+			res += poscible.toString();
+		}
+
 		return res;
 	}
 	

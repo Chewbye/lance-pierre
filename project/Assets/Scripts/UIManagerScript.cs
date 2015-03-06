@@ -21,8 +21,6 @@ public class UIManagerScript : MonoBehaviour {
 	/* Onglet Cibles */
 	public InputField IF_Nb_points_gagnes_par_cible;
 	public InputField IF_Delai_evaluation_cible;
-	public GameObject Table_cibles;
-	public UnityEngine.GameObject prefabRowTableCible;
 
 	/* Onglet Lance-pierre */
 	public InputField IF_Rigidite_lancepierre;
@@ -43,6 +41,7 @@ public class UIManagerScript : MonoBehaviour {
 
 		//Création du modèle Jeu au lancement de l'application
 		GameController.Jeu = new Jeu ();
+		GameController.Jeu.Config.Positions_Cibles.Add (new PositionCible (0, 0));
 		refreshGUIFields ();
 
 		//Affiche la liste des fichiers de configurations déja sauvegardés à l'ouverture de l'application
@@ -101,22 +100,6 @@ public class UIManagerScript : MonoBehaviour {
 	public static UnityEngine.UI.Button CreateButton(UnityEngine.UI.Button buttonPrefab, GameObject canvas, Vector2 cornerTopRight, Vector2 cornerBottomLeft)
 	{
 		var button = UnityEngine.Object.Instantiate(buttonPrefab, Vector3.zero, Quaternion.identity) as UnityEngine.UI.Button;
-		var rectTransform = button.GetComponent<RectTransform>();
-		rectTransform.SetParent(canvas.transform);
-		rectTransform.anchorMax = cornerTopRight;
-		rectTransform.anchorMin = cornerBottomLeft;
-		rectTransform.offsetMax = Vector2.zero;
-		rectTransform.offsetMin = Vector2.zero;
-		return button;
-	}
-
-	/** 
-	 * Créé une ligne pouvant etre ajoutée dans le tableau des cibles 
-	 * @return la ligne pouvant etre ajoutée dans le tableau des cibles 
-	 **/
-	public static UnityEngine.GameObject CreateRowCible(UnityEngine.GameObject prefabRowTableCible, GameObject canvas, Vector2 cornerTopRight, Vector2 cornerBottomLeft)
-	{
-		var button = UnityEngine.GameObject.Instantiate(prefabRowTableCible, Vector3.zero, Quaternion.identity) as UnityEngine.GameObject;
 		var rectTransform = button.GetComponent<RectTransform>();
 		rectTransform.SetParent(canvas.transform);
 		rectTransform.anchorMax = cornerTopRight;
@@ -190,43 +173,18 @@ public class UIManagerScript : MonoBehaviour {
 		}
 	}
 
-	public void onValueChangeTailleCible(string text){
-		Debug.Log ("aaa");
-	}
-	
-	/** 
-	 * Ajoute une ligne à la table des cibles
+	/**
+	 * Méthode appelée lorsqu'on clique sur le bouton "Pré-test"
 	 */
-	public void onClickAjouterUneCible(){
-		Transform boutonAjout = Table_cibles.transform.GetChild (Table_cibles.transform.childCount-1);
-		//Récupération dernière ligne du tableau
-		Transform lastRow = Table_cibles.transform.GetChild (Table_cibles.transform.childCount-2);
-
-		//Création de la nouvelle ligne du tableau
-		UnityEngine.GameObject newRowTableCibles = CreateRowCible (prefabRowTableCible, Table_cibles, new Vector2 (0, 0), new Vector2 (0, 0));
-
-		//Récupération du numéro de cible précédent
-		string lastNumCibleString = lastRow.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text;
-
-		int lastNumCible;
-		if (int.TryParse (lastNumCibleString, out lastNumCible)) {
-			lastNumCible ++;
-			//Modification du numéro de cible de la nouvelle ligne en l'incrémentant
-			newRowTableCibles.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = lastNumCible.ToString();
-		}
-
-		GameController.Jeu.Config.Cibles.Add (new Cible ());
-
-		boutonAjout.SetAsLastSibling (); //Descend le bouton d'ajout à la fin du tableau
-
-		// Ajout du listener à chaque champs de la nouvelle ligne
-		InputField.OnChangeEvent submitEvent = new InputField.OnChangeEvent();
-		submitEvent.AddListener (onValueChangeTailleCible);
-		newRowTableCibles.gameObject.transform.GetChild (1).gameObject.transform.GetChild(0).GetComponent<InputField>().onValueChange = submitEvent; 
+	public void onClickPreTest(){
+		launchGame ("jeu");
 	}
 
-	public void onClickPreTest(){
-		UnityEngine.Application.LoadLevel ("jeu");
+	/**
+	 * Lance la scene du jeu en fonction de son nom sceneName
+	 */
+	public void launchGame(string sceneName){
+		UnityEngine.Application.LoadLevel (sceneName);
 	}
 
 	/**
