@@ -41,9 +41,12 @@ public class UIManagerScript : MonoBehaviour {
 
 		//Création du modèle Jeu au lancement de l'application
 		GameController.Jeu = new Jeu ();
+
+		//Initialisation des tableaux
 		GameController.Jeu.Config.Positions_Cibles.Add (new PositionCible (0, 0));
 		GameController.Jeu.Config.Tailles_Cibles.Add (new TailleCible (0));
 		GameController.Jeu.Config.Tailles_Projectiles.Add (0.0f);
+
 		refreshGUIFields ();
 
 		//Affiche la liste des fichiers de configurations déja sauvegardés à l'ouverture de l'application

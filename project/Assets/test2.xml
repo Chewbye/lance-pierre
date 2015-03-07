@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ConfEntries>
+    <ConfEntry name="Name">
+      <Valeur />
+    </ConfEntry>
+    <ConfEntry name="Gravite">
+      <Valeur>9.81</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Rigidite_lancepierre">
+      <Valeur>1</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Nb_lancers">
+      <Valeur>1</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Afficher_le_score">
+      <Valeur>True</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Nb_points_gagnes_par_cible">
+      <Valeur>1</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Delai_lancer_projectile">
+      <Valeur>1</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Delai_evaluation_cible">
+      <Valeur>1</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Positions_Cibles">
+      <Valeur>System.Collections.Generic.List`1[PositionCible]</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Tailles_Cibles">
+      <Valeur>System.Collections.Generic.List`1[TailleCible]</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Tailles_Projectiles">
+      <Valeur>System.Collections.Generic.List`1[System.Single]</Valeur>
+    </ConfEntry>
+    <ConfEntry name="Ratio_echelle">
+      <Valeur>1</Valeur>
+    </ConfEntry>
+  </ConfEntries>
+</Configuration>

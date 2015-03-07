@@ -26,11 +26,31 @@ public class MenuTableManager : MonoBehaviour {
 
 		//Ajout des listeners à chaque champs de la première ligne de la table des tailles des projectiles
 		addListenersToRow(Table_tailles_projectiles.transform.GetChild(1), onValueChangeTableTailleProjectile, removeRowTableTailleProjectile, 0);
+
+		//Affichage des valeurs par défaut du fichier de configuration pour le tableau des positions des cibles
+		for(int i=0; i<GameController.Jeu.Config.Positions_Cibles.Count; i++){
+			setValueAt(Table_positions_cibles, i+1, 1, GameController.Jeu.Config.Positions_Cibles[i].DistanceX);
+			setValueAt(Table_positions_cibles, i+1, 2, GameController.Jeu.Config.Positions_Cibles[i].DistanceY);
+		}
+
+		//Affichage des valeurs par défaut du fichier de configuration pour le tableau des tailles des cibles
+		for(int i=0; i<GameController.Jeu.Config.Tailles_Cibles.Count; i++){
+			setValueAt(Table_tailles_cibles, i+1, 1, GameController.Jeu.Config.Tailles_Cibles[i].Taille);
+		}
+
+		//Affichage des valeurs par défaut du fichier de configuration pour le tableau des tailles des projectiles
+		for(int i=0; i<GameController.Jeu.Config.Tailles_Projectiles.Count; i++){
+			setValueAt(Table_tailles_projectiles, i+1, 1, GameController.Jeu.Config.Tailles_Projectiles[i]);
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+
+	}
+
+	public void setValueAt(GameObject tableau, int row, int col, float val){
+		tableau.transform.GetChild (row).gameObject.transform.GetChild(col).gameObject.transform.GetChild(0).GetComponent<InputField>().text = val.ToString();
 	}
 
 	public void onValueChangeTablePositionCible(int row, int col){
