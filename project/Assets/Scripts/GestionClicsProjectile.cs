@@ -21,12 +21,15 @@ public class GestionClicsProjectile : MonoBehaviour {
 	}
 	
 	void Start () {
+		double ratioEchelle = GameController.Jeu.Config.Ratio_echelle;
+		transform.localScale = new Vector3((float) ratioEchelle, (float)ratioEchelle, (float)ratioEchelle);
+
 		LineRendererSetup ();
 		rayToMouse = new Ray(catapult.position, Vector3.zero);
 		leftCatapultToProjectile = new Ray(catapultLineFront.transform.position, Vector3.zero);
 		maxStretchSqr = maxStretch * maxStretch;
 		CircleCollider2D circle = collider2D as CircleCollider2D;
-		circleRadius = circle.radius;
+		circleRadius = circle.radius * (float) ratioEchelle;
 	}
 	
 	void Update () {
