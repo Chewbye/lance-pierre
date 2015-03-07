@@ -113,6 +113,16 @@ public class Conf{
 		}
 	}
 
+	private List<float> _Tailles_Projectiles;
+	public List<float> Tailles_Projectiles {
+		get {
+			return _Tailles_Projectiles;
+		}
+		set {
+			_Tailles_Projectiles = value;
+		}
+	}
+
 	private double _Ratio_echelle;
 	
 	public double Ratio_echelle {
@@ -132,6 +142,7 @@ public class Conf{
 		this.loadConfig (confPath);
 		_Positions_Cibles = new List<PositionCible> (); //TEMPORAIRE
 		_Tailles_Cibles = new List<TailleCible> (); //TEMPORAIRE
+		_Tailles_Projectiles = new List<float> (); //TEMPORAIRE
 	}
 	
 	/**
@@ -148,6 +159,7 @@ public class Conf{
 		_Delai_evaluation_cible = 1.0f;
 		_Positions_Cibles = new List<PositionCible> ();
 		_Tailles_Cibles = new List<TailleCible> ();
+		_Tailles_Projectiles = new List<float> ();
 		_Ratio_echelle = 1;
 	}
 	
@@ -165,12 +177,17 @@ public class Conf{
 
 		foreach (PositionCible poscible in _Positions_Cibles) {
 			res += "POSITION CIBLE: " + System.Environment.NewLine;
-			res += poscible.toString();
+			res += poscible.toString() + System.Environment.NewLine;;
 		}
 
 		foreach (TailleCible taillecible in _Tailles_Cibles) {
 			res += "TAILLE CIBLE: " + System.Environment.NewLine;
-			res += taillecible.toString();
+			res += taillecible.toString() + System.Environment.NewLine;;
+		}
+
+		foreach (float tailleproj in _Tailles_Projectiles) {
+			res += "TAILLE PROJECTILE: " + System.Environment.NewLine;
+			res += tailleproj + System.Environment.NewLine;;
 		}
 
 		return res;
@@ -222,8 +239,8 @@ public class Conf{
 	/*
 	 * Met à jour le nombre de lancers
 	 */
-	public void updateNB_Lancers(){
-		_Nb_lancers = _Positions_Cibles.Count * _Tailles_Cibles.Count;
-
+	public int updateNB_Lancers(){
+		_Nb_lancers = _Positions_Cibles.Count * _Tailles_Cibles.Count * _Tailles_Projectiles.Count;
+		return _Nb_lancers;
 	}
 }
