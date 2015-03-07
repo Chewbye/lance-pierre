@@ -53,6 +53,8 @@ public class CalibrageEcran : MonoBehaviour {
 				{
 					ratioEchelle = tailleSlider.value;
 					balle.transform.localScale = new Vector3((float) ratioEchelle, (float)ratioEchelle, (float)ratioEchelle);
+					GameController.Jeu.Config.Ratio_echelle = ratioEchelle;
+					Debug.Log(GameController.Jeu.Config);
 					//Debug.Log(ratioEchelle);
 				}
 				else

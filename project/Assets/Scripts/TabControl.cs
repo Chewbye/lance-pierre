@@ -49,9 +49,9 @@ public class TabControl : MonoBehaviour
 		currentPanel = tabPos;
 
 		if(tabPos == 3) //Onglet calibrage
-			menuBalle.SetActive(true);
+			menuBalle.SetActive(true); //Affiche la balle dans cet onglet
 		else
-			menuBalle.SetActive(false);
+			menuBalle.SetActive(false); //Cache la balle dans les autres onglets
 
 			Debug.Log (tabPos);
 	}

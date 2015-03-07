@@ -113,6 +113,16 @@ public class Conf{
 		}
 	}
 
+	private double _Ratio_echelle;
+	
+	public double Ratio_echelle {
+		get {
+			return _Ratio_echelle;
+		}
+		set {
+			_Ratio_echelle = value;
+		}
+	}
 
 	/**
 	 * Créé un modèle Conf à partir d'un fichier de configuation
@@ -138,6 +148,7 @@ public class Conf{
 		_Delai_evaluation_cible = 1.0f;
 		_Positions_Cibles = new List<PositionCible> ();
 		_Tailles_Cibles = new List<TailleCible> ();
+		_Ratio_echelle = 1;
 	}
 	
 	
@@ -150,6 +161,7 @@ public class Conf{
 		res += "_Nb_points_gagnes_par_cible: " + _Nb_points_gagnes_par_cible + System.Environment.NewLine;
 		res += "_Delai_lancer_projectile: " + _Delai_lancer_projectile + System.Environment.NewLine;
 		res += "_Delai_evaluation_cible: " + _Delai_evaluation_cible + System.Environment.NewLine;
+		res += "_Ratio_echelle: " + _Ratio_echelle + System.Environment.NewLine;
 
 		foreach (PositionCible poscible in _Positions_Cibles) {
 			res += "POSITION CIBLE: " + System.Environment.NewLine;
