@@ -68,6 +68,7 @@ public class MenuTableManager : MonoBehaviour {
 		rectTransform.anchorMin = cornerBottomLeft;
 		rectTransform.offsetMax = Vector2.zero;
 		rectTransform.offsetMin = Vector2.zero;
+		rectTransform.localScale = new Vector3 (1, 1, 1);
 		return button;
 	}
 
