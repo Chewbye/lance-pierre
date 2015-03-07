@@ -16,6 +16,9 @@ public class TabControl : MonoBehaviour
 
 	private int currentPanel = 0;
 
+	[SerializeField]
+	private GameObject menuBalle = null;
+
     protected virtual void Start(){
 		int i = 0;
 		//Boucle de récupération des onglets de l'interface
@@ -44,6 +47,12 @@ public class TabControl : MonoBehaviour
 		panels [tabPos].SetActive (true);
 		panels [currentPanel].SetActive (false);
 		currentPanel = tabPos;
-		Debug.Log (tabPos);
+
+		if(tabPos == 3) //Onglet calibrage
+			menuBalle.SetActive(true);
+		else
+			menuBalle.SetActive(false);
+
+			Debug.Log (tabPos);
 	}
 }
