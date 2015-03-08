@@ -134,6 +134,28 @@ public class Conf{
 		}
 	}
 
+	private int _NB_series_cibles;
+	
+	public int NB_series_cibles {
+		get {
+			return _NB_series_cibles;
+		}
+		set {
+			_NB_series_cibles = value;
+		}
+	}
+
+	private int _NB_series_projectiles;
+	
+	public int NB_series_projectiles {
+		get {
+			return _NB_series_projectiles;
+		}
+		set {
+			_NB_series_projectiles = value;
+		}
+	}
+	
 	/**
 	 * Créé un modèle Conf à partir d'un fichier de configuation
 	 */
@@ -161,6 +183,8 @@ public class Conf{
 		_Tailles_Cibles = new List<float> ();
 		_Projectiles = new List<Projectile> ();
 		_Ratio_echelle = 1;
+		_NB_series_cibles = 1;
+		_NB_series_projectiles = 1;
 	}
 	
 	
@@ -174,6 +198,8 @@ public class Conf{
 		res += "_Delai_lancer_projectile: " + _Delai_lancer_projectile + System.Environment.NewLine;
 		res += "_Delai_evaluation_cible: " + _Delai_evaluation_cible + System.Environment.NewLine;
 		res += "_Ratio_echelle: " + _Ratio_echelle + System.Environment.NewLine;
+		res += "_NB_series_cibles: " + _NB_series_cibles + System.Environment.NewLine;
+		res += "_NB_series_projectiles: " + _NB_series_projectiles + System.Environment.NewLine;
 
 		foreach (PositionCible poscible in _Positions_Cibles) {
 			res += "POSITION CIBLE: " + System.Environment.NewLine;
@@ -240,7 +266,7 @@ public class Conf{
 	 * Met à jour le nombre de lancers
 	 */
 	public int updateNB_Lancers(){
-		_Nb_lancers = _Positions_Cibles.Count * _Tailles_Cibles.Count * _Projectiles.Count;
+		_Nb_lancers = _Positions_Cibles.Count * _Tailles_Cibles.Count * _Projectiles.Count * _NB_series_cibles * _NB_series_projectiles;
 		return _Nb_lancers;
 	}
 }

@@ -12,6 +12,9 @@ public class UIManagerScript : MonoBehaviour {
 	/* Fichier de style */
 	public GUISkin menuStyle;
 
+	/* Champ d'affichage du nombre de lancers */
+	public GameObject textNBLancers;
+
 	/* Champs du formulaire du menu */
 	/* Onglet Général */
 	public InputField IF_Gravite;
@@ -21,10 +24,12 @@ public class UIManagerScript : MonoBehaviour {
 	/* Onglet Cibles */
 	public InputField IF_Nb_points_gagnes_par_cible;
 	public InputField IF_Delai_evaluation_cible;
+	public InputField IF_Nb_series_cibles;
 
 	/* Onglet Lance-pierre */
 	public InputField IF_Rigidite_lancepierre;
 	public InputField IF_Delai_lancer_projectile;
+	public InputField IF_Nb_series_projectiles;
 
 
 	/* Liste des fichiers de configuration */
@@ -127,6 +132,8 @@ public class UIManagerScript : MonoBehaviour {
 		IF_Nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
 		IF_Delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		IF_Delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
+		IF_Nb_series_cibles.text = Convert.ToString (GameController.Jeu.Config.NB_series_cibles);
+		IF_Nb_series_projectiles.text = Convert.ToString (GameController.Jeu.Config.NB_series_projectiles);
 	}
 
 	public void onValueChangeGravite(){
@@ -165,6 +172,22 @@ public class UIManagerScript : MonoBehaviour {
 		}
 	}
 
+	public void onValueChangeNb_series_cibles(){
+		int res;
+		if (int.TryParse (IF_Nb_series_cibles.text, out res)) {
+			GameController.Jeu.Config.NB_series_cibles = res;
+			textNBLancers.GetComponent<Text>().text = GameController.Jeu.Config.updateNB_Lancers ().ToString();
+		}
+	}
+
+	public void onValueChangeNb_series_projectiles(){
+		int res;
+		if (int.TryParse (IF_Nb_series_projectiles.text, out res)) {
+			GameController.Jeu.Config.NB_series_projectiles = res;
+			textNBLancers.GetComponent<Text>().text = GameController.Jeu.Config.updateNB_Lancers ().ToString();
+		}
+	}
+	
 	public void onValueChangeDelai_lancer_projectile(){
 		float res;
 		if (float.TryParse (IF_Delai_lancer_projectile.text, out res)) {
