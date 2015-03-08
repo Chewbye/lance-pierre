@@ -35,7 +35,7 @@ public class MenuTableManager : MonoBehaviour {
 
 		//Affichage des valeurs par défaut du fichier de configuration pour le tableau des tailles des cibles
 		for(int i=0; i<GameController.Jeu.Config.Tailles_Cibles.Count; i++){
-			setValueAt(Table_tailles_cibles, i+1, 1, GameController.Jeu.Config.Tailles_Cibles[i].Taille);
+			setValueAt(Table_tailles_cibles, i+1, 1, GameController.Jeu.Config.Tailles_Cibles[i]);
 		}
 
 		//Affichage des valeurs par défaut du fichier de configuration pour le tableau des tailles des projectiles
@@ -77,7 +77,7 @@ public class MenuTableManager : MonoBehaviour {
 
 		float value;
 		if (float.TryParse (Table_tailles_cibles.transform.GetChild (row).gameObject.transform.GetChild(col).gameObject.transform.GetChild(0).GetComponent<InputField>().text, out value)) {
-			GameController.Jeu.Config.Tailles_Cibles[row-1].Taille = value;
+			GameController.Jeu.Config.Tailles_Cibles[row-1] = value;
 		}
 		
 		Debug.Log (GameController.Jeu.Config);
@@ -263,7 +263,7 @@ public class MenuTableManager : MonoBehaviour {
 		addListenersToRow(newRowTableCibles.transform, onValueChangeTableTailleCible, removeRowTableTailleCible, 0);
 		
 		//Modification du modèle Jeu
-		GameController.Jeu.Config.Tailles_Cibles.Add (new TailleCible (0));
+		GameController.Jeu.Config.Tailles_Cibles.Add (0.0f);
 
 		//Mise à jour du nombre de lancers
 		textNBLancers.GetComponent<Text>().text = GameController.Jeu.Config.updateNB_Lancers ().ToString();

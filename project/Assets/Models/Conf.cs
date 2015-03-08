@@ -103,8 +103,8 @@ public class Conf{
 		}
 	}
 
-	private List<TailleCible> _Tailles_Cibles;
-	public List<TailleCible> Tailles_Cibles {
+	private List<float> _Tailles_Cibles;
+	public List<float> Tailles_Cibles {
 		get {
 			return _Tailles_Cibles;
 		}
@@ -141,7 +141,7 @@ public class Conf{
 		_Name = Path.GetFileNameWithoutExtension (confPath);
 		this.loadConfig (confPath);
 		_Positions_Cibles = new List<PositionCible> (); //TEMPORAIRE
-		_Tailles_Cibles = new List<TailleCible> (); //TEMPORAIRE
+		_Tailles_Cibles = new List<float> (); //TEMPORAIRE
 		_Tailles_Projectiles = new List<float> (); //TEMPORAIRE
 	}
 	
@@ -158,7 +158,7 @@ public class Conf{
 		_Delai_lancer_projectile = 1.0f;
 		_Delai_evaluation_cible = 1.0f;
 		_Positions_Cibles = new List<PositionCible> ();
-		_Tailles_Cibles = new List<TailleCible> ();
+		_Tailles_Cibles = new List<float> ();
 		_Tailles_Projectiles = new List<float> ();
 		_Ratio_echelle = 1;
 	}
@@ -180,9 +180,9 @@ public class Conf{
 			res += poscible.toString() + System.Environment.NewLine;;
 		}
 
-		foreach (TailleCible taillecible in _Tailles_Cibles) {
+		foreach (float taillecible in _Tailles_Cibles) {
 			res += "TAILLE CIBLE: " + System.Environment.NewLine;
-			res += taillecible.toString() + System.Environment.NewLine;;
+			res += taillecible + System.Environment.NewLine;;
 		}
 
 		foreach (float tailleproj in _Tailles_Projectiles) {

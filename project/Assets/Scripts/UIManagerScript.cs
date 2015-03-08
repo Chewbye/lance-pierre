@@ -44,7 +44,7 @@ public class UIManagerScript : MonoBehaviour {
 
 		//Initialisation des tableaux
 		GameController.Jeu.Config.Positions_Cibles.Add (new PositionCible (0, 0));
-		GameController.Jeu.Config.Tailles_Cibles.Add (new TailleCible (0));
+		GameController.Jeu.Config.Tailles_Cibles.Add (0.0f);
 		GameController.Jeu.Config.Tailles_Projectiles.Add (0.0f);
 
 		refreshGUIFields ();
