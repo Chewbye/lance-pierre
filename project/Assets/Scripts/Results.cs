@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Xml.XPath;
+using System.Text.RegularExpressions;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -288,390 +292,670 @@ public class Results : MonoBehaviour {
 	public void writeXML() {
 		string nomFichier; 
 		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
-
 		//Ici on aura le numéro de la session
 		nomFichier = "Session_" + "1" + ".xml";
-
-		FileStream fs = File.Open(nomFichier, FileMode.Create);
 		fichierCourant = nomFichier;
-		
-		string text;
 
-		text = "<?xml version=\"1.0\"?>" +
-			"<?mso-application progid=\"Excel.Sheet\"?>" +
-			"<Workbook xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\" " + 
-			"xmlns:o=\"urn:schemas-microsoft-com:office:office\" " +
-			"xmlns:x=\"urn:schemas-microsoft-com:office:excel\" " +
-			"xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\" " +
-			"xmlns:html=\"http://www.w3.org/TR/REC-html40\">" +
-			"<ExcelWorkbook xmlns=\"urn:schemas-microsoft-com:office:excel\">" +
+		if (!File.Exists (nomFichier)) {
+			FileStream fs = File.Open (nomFichier, FileMode.Create);
+			
+			string text;
+
+			text = "<?xml version=\"1.0\"?>" +
+				"<?mso-application progid=\"Excel.Sheet\"?>" +
+				"<Workbook xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\" " + 
+				"xmlns:o=\"urn:schemas-microsoft-com:office:office\" " +
+				"xmlns:x=\"urn:schemas-microsoft-com:office:excel\" " +
+				"xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\" " +
+				"xmlns:html=\"http://www.w3.org/TR/REC-html40\">" +
+				"<ExcelWorkbook xmlns=\"urn:schemas-microsoft-com:office:excel\">" +
 			//"<ActiveSheet>3</ActiveSheet>" +
-			"</ExcelWorkbook>" +
-			"<Styles>" +
-			"<Style ss:ID=\"Default\" ss:Name=\"Normal\">" +
-			"<Alignment ss:Vertical=\"Bottom\"/>" +
-			"<Borders/>" +
-			"<Font ss:FontName=\"Calibri\" x:Family=\"Swiss\" ss:Size=\"11\" ss:Color=\"#000000\"/>" + 
-			"<Interior/>" +
-			"<NumberFormat/>" +
-			"<Protection/>" +
-			"</Style>" +
-			"</Styles>";
+				"</ExcelWorkbook>" +
+				"<Styles>" +
+				"<Style ss:ID=\"Default\" ss:Name=\"Normal\">" +
+				"<Alignment ss:Vertical=\"Bottom\"/>" +
+				"<Borders/>" +
+				"<Font ss:FontName=\"Calibri\" x:Family=\"Swiss\" ss:Size=\"11\" ss:Color=\"#000000\"/>" + 
+				"<Interior/>" +
+				"<NumberFormat/>" +
+				"<Protection/>" +
+				"</Style>" +
+				"</Styles>";
 
-		text += "<Worksheet ss:Name=\"Configuration\">" + 
-			"<Table>" +
-			"<Column ss:Width=\"150\"/><Column ss:Width=\"120\"/>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Configuration" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"vraiNomDeConfig" + // à changer par le bon nom de config
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Taille de la cible" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			taille_cible.text + 
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Hauteur de la cible" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			hauteur_cible.text + 
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Distance cible/LP" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			distance_cible_lancepierre.text + 
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Gravite" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			gravite.text + 
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Rigidite du LP" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			rigidite_lancepierre.text + 
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Nombre de lancers" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			nb_lancers.text + 
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Taille du projectile" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			taille_projectile.text + 
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Affichage du score" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">";
+			text += "<Worksheet ss:Name=\"Configuration\">" + 
+				"<Table>" +
+				"<Column ss:Width=\"150\"/><Column ss:Width=\"120\"/>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Configuration" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"vraiNomDeConfig" + // à changer par le bon nom de config
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Taille de la cible" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				taille_cible.text + 
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Hauteur de la cible" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				hauteur_cible.text + 
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Distance cible/LP" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				distance_cible_lancepierre.text + 
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Gravite" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				gravite.text + 
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Rigidite du LP" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				rigidite_lancepierre.text + 
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Nombre de lancers" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				nb_lancers.text + 
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Taille du projectile" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				taille_projectile.text + 
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Affichage du score" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">";
 			if (afficher_le_score.enabled == true) {
 				text += "Oui";
 			} else {
 				text += "Non";
 			}
 			text = text + "</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Nombre de points par cible" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			nb_points_gagnes_par_cible.text + 
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Delai pour lancer le projectile" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			delai_lancer_projectile.text + 
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Delai pour evaluer la cible" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			delai_evaluation_cible.text + 
-			"</Data></Cell>" +
-			"</Row>" +
-			"</Table>" +
-			"</Worksheet>";
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Nombre de points par cible" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				nb_points_gagnes_par_cible.text + 
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Delai pour lancer le projectile" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				delai_lancer_projectile.text + 
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Delai pour evaluer la cible" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				delai_evaluation_cible.text + 
+				"</Data></Cell>" +
+				"</Row>" +
+				"</Table>" +
+				"</Worksheet>";
 
-		//Ici on aura N-Participations
-		int dernierLancer = -3;
-		//int premierLancer = dernierLancer - (nb_lancers.text - 1); A Decommenter !!!
-		int premierLancer = dernierLancer  - (2 - 1);
-		text += "<Worksheet ss:Name=\"Participant1\">" + 
-			"<Table>" +
-			"<Column ss:Width=\"150\"/><Column ss:Width=\"105\"/><Column ss:Width=\"90\"/><Column ss:Width=\"90\"/>" +
-			"<Column ss:Width=\"90\"/><Column ss:Width=\"75\"/><Column ss:Width=\"120\"/><Column ss:Width=\"130\"/>" +
-			"<Column ss:Width=\"60\"/><Column ss:Width=\"80\"/><Column ss:Width=\"90\"/><Column ss:Width=\"55\"/>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Date" + 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			date + 
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Numero de participant" + 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre le vrai numéro de participant
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Age" + 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"22" + // Mettre le vrai age du participant
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Sexe" + 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Homme" + // Mettre le vrai sexe du participant
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Main dominante" + 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Droite" + // Mettre le vrai sexe du participant
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Experience dans les jeux videos" + 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Oui" + // Mettre le vrai sexe du participant
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row>" +
-			"</Row>" +
-			"<Row>" +
-			"<Cell></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Taille de la cible" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Position de la cible" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Taille du projectile" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Poids du projectile" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Points obtenus" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Delai imparti pour lancer" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Delai imparti pour evaluer" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Delai lancer" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Delai evaluation" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Resultat du lancer" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Evaluation" +
-			"</Data></Cell>" +
-			"</Row>" +
-		// Faire pour le bon nombre de lancers
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Lancer 1" + 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre la vraie taille de la cible
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre la vraie position de la cible
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre la vraie taille du projectile
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre le vrai poids du projectile
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre le bon nombre de points
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre le bon temps imparti pour lancer 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre le bon temps imparti pour evaluation 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre le bon temps pour lancer 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre le bon temps pour evaluer
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre le bon résultat du lancer
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"1" + // Mettre la bonne evaluation
-			"</Data></Cell>" +
-			"</Row>" +
-		// Faire pour le bon nombre de lancers
-			"<Row>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Lancer 2" + 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"3" + // Mettre la vraie taille de la cible
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"3" + // Mettre la vraie position de la cible
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"3" + // Mettre la vraie taille du projectile
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"3" + // Mettre le vrai poids du projectile
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"3" + // Mettre le bon nombre de points
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"3" + // Mettre le bon temps imparti pour lancer 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"3" + // Mettre le bon temps imparti pour evaluation 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"3" + // Mettre le bon temps pour lancer 
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"3" + // Mettre le bon temps pour evaluer
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"3" + // Mettre le bon résultat du lancer
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"Number\">" +
-			"3" + // Mettre la bonne evaluation
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row></Row>" +
-			"<Row>" +
-			"<Cell></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Moyenne" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Moyenne" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Moyenne" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Moyenne" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Moyenne" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Moyenne" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Moyenne" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Moyenne" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Moyenne" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Moyenne" +
-			"</Data></Cell>" +
-			"<Cell><Data ss:Type=\"String\">" +
-			"Moyenne" +
-			"</Data></Cell>" +
-			"</Row>" +
-			"<Row><Cell></Cell>" +
-			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-			"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-			"</Row>" +
-			"</Table>" +
-			"</Worksheet>";
+			//Ici on aura N-Participations
+			int dernierLancer = -3;
+			//int premierLancer = dernierLancer - (nb_lancers.text - 1); A Decommenter !!!
+			int premierLancer = dernierLancer - (2 - 1);
+			text += "<Worksheet ss:Name=\"Participant1\">" + 
+				"<Table>" +
+				"<Column ss:Width=\"150\"/><Column ss:Width=\"105\"/><Column ss:Width=\"90\"/><Column ss:Width=\"90\"/>" +
+				"<Column ss:Width=\"90\"/><Column ss:Width=\"75\"/><Column ss:Width=\"120\"/><Column ss:Width=\"130\"/>" +
+				"<Column ss:Width=\"60\"/><Column ss:Width=\"80\"/><Column ss:Width=\"90\"/><Column ss:Width=\"55\"/>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Date" + 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				date + 
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Numero de participant" + 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre le vrai numéro de participant
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Age" + 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"22" + // Mettre le vrai age du participant
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Sexe" + 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Homme" + // Mettre le vrai sexe du participant
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Main dominante" + 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Droite" + // Mettre le vrai sexe du participant
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Experience dans les jeux videos" + 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Oui" + // Mettre le vrai sexe du participant
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Taille de la cible" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Position de la cible" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Taille du projectile" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Poids du projectile" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Points obtenus" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Delai imparti pour lancer" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Delai imparti pour evaluer" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Delai lancer" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Delai evaluation" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Resultat du lancer" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Evaluation" +
+				"</Data></Cell>" +
+				"</Row>" +
+			// Faire pour le bon nombre de lancers
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Lancer 1" + 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre la vraie taille de la cible
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre la vraie position de la cible
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre la vraie taille du projectile
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre le vrai poids du projectile
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre le bon nombre de points
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre le bon temps imparti pour lancer 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre le bon temps imparti pour evaluation 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre le bon temps pour lancer 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre le bon temps pour evaluer
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre le bon résultat du lancer
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre la bonne evaluation
+				"</Data></Cell>" +
+				"</Row>" +
+			// Faire pour le bon nombre de lancers
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Lancer 2" + 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"3" + // Mettre la vraie taille de la cible
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"3" + // Mettre la vraie position de la cible
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"3" + // Mettre la vraie taille du projectile
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"3" + // Mettre le vrai poids du projectile
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"3" + // Mettre le bon nombre de points
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"3" + // Mettre le bon temps imparti pour lancer 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"3" + // Mettre le bon temps imparti pour evaluation 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"3" + // Mettre le bon temps pour lancer 
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"3" + // Mettre le bon temps pour evaluer
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"3" + // Mettre le bon résultat du lancer
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"3" + // Mettre la bonne evaluation
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row></Row>" +
+				"<Row>" +
+				"<Cell></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row><Cell></Cell>" +
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"</Row>" +
+				"</Table>" +
+				"</Worksheet>";
 
-		//Somme à garder pour les stats !!!
-		//"<Cell ss:Formula=\"=SUM(RC[-1],R[3]C[-1])\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-		text += "<Worksheet ss:Name=\"Statistiques\">" + 
-			"<Table ss:ExpandedColumnCount=\"2\" ss:ExpandedRowCount=\"1\" x:FullColumns=\"1\" " +
-			"x:FullRows=\"1\" ss:DefaultRowHeight=\"15\">" +
-			"<Row>" +
-			"</Row>" +
-			"</Table>" +
-			"</Worksheet>" +
-			"</Workbook>";
+			//Somme à garder pour les stats !!!
+			//"<Cell ss:Formula=\"=SUM(RC[-1],R[3]C[-1])\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+			text += "<Worksheet ss:Name=\"Statistiques\">" + 
+				"<Table ss:ExpandedColumnCount=\"2\" ss:ExpandedRowCount=\"1\" x:FullColumns=\"1\" " +
+				"x:FullRows=\"1\" ss:DefaultRowHeight=\"15\">" +
+				"<Row>" +
+				"</Row>" +
+				"</Table>" +
+				"</Worksheet>" +
+				"</Workbook>";
 
-		Byte[] info = new UTF8Encoding(true).GetBytes(text);
-		fs.Write(info, 0, text.Length);
-		
-		fs.Close();
+			Byte[] info = new UTF8Encoding (true).GetBytes (text);
+			fs.Write (info, 0, text.Length);
+			
+			fs.Close ();
+		} else {
+			String contenu = "";
+			
+			contenu = System.IO.File.ReadAllText(nomFichier);
+
+			int numParticipant = this.getNumParticipant (contenu);
+
+			string[] lines = Regex.Split(contenu, "</Worksheet>");
+
+			String textToWrite = "";
+
+			for (int i = 0; i < (lines.Length - 2); i++) {
+				textToWrite += lines[i] + "</Worksheet>";
+			}
+
+			lines[(lines.Length - 2)] += "</Worksheet>";
+
+			//Ici on aura N-Participations
+			int dernierLancer = -3;
+			//int premierLancer = dernierLancer - (nb_lancers.text - 1); A Decommenter !!!
+			int premierLancer = dernierLancer - (2 - 1);
+			String identiteParticipant = "Participant" + numParticipant;
+			textToWrite += "<Worksheet ss:Name=\"";
+			textToWrite += identiteParticipant;
+			textToWrite += "\">" + 
+				"<Table>" +
+					"<Column ss:Width=\"150\"/><Column ss:Width=\"105\"/><Column ss:Width=\"90\"/><Column ss:Width=\"90\"/>" +
+					"<Column ss:Width=\"90\"/><Column ss:Width=\"75\"/><Column ss:Width=\"120\"/><Column ss:Width=\"130\"/>" +
+					"<Column ss:Width=\"60\"/><Column ss:Width=\"80\"/><Column ss:Width=\"90\"/><Column ss:Width=\"55\"/>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Date" + 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					date + 
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Numero de participant" + 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre le vrai numéro de participant
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Age" + 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"22" + // Mettre le vrai age du participant
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Sexe" + 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Homme" + // Mettre le vrai sexe du participant
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Main dominante" + 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Droite" + // Mettre le vrai sexe du participant
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Experience dans les jeux videos" + 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Oui" + // Mettre le vrai sexe du participant
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Taille de la cible" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Position de la cible" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Taille du projectile" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Poids du projectile" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Points obtenus" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Delai imparti pour lancer" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Delai imparti pour evaluer" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Delai lancer" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Delai evaluation" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Resultat du lancer" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Evaluation" +
+					"</Data></Cell>" +
+					"</Row>" +
+					// Faire pour le bon nombre de lancers
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Lancer 1" + 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre la vraie taille de la cible
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre la vraie position de la cible
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre la vraie taille du projectile
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre le vrai poids du projectile
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre le bon nombre de points
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre le bon temps imparti pour lancer 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre le bon temps imparti pour evaluation 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre le bon temps pour lancer 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre le bon temps pour evaluer
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre le bon résultat du lancer
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"1" + // Mettre la bonne evaluation
+					"</Data></Cell>" +
+					"</Row>" +
+					// Faire pour le bon nombre de lancers
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Lancer 2" + 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"3" + // Mettre la vraie taille de la cible
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"3" + // Mettre la vraie position de la cible
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"3" + // Mettre la vraie taille du projectile
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"3" + // Mettre le vrai poids du projectile
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"3" + // Mettre le bon nombre de points
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"3" + // Mettre le bon temps imparti pour lancer 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"3" + // Mettre le bon temps imparti pour evaluation 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"3" + // Mettre le bon temps pour lancer 
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"3" + // Mettre le bon temps pour evaluer
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"3" + // Mettre le bon résultat du lancer
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					"3" + // Mettre la bonne evaluation
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row></Row>" +
+					"<Row>" +
+					"<Cell></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Moyenne" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Moyenne" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Moyenne" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Moyenne" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Moyenne" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Moyenne" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Moyenne" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Moyenne" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Moyenne" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Moyenne" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Moyenne" +
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row><Cell></Cell>" +
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"</Row>" +
+					"</Table>" +
+					"</Worksheet>";
+
+			textToWrite += lines[(lines.Length - 2)] + lines[(lines.Length - 1)];
+
+			//UnityEngine.Debug.Log(textToWrite);
+
+			FileStream fs = File.Open (nomFichier, FileMode.Create);
+
+			Byte[] info = new UTF8Encoding (true).GetBytes (textToWrite);
+			fs.Write (info, 0, textToWrite.Length);
+			
+			fs.Close ();
+		}
 	}
-
+		
 	public void onClickOpenXML() {
 		Process.Start (fichierCourant);
 	}
 
 	public void onClickOpenAllXML() {
 		Process.Start (fichierCourant); // à modifier par la suite
+	}
+
+	public void onMenu() {
+		Application.LoadLevel ("mainMenu");
+	}
+
+	public int getNumParticipant(String contenu) {
+		int nbParticipants = 1;
+
+		Boolean exists = true;
+		String basis = "Participant";
+		
+		while (exists) {
+			basis += nbParticipants;
+			if (contenu.Contains(basis)) {
+				nbParticipants++;
+				basis = "Participant";
+			}
+			else
+				exists = false;
+		}
+
+		return nbParticipants;
 	}
 }
