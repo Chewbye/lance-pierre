@@ -39,8 +39,9 @@ public class MenuTableManager : MonoBehaviour {
 		}
 
 		//Affichage des valeurs par défaut du fichier de configuration pour le tableau des tailles des projectiles
-		for(int i=0; i<GameController.Jeu.Config.Tailles_Projectiles.Count; i++){
-			setValueAt(Table_tailles_projectiles, i+1, 1, GameController.Jeu.Config.Tailles_Projectiles[i]);
+		for(int i=0; i<GameController.Jeu.Config.Projectiles.Count; i++){
+			setValueAt(Table_tailles_projectiles, i+1, 1, GameController.Jeu.Config.Projectiles[i].Taille);
+			setValueAt(Table_tailles_projectiles, i+1, 2, GameController.Jeu.Config.Projectiles[i].Poids);
 		}
 	}
 	
@@ -89,7 +90,15 @@ public class MenuTableManager : MonoBehaviour {
 		
 		float value;
 		if (float.TryParse (Table_tailles_projectiles.transform.GetChild (row).gameObject.transform.GetChild(col).gameObject.transform.GetChild(0).GetComponent<InputField>().text, out value)) {
-			GameController.Jeu.Config.Tailles_Projectiles[row-1] = value;
+			//GameController.Jeu.Config.Tailles_Projectiles[row-1] = value;
+			switch (col) {
+			case 1:
+				GameController.Jeu.Config.Projectiles[row-1].Taille = value;
+				break;
+			case 2:
+				GameController.Jeu.Config.Projectiles[row-1].Poids = value;
+				break;
+			}
 		}
 		
 		Debug.Log (GameController.Jeu.Config);
@@ -159,7 +168,7 @@ public class MenuTableManager : MonoBehaviour {
 	public void removeRowTableTailleProjectile(int row){
 		Debug.Log (row);
 		Destroy (Table_tailles_projectiles.transform.GetChild (row).gameObject); //Destruction de la ligne graphiquement
-		GameController.Jeu.Config.Tailles_Projectiles.RemoveAt(row - 1);
+		GameController.Jeu.Config.Projectiles.RemoveAt(row - 1);
 		//Remise à niveau des identifiants de chaque ligne
 		for (int i=row; i<Table_tailles_projectiles.transform.childCount-1; i++) {
 			int newID = i - 2;
@@ -297,7 +306,7 @@ public class MenuTableManager : MonoBehaviour {
 		addListenersToRow(newRowTableCibles.transform, onValueChangeTableTailleProjectile, removeRowTableTailleProjectile, 0);
 		
 		//Modification du modèle Jeu
-		GameController.Jeu.Config.Tailles_Projectiles.Add (0.0f);
+		GameController.Jeu.Config.Projectiles.Add (new Projectile(0,0));
 		
 		//Mise à jour du nombre de lancers
 		textNBLancers.GetComponent<Text>().text = GameController.Jeu.Config.updateNB_Lancers ().ToString();
