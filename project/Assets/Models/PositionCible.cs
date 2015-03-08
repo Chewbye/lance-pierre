@@ -29,8 +29,8 @@ public class PositionCible{
 
 
 	public PositionCible (){
-		_DistanceX = 1;
-		_DistanceY = 1;
+		_DistanceX = 0;
+		_DistanceY = 0;
 	}
 
 	public PositionCible (float distanceX, float distanceY){

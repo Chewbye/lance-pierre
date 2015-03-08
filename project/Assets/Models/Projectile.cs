@@ -27,8 +27,8 @@ public class Projectile{
 	}	
 	
 	public Projectile (){
-		_Taille = 1;
-		_Poids = 1;
+		_Taille = 0;
+		_Poids = 0;
 	}
 	
 	public Projectile (float taille, float poids){

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class MenuTableManager : MonoBehaviour {
@@ -50,13 +51,23 @@ public class MenuTableManager : MonoBehaviour {
 
 	}
 
+	/**
+	 * Modifie une valeur d'un champ de type InputField dans le tableau
+	 * @param tableau tableau auquel on veut modifier la valeur d'un champ
+	 * @param row ligne dans laquelle le champ à modifier est positionné
+	 * @param col colonne dans laquelle le champ à modifier est positionné
+	 * @param val nouvelle valeur à afficher
+	 */
 	public void setValueAt(GameObject tableau, int row, int col, float val){
 		tableau.transform.GetChild (row).gameObject.transform.GetChild(col).gameObject.transform.GetChild(0).GetComponent<InputField>().text = val.ToString();
 	}
 
+	/**
+	 * Modifie la valeur d'un attribut de la liste Table_positions_cibles en fonction du champ modifié dans le GUI
+	 * @param row ligne dans laquelle le champ a été modifié
+	 * @param col colonne dans laquelle le champ a été modifié
+	 */
 	public void onValueChangeTablePositionCible(int row, int col){
-		Debug.Log (row + " " + col);
-		Debug.Log (Table_positions_cibles.transform.GetChild (row).gameObject.transform.GetChild(col).gameObject.transform.GetChild(0).GetComponent<InputField>().text);
 		float value;
 		if (float.TryParse (Table_positions_cibles.transform.GetChild (row).gameObject.transform.GetChild(col).gameObject.transform.GetChild(0).GetComponent<InputField>().text, out value)) {
 			switch (col) {
@@ -72,10 +83,12 @@ public class MenuTableManager : MonoBehaviour {
 		Debug.Log (GameController.Jeu.Config);
 	}
 
+	/**
+	 * Modifie la valeur d'un attribut de la liste Table_tailles_cibles en fonction du champ modifié dans le GUI
+	 * @param row ligne dans laquelle le champ a été modifié
+	 * @param col colonne dans laquelle le champ a été modifié
+	 */
 	public void onValueChangeTableTailleCible(int row, int col){
-		Debug.Log (row + " " + col);
-		Debug.Log (Table_tailles_cibles.transform.GetChild (row).gameObject.transform.GetChild(col).gameObject.transform.GetChild(0).GetComponent<InputField>().text);
-
 		float value;
 		if (float.TryParse (Table_tailles_cibles.transform.GetChild (row).gameObject.transform.GetChild(col).gameObject.transform.GetChild(0).GetComponent<InputField>().text, out value)) {
 			GameController.Jeu.Config.Tailles_Cibles[row-1] = value;
@@ -84,10 +97,12 @@ public class MenuTableManager : MonoBehaviour {
 		Debug.Log (GameController.Jeu.Config);
 	}
 
+	/**
+	 * Modifie la valeur d'un attribut de la liste Table_tailles_projectiles en fonction du champ modifié dans le GUI
+	 * @param row ligne dans laquelle le champ a été modifié
+	 * @param col colonne dans laquelle le champ a été modifié
+	 */
 	public void onValueChangeTableTailleProjectile(int row, int col){
-		Debug.Log (row + " " + col);
-		Debug.Log (Table_tailles_projectiles.transform.GetChild (row).gameObject.transform.GetChild(col).gameObject.transform.GetChild(0).GetComponent<InputField>().text);
-		
 		float value;
 		if (float.TryParse (Table_tailles_projectiles.transform.GetChild (row).gameObject.transform.GetChild(col).gameObject.transform.GetChild(0).GetComponent<InputField>().text, out value)) {
 			//GameController.Jeu.Config.Tailles_Projectiles[row-1] = value;
@@ -122,60 +137,24 @@ public class MenuTableManager : MonoBehaviour {
 	}
 
 	/**
-	 * Détruit une ligne de la table Table_positions_cibles
+	 * Supprime la ligne situé à la position row de la table Table
+	 * Supprime l'élément de type T à la liste ModeleList situé à la position row - 1 (décallage car la première ligne de Table est le nom des colonnes)
+	 * @param Table tableau auquel on veut ajouter une ligne
+	 * @param modele liste auquelle on veut ajouter un élément
+	 * @param row indice de la ligne à supprimer dans Table
+	 * @param fieldChangeMethod méthode appellée lorsqu'une case du tableau est modifiée
+	 * @param removeRowMethod méthode appellée lorsqu'un bouton de suppression d'une ligne est appellée
 	 */
-	public void removeRowTablePositionCible(int row){
+	public void removeRowFromTable<T>(ref GameObject Table, List<T> ModeleList, int row,  Action<int, int> fieldChangeMethod, Action<int> removeRowMethod){
 		Debug.Log (row);
-		Destroy (Table_positions_cibles.transform.GetChild (row).gameObject); //Destruction de la ligne graphiquement
-		GameController.Jeu.Config.Positions_Cibles.RemoveAt(row - 1);
+		Destroy (Table.transform.GetChild (row).gameObject); //Destruction de la ligne graphiquement
+		ModeleList.RemoveAt(row - 1);
 		//Remise à niveau des identifiants de chaque ligne
-		for (int i=row; i<Table_positions_cibles.transform.childCount-1; i++) {
+		for (int i=row; i<Table.transform.childCount-1; i++) {
 			int newID = i - 2;
-			//Debug.Log(newID + " " + Table_positions_cibles.transform.GetChild(i).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text);
-			Table_positions_cibles.transform.GetChild(i).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = newID.ToString();
-
-			addListenersToRow(Table_positions_cibles.transform.GetChild(i).gameObject.transform, onValueChangeTablePositionCible, removeRowTablePositionCible, -1);
-		}
-
-		//Mise à jour du nombre de lancers
-		textNBLancers.GetComponent<Text>().text = GameController.Jeu.Config.updateNB_Lancers ().ToString();
-	}
-
-
-	/**
-	 * Détruit une ligne de la table Table_tailles_cibles
-	 */
-	public void removeRowTableTailleCible(int row){
-		Debug.Log (row);
-		Destroy (Table_tailles_cibles.transform.GetChild (row).gameObject); //Destruction de la ligne graphiquement
-		GameController.Jeu.Config.Tailles_Cibles.RemoveAt(row - 1);
-		//Remise à niveau des identifiants de chaque ligne
-		for (int i=row; i<Table_tailles_cibles.transform.childCount-1; i++) {
-			int newID = i - 2;
-			//Debug.Log(newID + " " + Table_positions_cibles.transform.GetChild(i).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text);
-			Table_tailles_cibles.transform.GetChild(i).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = newID.ToString();
+			Table.transform.GetChild(i).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = newID.ToString();
 			
-			addListenersToRow(Table_tailles_cibles.transform.GetChild(i).gameObject.transform, onValueChangeTableTailleCible, removeRowTableTailleCible, -1);
-		}
-
-		//Mise à jour du nombre de lancers
-		textNBLancers.GetComponent<Text>().text = GameController.Jeu.Config.updateNB_Lancers ().ToString();
-	}
-
-	/**
-	 * Détruit une ligne de la table Table_tailles_projectiles
-	 */
-	public void removeRowTableTailleProjectile(int row){
-		Debug.Log (row);
-		Destroy (Table_tailles_projectiles.transform.GetChild (row).gameObject); //Destruction de la ligne graphiquement
-		GameController.Jeu.Config.Projectiles.RemoveAt(row - 1);
-		//Remise à niveau des identifiants de chaque ligne
-		for (int i=row; i<Table_tailles_projectiles.transform.childCount-1; i++) {
-			int newID = i - 2;
-			//Debug.Log(newID + " " + Table_positions_cibles.transform.GetChild(i).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text);
-			Table_tailles_projectiles.transform.GetChild(i).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = newID.ToString();
-			
-			addListenersToRow(Table_tailles_projectiles.transform.GetChild(i).gameObject.transform, onValueChangeTableTailleProjectile, removeRowTableTailleProjectile, -1);
+			addListenersToRow(Table.transform.GetChild(i).gameObject.transform, fieldChangeMethod, removeRowMethod, -1);
 		}
 		
 		//Mise à jour du nombre de lancers
@@ -183,10 +162,32 @@ public class MenuTableManager : MonoBehaviour {
 	}
 
 	/**
+	 * Détruit une ligne de la table Table_positions_cibles
+	 */
+	public void removeRowTablePositionCible(int row){
+		removeRowFromTable (ref Table_positions_cibles, GameController.Jeu.Config.Positions_Cibles, row, onValueChangeTablePositionCible, removeRowTablePositionCible);
+	}
+
+
+	/**
+	 * Détruit une ligne de la table Table_tailles_cibles
+	 */
+	public void removeRowTableTailleCible(int row){
+		removeRowFromTable (ref Table_tailles_cibles, GameController.Jeu.Config.Tailles_Cibles, row, onValueChangeTableTailleCible, removeRowTableTailleCible);
+	}
+
+	/**
+	 * Détruit une ligne de la table Table_tailles_projectiles
+	 */
+	public void removeRowTableTailleProjectile(int row){
+		removeRowFromTable (ref Table_tailles_projectiles, GameController.Jeu.Config.Projectiles, row, onValueChangeTableTailleProjectile, removeRowTableTailleProjectile);
+	}
+
+	/**
 	 * Ajoute ou modifie un listener à chaque champ de la ligne row
 	 * @row ligne à modifier
 	 * @fieldChangeMethod méthode à appeler lors de la modification d'un champ de type texte
-	 * @removeRowMethod à appeler pour le dernier champ qui est le bouton de suppression d'une ligne
+	 * @removeRowMethod méthode à appeler pour le dernier champ qui est le bouton de suppression d'une ligne
 	 * @decallage mettre cette valeur valeur à -1 si cette méthode est appelée depuis la méthode de suppression d'une ligne (décallant les indexs de la table de 1)
 	 */
 	public void addListenersToRow(Transform row, Action<int, int> fieldChangeMethod, Action<int> removeRowMethod, int decallage){
@@ -211,16 +212,23 @@ public class MenuTableManager : MonoBehaviour {
 		row.gameObject.transform.GetChild (row.gameObject.transform.childCount - 1).gameObject.transform.GetChild (0).GetComponent<UnityEngine.UI.Button> ().onClick = onclickEvent; 
 	}
 
-	/** 
-	 * Ajoute une ligne à la table des positions des cibles
+	/**
+	 * Ajoute une ligne à la table Table
+	 * Ajoute un listener à chaque champ de cette ligne
+	 * Ajoute un élément de type T à la liste modèle en utilisant le constructeur par défaut de la classe T
+	 * @param Table tableau auquel on veut ajouter une ligne
+	 * @param modele liste auquelle on veut ajouter un élément
+	 * @param prefabRow prefab de la ligne à ajouter au tableau
+	 * @param fieldChangeMethod méthode appellée lorsqu'une case du tableau est modifiée
+	 * @param removeRowMethod méthode appellée lorsqu'un bouton de suppression d'une ligne est appellée
 	 */
-	public void onClickAjouterUnePositionCible(){
-		Transform boutonAjout = Table_positions_cibles.transform.GetChild (Table_positions_cibles.transform.childCount-1);
+	public void addRow<T>(ref GameObject Table, List<T> modele, GameObject prefabRow, Action<int, int> fieldChangeMethod, Action<int> removeRowMethod) where T : new(){
+		Transform boutonAjout = Table.transform.GetChild (Table.transform.childCount-1);
 		//Récupération dernière ligne du tableau
-		Transform lastRow = Table_positions_cibles.transform.GetChild (Table_positions_cibles.transform.childCount-2);
+		Transform lastRow = Table.transform.GetChild (Table.transform.childCount-2);
 		
 		//Création de la nouvelle ligne du tableau
-		UnityEngine.GameObject newRowTableCibles = CreateRowCible (prefabRowTableCible, Table_positions_cibles, new Vector2 (0, 0), new Vector2 (0, 0));
+		UnityEngine.GameObject newRowTableCibles = CreateRowCible (prefabRow, Table, new Vector2 (0, 0), new Vector2 (0, 0));
 		
 		//Récupération du numéro de cible précédent
 		string lastNumCibleString = lastRow.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text;
@@ -231,84 +239,37 @@ public class MenuTableManager : MonoBehaviour {
 			//Modification du numéro de cible de la nouvelle ligne en l'incrémentant
 			newRowTableCibles.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = lastNumCible.ToString();
 		}
-				
+		
 		boutonAjout.SetAsLastSibling (); //Descend le bouton d'ajout à la fin du tableau
-
+		
 		//Ajout des listeners à chaque champs
-		addListenersToRow(newRowTableCibles.transform, onValueChangeTablePositionCible, removeRowTablePositionCible, 0);
-
+		addListenersToRow(newRowTableCibles.transform, fieldChangeMethod, removeRowMethod, 0);
+		
 		//Modification du modèle Jeu
-		GameController.Jeu.Config.Positions_Cibles.Add (new PositionCible (0, 0));
-
+		modele.Add (new T ());
+		
 		//Mise à jour du nombre de lancers
 		textNBLancers.GetComponent<Text>().text = GameController.Jeu.Config.updateNB_Lancers ().ToString();
+	}
+
+	/** 
+	 * Ajoute une ligne à la table des positions des cibles
+	 */
+	public void onClickAjouterUnePositionCible(){
+		addRow<PositionCible> (ref Table_positions_cibles, GameController.Jeu.Config.Positions_Cibles, prefabRowTableCible, onValueChangeTablePositionCible, removeRowTablePositionCible);
 	}
 
 	/** 
 	 * Ajoute une ligne à la table des tailles des cibles
 	 */
 	public void onClickAjouterUneTailleCible(){
-		Transform boutonAjout = Table_tailles_cibles.transform.GetChild (Table_tailles_cibles.transform.childCount-1);
-
-		//Récupération dernière ligne du tableau
-		Transform lastRow = Table_tailles_cibles.transform.GetChild (Table_tailles_cibles.transform.childCount-2);
-		
-		//Création de la nouvelle ligne du tableau
-		UnityEngine.GameObject newRowTableCibles = CreateRowCible (prefabRowTableTaillesCible, Table_tailles_cibles, new Vector2 (0, 0), new Vector2 (0, 0));
-		
-		//Récupération du numéro de cible précédent
-		string lastNumCibleString = lastRow.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text;
-		
-		int lastNumCible;
-		if (int.TryParse (lastNumCibleString, out lastNumCible)) {
-			lastNumCible ++;
-			//Modification du numéro de cible de la nouvelle ligne en l'incrémentant
-			newRowTableCibles.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = lastNumCible.ToString();
-		}
-		
-		boutonAjout.SetAsLastSibling (); //Descend le bouton d'ajout à la fin du tableau
-		
-		//Ajout des listeners à chaque champs
-		addListenersToRow(newRowTableCibles.transform, onValueChangeTableTailleCible, removeRowTableTailleCible, 0);
-		
-		//Modification du modèle Jeu
-		GameController.Jeu.Config.Tailles_Cibles.Add (0.0f);
-
-		//Mise à jour du nombre de lancers
-		textNBLancers.GetComponent<Text>().text = GameController.Jeu.Config.updateNB_Lancers ().ToString();
+		addRow<float> (ref Table_tailles_cibles, GameController.Jeu.Config.Tailles_Cibles, prefabRowTableTaillesCible, onValueChangeTableTailleCible, removeRowTableTailleCible);
 	}
 
 	/** 
 	 * Ajoute une ligne à la table des tailles des cibles
 	 */
 	public void onClickAjouterUneTailleProjectile(){
-		Transform boutonAjout = Table_tailles_projectiles.transform.GetChild (Table_tailles_projectiles.transform.childCount-1);
-		
-		//Récupération dernière ligne du tableau
-		Transform lastRow = Table_tailles_projectiles.transform.GetChild (Table_tailles_projectiles.transform.childCount-2);
-		
-		//Création de la nouvelle ligne du tableau
-		UnityEngine.GameObject newRowTableCibles = CreateRowCible (prefabRowTableTaillesProjectiles, Table_tailles_projectiles, new Vector2 (0, 0), new Vector2 (0, 0));
-		
-		//Récupération du numéro de cible précédent
-		string lastNumCibleString = lastRow.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text;
-		
-		int lastNumCible;
-		if (int.TryParse (lastNumCibleString, out lastNumCible)) {
-			lastNumCible ++;
-			//Modification du numéro de cible de la nouvelle ligne en l'incrémentant
-			newRowTableCibles.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = lastNumCible.ToString();
-		}
-		
-		boutonAjout.SetAsLastSibling (); //Descend le bouton d'ajout à la fin du tableau
-		
-		//Ajout des listeners à chaque champs
-		addListenersToRow(newRowTableCibles.transform, onValueChangeTableTailleProjectile, removeRowTableTailleProjectile, 0);
-		
-		//Modification du modèle Jeu
-		GameController.Jeu.Config.Projectiles.Add (new Projectile(0,0));
-		
-		//Mise à jour du nombre de lancers
-		textNBLancers.GetComponent<Text>().text = GameController.Jeu.Config.updateNB_Lancers ().ToString();
+		addRow<Projectile> (ref Table_tailles_projectiles, GameController.Jeu.Config.Projectiles, prefabRowTableTaillesProjectiles, onValueChangeTableTailleProjectile, removeRowTableTailleProjectile);
 	}
 }
