@@ -154,10 +154,6 @@ public class UIManagerScript : MonoBehaviour {
 		int res;
 		if (int.TryParse (IF_Nb_lancers.text, out res)) {
 			GameController.Jeu.Config.Nb_lancers = res;
-			GameController.Jeu._Un_tir = new bool[res];
-			GameController.Jeu._Une_tailleCible = new double[res];
-			GameController.Jeu._Une_distance = new double[res];
-			GameController.Jeu._Un_temps = new double[res];
 		}
 	}
 
