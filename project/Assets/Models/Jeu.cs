@@ -257,6 +257,75 @@ public class Jeu{
 		return res;
 	}
 
+	/*Retourne true si position n'a pas été choisie trop de fois pendant la partie et l'ajoute dans la liste des positions jouées
+	 * false sinon*/
+	public bool PositionCiblePossible(PositionCible position)
+	{
+		int dejachoisie = 0;
+		foreach (PositionCible p in _Positions_Cibles) 
+		{
+			if(p.Equals(position))
+			{
+				dejachoisie++;
+			}
+		}
+		if (dejachoisie < _Occurence_Position_Cible) 
+		{
+			this._Positions_Cibles.Add(position);
+			return true;
+		} 
+		else 
+		{
+			return false;
+		}
+	}
+
+	/*Retourne true si taille n'a pas été choisie trop de fois pendant la partie et l'ajoute dans la liste des tailles jouées
+	 * false sinon*/
+	public bool TailleCiblePossible(float taille)
+	{
+		int dejachoisie = 0;
+		foreach (float t in _Tailles_Cibles) 
+		{
+			if(t == taille)
+			{
+				dejachoisie++;
+			}
+		}
+		if (dejachoisie < _Occurence_Taille_Cible) 
+		{
+			this._Tailles_Cibles.Add(taille);
+			return true;
+		} 
+		else 
+		{
+			return false;
+		}
+	}
+
+	/*Retourne true si taille(projectile) n'a pas été choisie trop de fois pendant la partie et l'ajoute dans la liste des projectiles jouées
+	 * false sinon*/
+	public bool TailleProjectilePossible(Projectile projectile)
+	{
+		int dejachoisie = 0;
+		foreach (Projectile p in _Projectiles) 
+		{
+			if(p.Equals(projectile))
+			{
+				dejachoisie++;
+			}
+		}
+		if (dejachoisie < _Occurence_Taille_Projectile) 
+		{
+			this._Projectiles.Add(projectile);
+			return true;
+		} 
+		else 
+		{
+			return false;
+		}
+	}
+
 	/* Sauvegarde la configuration du jeu actuel dans le fichier path */
 	public void saveConfig(string path){
 		_Config.saveConfig(path);
