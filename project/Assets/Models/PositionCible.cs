@@ -3,6 +3,8 @@ using System.Collections;
 using System.IO;
 using System;
 using System.Reflection;
+using System.Xml;
+using System.Xml.Serialization;
 
 public class PositionCible{
 	private float _DistanceX;

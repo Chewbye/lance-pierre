@@ -44,6 +44,9 @@ public class TabControl : MonoBehaviour
 	 * Listener lorsqu'un onglet est cliqué
 	 */
 	public void tabSelect(int tabPos){
+		if (tabPos == currentPanel)
+			return;
+
 		panels [tabPos].SetActive (true);
 		panels [currentPanel].SetActive (false);
 		currentPanel = tabPos;

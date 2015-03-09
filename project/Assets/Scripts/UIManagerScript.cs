@@ -20,16 +20,16 @@ public class UIManagerScript : MonoBehaviour {
 	public InputField IF_Gravite;
 	public InputField IF_Nb_lancers;
 	public Toggle T_Afficher_le_score;
-
+	public InputField IF_Nb_series;
+	
 	/* Onglet Cibles */
 	public InputField IF_Nb_points_gagnes_par_cible;
 	public InputField IF_Delai_evaluation_cible;
-	public InputField IF_Nb_series_cibles;
+
 
 	/* Onglet Lance-pierre */
 	public InputField IF_Rigidite_lancepierre;
 	public InputField IF_Delai_lancer_projectile;
-	public InputField IF_Nb_series_projectiles;
 
 
 	/* Liste des fichiers de configuration */
@@ -39,6 +39,8 @@ public class UIManagerScript : MonoBehaviour {
 	private bool renderWindowConfigName = false;
 	private string newConfigName = "";
 	public GameObject PanelBackground;
+
+	public MenuTableManager menuTableManager;
 
 	void Start () {
 
@@ -132,8 +134,7 @@ public class UIManagerScript : MonoBehaviour {
 		IF_Nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
 		IF_Delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		IF_Delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
-		IF_Nb_series_cibles.text = Convert.ToString (GameController.Jeu.Config.NB_series_cibles);
-		IF_Nb_series_projectiles.text = Convert.ToString (GameController.Jeu.Config.NB_series_projectiles);
+		IF_Nb_series.text = Convert.ToString (GameController.Jeu.Config.NB_series);
 	}
 
 	public void onValueChangeGravite(){
@@ -168,18 +169,10 @@ public class UIManagerScript : MonoBehaviour {
 		}
 	}
 
-	public void onValueChangeNb_series_cibles(){
+	public void onValueChangeNb_series(){
 		int res;
-		if (int.TryParse (IF_Nb_series_cibles.text, out res)) {
-			GameController.Jeu.Config.NB_series_cibles = res;
-			textNBLancers.GetComponent<Text>().text = GameController.Jeu.Config.updateNB_Lancers ().ToString();
-		}
-	}
-
-	public void onValueChangeNb_series_projectiles(){
-		int res;
-		if (int.TryParse (IF_Nb_series_projectiles.text, out res)) {
-			GameController.Jeu.Config.NB_series_projectiles = res;
+		if (int.TryParse (IF_Nb_series.text, out res)) {
+			GameController.Jeu.Config.NB_series = res;
 			textNBLancers.GetComponent<Text>().text = GameController.Jeu.Config.updateNB_Lancers ().ToString();
 		}
 	}
@@ -225,6 +218,10 @@ public class UIManagerScript : MonoBehaviour {
 		
 		//Mis à jour du GUI avec la nouvelle config
 		refreshGUIFields ();
+
+		//Mise à jour des tableaux
+		menuTableManager.resetTables ();
+		//menuTableManager.refreshGUITables();
 	}
 
 	public void CallbackConfExistsDialog(DialogResult result){
@@ -258,6 +255,7 @@ public class UIManagerScript : MonoBehaviour {
 			}
 		}
 
+		GameController.Jeu.Config.Name = newConfigName;
 		GameController.Jeu.saveConfig(UnityEngine.Application.dataPath + "/" + newConfigName + ".xml");
 
 		//Si le fichier de conf n'existe pas déja

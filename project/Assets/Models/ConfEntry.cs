@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 public class ConfEntry{
 	[XmlAttribute("name")]
@@ -15,4 +16,6 @@ public class ConfEntry{
 		this.Attribut = attribut;
 		this.Valeur = valeur;
 	}
+
+
 }

@@ -1,32 +1,39 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ConfEntries>
-    <ConfEntry name="Name">
-      <Valeur />
-    </ConfEntry>
-    <ConfEntry name="Gravite">
-      <Valeur>9.81</Valeur>
-    </ConfEntry>
-    <ConfEntry name="Rigidite_lancepierre">
-      <Valeur>1</Valeur>
-    </ConfEntry>
-    <ConfEntry name="Nb_lancers">
-      <Valeur>1</Valeur>
-    </ConfEntry>
-    <ConfEntry name="Afficher_le_score">
-      <Valeur>True</Valeur>
-    </ConfEntry>
-    <ConfEntry name="Nb_points_gagnes_par_cible">
-      <Valeur>1</Valeur>
-    </ConfEntry>
-    <ConfEntry name="Delai_lancer_projectile">
-      <Valeur>1</Valeur>
-    </ConfEntry>
-    <ConfEntry name="Delai_evaluation_cible">
-      <Valeur>1</Valeur>
-    </ConfEntry>
-    <ConfEntry name="Cibles">
-      <Valeur>System.Collections.Generic.List`1[Cible]</Valeur>
-    </ConfEntry>
-  </ConfEntries>
-</Configuration>
+<?xml version="1.0" encoding="utf-8"?>
+<Conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>test</Name>
+  <Gravite>9.81</Gravite>
+  <Rigidite_lancepierre>1</Rigidite_lancepierre>
+  <Nb_lancers>9</Nb_lancers>
+  <Afficher_le_score>true</Afficher_le_score>
+  <Nb_points_gagnes_par_cible>1</Nb_points_gagnes_par_cible>
+  <Delai_lancer_projectile>1</Delai_lancer_projectile>
+  <Delai_evaluation_cible>1</Delai_evaluation_cible>
+  <Positions_Cibles>
+    <PositionCible>
+      <DistanceX>0</DistanceX>
+      <DistanceY>0</DistanceY>
+    </PositionCible>
+    <PositionCible>
+      <DistanceX>1</DistanceX>
+      <DistanceY>1</DistanceY>
+    </PositionCible>
+    <PositionCible>
+      <DistanceX>2</DistanceX>
+      <DistanceY>4</DistanceY>
+    </PositionCible>
+  </Positions_Cibles>
+  <Tailles_Cibles>
+    <float>0</float>
+    <float>1</float>
+    <float>2</float>
+  </Tailles_Cibles>
+  <Projectiles>
+    <Projectile>
+      <Taille>0</Taille>
+      <Poids>0</Poids>
+    </Projectile>
+  </Projectiles>
+  <Ratio_echelle>1</Ratio_echelle>
+  <NB_series_cibles>1</NB_series_cibles>
+  <NB_series_projectiles>1</NB_series_projectiles>
+</Conf>

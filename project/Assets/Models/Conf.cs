@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Reflection;
+using System.Xml;
+using System.Xml.Serialization;
 
 public class Conf{
 	private string _Name;
@@ -134,25 +136,14 @@ public class Conf{
 		}
 	}
 
-	private int _NB_series_cibles;
+	private int _NB_series;
 	
-	public int NB_series_cibles {
+	public int NB_series {
 		get {
-			return _NB_series_cibles;
+			return _NB_series;
 		}
 		set {
-			_NB_series_cibles = value;
-		}
-	}
-
-	private int _NB_series_projectiles;
-	
-	public int NB_series_projectiles {
-		get {
-			return _NB_series_projectiles;
-		}
-		set {
-			_NB_series_projectiles = value;
+			_NB_series = value;
 		}
 	}
 	
@@ -183,8 +174,7 @@ public class Conf{
 		_Tailles_Cibles = new List<float> ();
 		_Projectiles = new List<Projectile> ();
 		_Ratio_echelle = 1;
-		_NB_series_cibles = 1;
-		_NB_series_projectiles = 1;
+		_NB_series = 1;
 	}
 	
 	
@@ -198,8 +188,7 @@ public class Conf{
 		res += "_Delai_lancer_projectile: " + _Delai_lancer_projectile + System.Environment.NewLine;
 		res += "_Delai_evaluation_cible: " + _Delai_evaluation_cible + System.Environment.NewLine;
 		res += "_Ratio_echelle: " + _Ratio_echelle + System.Environment.NewLine;
-		res += "_NB_series_cibles: " + _NB_series_cibles + System.Environment.NewLine;
-		res += "_NB_series_projectiles: " + _NB_series_projectiles + System.Environment.NewLine;
+		res += "_NB_series: " + _NB_series + System.Environment.NewLine;
 
 		foreach (PositionCible poscible in _Positions_Cibles) {
 			res += "POSITION CIBLE: " + System.Environment.NewLine;
@@ -221,6 +210,7 @@ public class Conf{
 	
 	/* Sauvegarde la configuration du jeu actuel dans le fichier path */
 	public void saveConfig(string path){
+		/*
 		ConfContainer confContainer = new ConfContainer ();
 		Type type = this.GetType();
 		PropertyInfo[] properties = type.GetProperties();
@@ -228,11 +218,24 @@ public class Conf{
 		confContainer.ConfEntries = new ConfEntry[properties.Length];
 		int i = 0;
 		foreach (PropertyInfo property in properties){
-			confContainer.ConfEntries [i] = new ConfEntry (property.Name, Convert.ToString(property.GetValue(this, null)));
+			if(property.GetValue(this,null) is IList && property.GetValue(this,null).GetType().IsGenericType){
+				var listType = property.PropertyType.GetGenericArguments()[0];
+				var confType = typeof(ConfEntryList<>).MakeGenericType(listType);
+				var item = Activator.CreateInstance(confType,
+				                                    new object [] {property.Name, property.GetValue(this, null)});
+				confContainer.ConfEntries [i] =  (ConfEntry)item;
+			} else{
+				confContainer.ConfEntries [i] = new ConfEntry (property.Name, Convert.ToString(property.GetValue(this, null)));
+			}
 			i++;
 		}
-		
 		confContainer.Save (path);
+		*/
+		XmlSerializer xs = new XmlSerializer(typeof(Conf));
+		using (StreamWriter wr = new StreamWriter(path))
+		{
+			xs.Serialize(wr, this);
+		}
 	}
 	
 	/* Charge la configuration du fichier vers le jeu actuel */
@@ -257,8 +260,6 @@ public class Conf{
 			} else{
 				//pi.SetValue(this, confEntry.Valeur, null);
 			}
-
-
 		}
 	}
 
@@ -266,7 +267,7 @@ public class Conf{
 	 * Met à jour le nombre de lancers
 	 */
 	public int updateNB_Lancers(){
-		_Nb_lancers = _Positions_Cibles.Count * _Tailles_Cibles.Count * _Projectiles.Count * _NB_series_cibles * _NB_series_projectiles;
+		_Nb_lancers = _Positions_Cibles.Count * _Tailles_Cibles.Count * _Projectiles.Count * _NB_series ;
 		return _Nb_lancers;
 	}
 }

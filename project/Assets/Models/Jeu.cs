@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Reflection;
+using System.Xml;
+using System.Xml.Serialization;
 
 public class Jeu{
 	private Conf _Config;
@@ -238,7 +240,7 @@ public class Jeu{
 		_ConfigsList = new ArrayList ();
 		//Transformation tableau vers ArrayList
 		foreach (string fileName in fileNames) {
-			_ConfigsList.Add (new Conf (fileName.Replace("/", "\\")));
+			_ConfigsList.Add (getConfigFile(fileName.Replace("/", "\\")));
 		}
 	}
 
@@ -334,6 +336,18 @@ public class Jeu{
 
 	/* Charge la configuration du fichier vers le jeu actuel */
 	public void loadConfig(string path){
-		_Config.loadConfig(path);
+		//_Config.loadConfig(path);
+		_Config = getConfigFile (path);
+	}
+
+	public Conf getConfigFile(string path){
+		//_Config.loadConfig(path);
+		Conf res = null;
+		XmlSerializer xs = new XmlSerializer(typeof(Conf));
+		using (StreamReader rd = new StreamReader(path))
+		{
+			res = xs.Deserialize(rd) as Conf;
+		}
+		return res;
 	}
 }
