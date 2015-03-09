@@ -11,7 +11,7 @@ public class PositionTailleCible : MonoBehaviour {
 	void Start () {
 		// CHANGEMENT DE POSITION
 		// On place aléatoirement la cible dans une zone donnée
-		System.Random rnd = new System.Random();
+		/*System.Random rnd = new System.Random();
 		int x = rnd.Next(3, 27);
 		int y = rnd.Next(-5, 14); 
 		Vector3 positionCible = new Vector3( x, y, 0 );
@@ -32,7 +32,7 @@ public class PositionTailleCible : MonoBehaviour {
 		transform.localScale = new Vector3((float)taille, (float)taille, transform.localScale.z);
 
 		// On enregistre le coefficient multiplicateur
-		GameController.Jeu._Une_tailleCible [GameController.Jeu.Tir_courant] = taille;
+		GameController.Jeu._Une_tailleCible [GameController.Jeu.Tir_courant] = taille;*/
 	}
 
 	// Update is called once per frame

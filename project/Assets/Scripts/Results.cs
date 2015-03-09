@@ -255,14 +255,14 @@ public class Results : MonoBehaviour {
 		text = text + "Details des lancers;\n\n";
 		
 		int count = 0;
-		foreach (bool tir in GameController.Jeu._Un_tir) {
+		/*foreach (bool tir in GameController.Jeu._Un_tir) { //MODIFIE PAR PIERRE CAR TABLEAU SUPPRIME
 			count++;
 			text = text + "Tir numero " + count + ";";
 			if (tir == true) 
 				text = text + "Touche !;\n";
 			else 
 				text = text + "Manque !;\n";
-		}
+		}*/
 		Byte[] info = new UTF8Encoding(true).GetBytes(text);
 		fs.Write(info, 0, text.Length);
 		

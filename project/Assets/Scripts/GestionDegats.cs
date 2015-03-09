@@ -28,7 +28,7 @@ public class GestionDegats : MonoBehaviour {
 		GameController.Jeu.Nb_cible_touchees ++;
 
 		// On indique que le tir courant est réussi
-		GameController.Jeu._Un_tir [GameController.Jeu.Tir_courant] = true;
+		//GameController.Jeu._Un_tir [GameController.Jeu.Tir_courant] = true;
 
 		// On incrémente le tir courant
 		GameController.Jeu.Tir_courant++;

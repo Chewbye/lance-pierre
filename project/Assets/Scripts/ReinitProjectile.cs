@@ -49,7 +49,7 @@ public class ReinitProjectile : MonoBehaviour {
 		GameController.Jeu.Nb_cible_manquees ++;
 
 		// On indique que le tir courant est manqué
-		GameController.Jeu._Un_tir[GameController.Jeu.Tir_courant] = false;
+		//GameController.Jeu._Un_tir[GameController.Jeu.Tir_courant] = false;
 
 		// On incrémente le tir courant
 		GameController.Jeu.Tir_courant++;

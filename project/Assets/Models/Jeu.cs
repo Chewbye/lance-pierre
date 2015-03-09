@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Reflection;
@@ -65,6 +66,7 @@ public class Jeu{
 		}
 	}
 
+	// Indique le nombre courant de tirs réussis
 	private int _Nb_cible_touchees;
 	public int Nb_cible_touchees {
 		get {
@@ -75,6 +77,7 @@ public class Jeu{
 		}
 	}
 
+	// Indique le nombre courant de tirs manqués
 	private int _Nb_cible_manquees;
 	public int Nb_cible_manquees {
 		get {
@@ -85,6 +88,7 @@ public class Jeu{
 		}
 	}
 
+	// Indique le nombre courant de tirs effectués
 	private int _Tir_courant;
 	public int Tir_courant {
 		get {
@@ -95,46 +99,84 @@ public class Jeu{
 		}
 	}
 
-	private bool[] _Ensemble_tirs;
-	public bool[] _Un_tir {
+	// Liste contenant la réussite ou non de chacun des tirs
+	private List<bool> _Reussite_Tirs;
+	public List<bool> Reussiste_Tirs {
 		get {
-			return _Ensemble_tirs;
+			return _Reussite_Tirs;
 		}
 		set {
-			_Ensemble_tirs = value;
+			_Reussite_Tirs = value;
 		}
 	}
 
-	private double[] _Ensemble_distances;
-	public double[] _Une_distance {
+	//Liste contenant la position de la cible à chacun des tirs
+	private List<PositionCible> _Positions_Cibles;
+	public List<PositionCible> Positions_Cibles {
 		get {
-			return _Ensemble_distances;
+			return _Positions_Cibles;
 		}
 		set {
-			_Ensemble_distances = value;
+			_Positions_Cibles = value;
 		}
 	}
 
-	private double[] _Ensemble_tailleCible;
-	public double[] _Une_tailleCible {
+	//Liste contenant la taille de la cible à chacun des tirs
+	private List<float> _Tailles_Cibles;
+	public List<float> Tailles_Cibles {
 		get {
-			return _Ensemble_tailleCible;
+			return _Tailles_Cibles;
 		}
 		set {
-			_Ensemble_tailleCible = value;
+			_Tailles_Cibles = value;
 		}
 	}
 
-	private double[] _Ensemble_temps;
-	public double[] _Un_temps {
+	//Liste contenant la taille et poids du projectile à chacun des Tirs
+	private List<Projectile> _Projectiles;
+	public List<Projectile> Projectiles {
 		get {
-			return _Ensemble_temps;
+			return _Projectiles;
 		}
 		set {
-			_Ensemble_temps = value;
+			_Projectiles = value;
 		}
 	}
 
+	// Indique combien de fois chacune des positions de cible doit apparaitre (nb taille cible * nb taille projectile * nb de série)
+	private int _Occurence_Position_Cible;
+	public int Occurence_Position_Cible {
+		get {
+			return _Occurence_Position_Cible;
+		}
+		set {
+			_Occurence_Position_Cible = value;
+		}
+	}
+
+	// Indique combien de fois chacune des tailles de cible doit apparaitre (nb position cible * nb taille projectile * nb de série)
+	private int _Occurence_Taille_Cible;
+	public int Occurence_Taille_Cible {
+		get {
+			return _Occurence_Taille_Cible;
+		}
+		set {
+			_Occurence_Taille_Cible = value;
+		}
+	}
+
+	// Indique combien de fois chacune des tailles de projectile doit apparaitre (nb position cible * nb taille cible * nb de série)
+	private int _Occurence_Taille_Projectile;
+	public int Occurence_Taille_Projectile {
+		get {
+			return _Occurence_Taille_Projectile;
+		}
+		set {
+			_Occurence_Taille_Projectile = value;
+		}
+	}
+	
+		
 	/**
 	 * Créé un modèle Jeu à partir d'un fichier de configuation
 	 */
@@ -145,11 +187,14 @@ public class Jeu{
 		_Score_final = 0;
 		_Nb_cible_manquees = 0;
 		_Nb_cible_touchees = 0;
-		_Ensemble_tirs = new bool[_Nb_lancers];
-		_Ensemble_distances = new double[_Nb_lancers];
-		_Ensemble_tailleCible = new double[_Nb_lancers];
-		_Ensemble_temps = new double[_Nb_lancers];
 		_Tir_courant = 0;
+		_Occurence_Position_Cible = -1;
+		_Occurence_Taille_Cible = -1;
+		_Occurence_Taille_Projectile = -1;
+		_Reussite_Tirs = new List<bool> ();
+		_Positions_Cibles = new List<PositionCible> ();
+		_Tailles_Cibles = new List<float> ();
+		_Projectiles = new List<Projectile> ();
 		refreshConfigFiles ();
 	}
 
@@ -163,13 +208,17 @@ public class Jeu{
 		_Score_final = 0;
 		_Nb_cible_manquees = 0;
 		_Nb_cible_touchees = 0;
-		_Ensemble_tirs = new bool[_Nb_lancers];
-		_Ensemble_distances = new double[_Nb_lancers];
-		_Ensemble_tailleCible = new double[_Nb_lancers];
-		_Ensemble_temps = new double[_Nb_lancers];
 		_Tir_courant = 0;
+		_Occurence_Position_Cible = -1;
+		_Occurence_Taille_Cible = -1;
+		_Occurence_Taille_Projectile = -1;
+		_Reussite_Tirs = new List<bool> ();
+		_Positions_Cibles = new List<PositionCible> ();
+		_Tailles_Cibles = new List<float> ();
+		_Projectiles = new List<Projectile> ();
 		refreshConfigFiles ();
 	}
+	
 
 	/**
 	 * Stocke la liste des modèles de configuration déja enregistrées dans l'attribut _ConfigsList par ordre de dates de création
@@ -196,13 +245,15 @@ public class Jeu{
 
 	public override string ToString(){
 		string res = "";
-		res +=  "NB_lancers=" + _Nb_lancers + System.Environment.NewLine 
-			    + "ScoreFinal=" + _Score_final + System.Environment.NewLine 
-				+ "NBCiblesTouchees=" + _Nb_cible_touchees + System.Environment.NewLine 
-				+ "NBCiblesManquees=" + _Nb_cible_manquees + System.Environment.NewLine
-				+ "TirCourant=" + _Tir_courant + System.Environment.NewLine;
+		res += "NB_lancers=" + _Nb_lancers + System.Environment.NewLine 
+						+ "ScoreFinal=" + _Score_final + System.Environment.NewLine 
+						+ "NBCiblesTouchees=" + _Nb_cible_touchees + System.Environment.NewLine 
+						+ "NBCiblesManquees=" + _Nb_cible_manquees + System.Environment.NewLine
+						+ "TirCourant=" + _Tir_courant + System.Environment.NewLine
+						+ "_Occurence_Position_Cible=" + _Occurence_Position_Cible + System.Environment.NewLine
+						+ "_Occurence_Taille_Cible=" + _Occurence_Taille_Cible + System.Environment.NewLine
+						+ "_Occurence_Taille_Projectile=" + _Occurence_Taille_Projectile + System.Environment.NewLine;
 			
-
 		return res;
 	}
 
