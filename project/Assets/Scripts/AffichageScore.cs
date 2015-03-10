@@ -12,7 +12,7 @@ public class AffichageScore : MonoBehaviour {
 		if(GameController.Jeu.Config.Afficher_le_score)
 		{
 			txt = gameObject.GetComponent<Text>(); 
-			txt.text= "Score : " + GameController.Jeu.Score_courant;
+			txt.text= "Score : " + GameController.Jeu.Score;
 		}
 		else
 		{
@@ -26,7 +26,7 @@ public class AffichageScore : MonoBehaviour {
 		if(GameController.Jeu.Config.Afficher_le_score)
 		{
 			txt = gameObject.GetComponent<Text>(); 
-			txt.text= "Score : " + GameController.Jeu.Score_courant;
+			txt.text= "Score : " + GameController.Jeu.Score;
 		}
 		else
 		{

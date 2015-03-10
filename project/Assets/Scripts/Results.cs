@@ -75,7 +75,7 @@ public class Results : MonoBehaviour {
 		
 		//Assignation des valeurs par traitement des résultats obtenus durant la partie
 		//A remplacer par les résultats stockés par Pierre
-		score_final.text = Convert.ToString(GameController.Jeu.Score_final);
+		score_final.text = Convert.ToString(GameController.Jeu.Score); // MODIFIE PAR CABRON
 		//nombre_cibles_touchees.text = Convert.ToString(GameController.Jeu.Nb_cible_touchees); SUPPRIME PAR CABRON
 		//nombre_cibles_manquees.text = Convert.ToString(GameController.Jeu.Nb_cible_manquees); SUPPRIME PAR CABRON
 		//Ici on comptera le nombre de valeurs correspondantes

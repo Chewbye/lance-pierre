@@ -48,23 +48,13 @@ public class Jeu{
 		}
 	}
 
-	private int _Score_courant;
-	public int Score_courant {
+	private int _Score;
+	public int Score {
 		get {
-			return _Score_courant;
+			return _Score;
 		}
 		set {
-			_Score_courant = value;
-		}
-	}
-
-	private int _Score_final;
-	public int Score_final {
-		get {
-			return _Score_final;
-		}
-		set {
-			_Score_final = value;
+			_Score = value;
 		}
 	}
 
@@ -118,8 +108,7 @@ public class Jeu{
 	public Jeu(Conf configuration){
 		_Config = configuration;
 		_Nb_lancers = _Config.Nb_lancers;
-		_Score_courant = 0;
-		_Score_final = 0;
+		_Score = 0;
 		_Tir_courant = 0;
 		_Reussite_Tirs = new List<bool> ();
 		_Tirs_A_Realiser = new List<TripletTirs> ();
@@ -133,8 +122,7 @@ public class Jeu{
 	public Jeu(){
 		_Config = new Conf ();
 		_Nb_lancers = _Config.Nb_lancers;
-		_Score_courant = 0;
-		_Score_final = 0;
+		_Score = 0;
 		_Tir_courant = 0;
 		_Reussite_Tirs = new List<bool> ();
 		_Tirs_A_Realiser = new List<TripletTirs> ();
@@ -169,7 +157,7 @@ public class Jeu{
 	public override string ToString(){
 		string res = "";
 		res += "NB_lancers=" + _Nb_lancers + System.Environment.NewLine 
-						+ "ScoreFinal=" + _Score_final + System.Environment.NewLine 
+						+ "Score=" + _Score + System.Environment.NewLine 
 				+ "TirCourant=" + _Tir_courant + System.Environment.NewLine;
 			
 		return res;

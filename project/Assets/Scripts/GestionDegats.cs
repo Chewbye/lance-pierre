@@ -28,6 +28,9 @@ public class GestionDegats : MonoBehaviour {
 		// On indique que le tir courant est réussi
 		GameController.Jeu.Reussiste_Tirs.Add(true);
 
+		// On augmente le score
+		GameController.Jeu.Score = GameController.Jeu.Score + GameController.Jeu.Config.Nb_points_gagnes_par_cible;
+
 		// On incrémente le tir courant
 		GameController.Jeu.Tir_courant++;
 
