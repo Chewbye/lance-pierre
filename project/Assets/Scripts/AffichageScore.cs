@@ -7,13 +7,31 @@ public class AffichageScore : MonoBehaviour {
 	Text txt;
 	
 	// Use this for initialization
-	void Start () {
-		txt = gameObject.GetComponent<Text>(); 
-		txt.text= "Score : " + GameController.Jeu.Score_courant;
+	void Start () 
+	{
+		if(GameController.Jeu.Config.Afficher_le_score)
+		{
+			txt = gameObject.GetComponent<Text>(); 
+			txt.text= "Score : " + GameController.Jeu.Score_courant;
+		}
+		else
+		{
+			txt = gameObject.GetComponent<Text>(); 
+			txt.text= "";
+		}
 	}
-	
 	// Update is called once per frame
-	void Update () {
-		txt.text= "Score : " + GameController.Jeu.Score_courant;
+	void Update () 
+	{
+		if(GameController.Jeu.Config.Afficher_le_score)
+		{
+			txt = gameObject.GetComponent<Text>(); 
+			txt.text= "Score : " + GameController.Jeu.Score_courant;
+		}
+		else
+		{
+			txt = gameObject.GetComponent<Text>(); 
+			txt.text= "";
+		}
 	}
 }

@@ -23,12 +23,10 @@ public class GestionDegats : MonoBehaviour {
 		damageImpactSpeedSqr = damageImpactSpeed * damageImpactSpeed;
 	}
 	
-	void OnCollisionEnter2D (Collision2D collision) {
-		// On incrémente le nombre de cibles touchées
-		GameController.Jeu.Nb_cible_touchees ++;
-
+	void OnCollisionEnter2D (Collision2D collision) 
+	{
 		// On indique que le tir courant est réussi
-		//GameController.Jeu._Un_tir [GameController.Jeu.Tir_courant] = true;
+		GameController.Jeu.Reussiste_Tirs.Add(true);
 
 		// On incrémente le tir courant
 		GameController.Jeu.Tir_courant++;
