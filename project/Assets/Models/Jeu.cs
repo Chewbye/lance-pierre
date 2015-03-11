@@ -69,6 +69,17 @@ public class Jeu{
 		}
 	}
 
+	// Nécessaire de garder la meme instance Random au cours de la partie
+	private System.Random _Rang_Aleatoire;
+	public System.Random Rang_Aleatoire {
+		get {
+			return _Rang_Aleatoire;
+		}
+		set {
+			_Rang_Aleatoire = value;
+		}
+	}
+
 	// Liste contenant la réussite ou non de chacun des tirs
 	private List<bool> _Reussite_Tirs;
 	public List<bool> Reussiste_Tirs {
@@ -110,6 +121,7 @@ public class Jeu{
 		_Nb_lancers = _Config.Nb_lancers;
 		_Score = 0;
 		_Tir_courant = 0;
+		_Rang_Aleatoire = new System.Random();
 		_Reussite_Tirs = new List<bool> ();
 		_Tirs_A_Realiser = new List<TripletTirs> ();
 		_Tirs_Realises = new List<TripletTirs> ();
@@ -124,6 +136,7 @@ public class Jeu{
 		_Nb_lancers = _Config.Nb_lancers;
 		_Score = 0;
 		_Tir_courant = 0;
+		_Rang_Aleatoire = new System.Random();
 		_Reussite_Tirs = new List<bool> ();
 		_Tirs_A_Realiser = new List<TripletTirs> ();
 		_Tirs_Realises = new List<TripletTirs> ();

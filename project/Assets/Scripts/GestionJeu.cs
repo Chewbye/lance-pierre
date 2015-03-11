@@ -18,12 +18,12 @@ public class GestionJeu : MonoBehaviour
 	private float circleRadius;
 	private bool clickedOn;
 	private Vector2 prevVelocity;
-
+	
 	void Awake () {
 		spring = GetComponent <SpringJoint2D> ();
 		catapult = spring.connectedBody.transform;
 	}
-
+	
 	// Use this for initialization
 	void Start () 
 	{
@@ -53,16 +53,15 @@ public class GestionJeu : MonoBehaviour
 			}
 			Debug.Log("Nombre de combinaisons générées : " + nbCombinaisonsGenerees);
 		}
-
+		
 		if(GameController.Jeu.Tirs_Realises.Count < GameController.Jeu.Nb_lancers) // Si nous ne sommes pas en fin de partie
 		{
 			// CHOIX D'UN TIR A REALISER
 			// Choix d'un tir
-			System.Random rnd = new System.Random();
-			int rang = rnd.Next(0, GameController.Jeu.Tirs_A_Realiser.Count-1);
+			int rang = GameController.Jeu.Rang_Aleatoire.Next(0, GameController.Jeu.Tirs_A_Realiser.Count-1);
 			TripletTirs tirAFaire = GameController.Jeu.Tirs_A_Realiser[rang];
-			Debug.Log("Tir choisi (DistanceX=" + tirAFaire.Position_Cible.DistanceX + ", DistanceY=" + tirAFaire.Position_Cible.DistanceY
-			          + ", TailleCible=" + tirAFaire.Taille_Cible + ", TailleProjectile=" + tirAFaire.Projectile.Taille + ")");
+			Debug.Log("Rang = " + rang + ", Tir choisi (DistanceX=" + tirAFaire.Position_Cible.DistanceX + ", DistanceY=" + tirAFaire.Position_Cible.DistanceY
+			          + ", TailleCible=" + tirAFaire.Taille_Cible + ", TailleProjectile=" + tirAFaire.Projectile.Taille + ", PoidsProjectile=" + tirAFaire.Projectile.Poids + ")");
 			
 			// Suppression du tir dans la liste des tirs à réaliser
 			GameController.Jeu.Tirs_A_Realiser.Remove(tirAFaire);
@@ -85,15 +84,17 @@ public class GestionJeu : MonoBehaviour
 			double ratioEchelle = GameController.Jeu.Config.Ratio_echelle;
 			float tailleXYZProjectile = tirAFaire.Projectile.Taille;
 			transform.localScale = new Vector3((float) ratioEchelle* tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile);
-			
 			LineRendererSetup ();
 			rayToMouse = new Ray(catapult.position, Vector3.zero);
 			leftCatapultToProjectile = new Ray(catapultLineFront.transform.position, Vector3.zero);
 			maxStretchSqr = maxStretch * maxStretch;
 			CircleCollider2D circle = collider2D as CircleCollider2D;
 			circleRadius = circle.radius * (float) ratioEchelle * tailleXYZProjectile;
+			
+			//rigidbody2D.mass = tirAFaire.Projectile.Poids;
+			rigidbody2D.gravityScale = tirAFaire.Projectile.Poids;
 		}
-
+		
 	}
 	
 	// Update is called once per frame
