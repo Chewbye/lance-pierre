@@ -27,6 +27,8 @@ public class GestionJeu : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		double diametreProjectile = renderer.bounds.size.x * GameController.Jeu.Config.Ratio_echelle;
+		Debug.Log("diametre=" + diametreProjectile);
 		// INITIALISATION DES ATTRIBUTS DE JEU
 		if(GameController.Jeu.Tirs_A_Realiser.Count == 0 && GameController.Jeu.Tirs_Realises.Count == 0)// Si les triplets n'ont pas déjà été générés
 		{
@@ -73,10 +75,10 @@ public class GestionJeu : MonoBehaviour
 			Vector3 positionCatapulte = catapulte.transform.position;
 			
 			// CHANGEMENT DE LA POSITION ET DE LA TAILLE DE LA CIBLE
-			/*float positionXCible = catapulte.transform.position.x + (positionCible.DistanceX * (float)GameController.Jeu.Config.Ratio_echelle);
-		float positionYCible = catapulte.transform.position.y + (positionCible.DistanceY * (float)GameController.Jeu.Config.Ratio_echelle);
-		float positionZCible = cible.transform.position.z * (float)GameController.Jeu.Config.Ratio_echelle;
-		cible.transform.position = new Vector3(positionXCible, positionYCible, positionZCible);*/
+			float positionXCible = catapulte.transform.position.x + (tirAFaire.Position_Cible.DistanceX * (float)diametreProjectile);
+			float positionYCible = catapulte.transform.position.y + (tirAFaire.Position_Cible.DistanceY * (float)diametreProjectile);
+			float positionZCible = cible.transform.position.z * (float)diametreProjectile;
+			cible.transform.position = new Vector3(positionXCible, positionYCible, positionZCible);
 			float tailleXYZCible = tirAFaire.Taille_Cible * (float)GameController.Jeu.Config.Ratio_echelle * cible.transform.localScale.x; // la cible doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
 			cible.transform.localScale = new Vector3(tailleXYZCible, tailleXYZCible, tailleXYZCible);
 			
