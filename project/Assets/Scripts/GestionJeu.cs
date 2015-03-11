@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class GestionJeu : MonoBehaviour 
 {
-	public GameObject projectile;
 	public GameObject cible;
 	public GameObject catapulte;
 	public float maxStretch = 3.0f;
@@ -21,7 +20,7 @@ public class GestionJeu : MonoBehaviour
 	private Vector2 prevVelocity;
 
 	void Awake () {
-		spring = projectile.GetComponent <SpringJoint2D> ();
+		spring = GetComponent <SpringJoint2D> ();
 		catapult = spring.connectedBody.transform;
 	}
 
@@ -85,13 +84,13 @@ public class GestionJeu : MonoBehaviour
 			// CHANGEMENT DE LA TAILLE ET DU POIDS DU PROJECTILE
 			double ratioEchelle = GameController.Jeu.Config.Ratio_echelle;
 			float tailleXYZProjectile = tirAFaire.Projectile.Taille;
-			projectile.transform.localScale = new Vector3((float) ratioEchelle* tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile);
+			transform.localScale = new Vector3((float) ratioEchelle* tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile);
 			
 			LineRendererSetup ();
 			rayToMouse = new Ray(catapult.position, Vector3.zero);
 			leftCatapultToProjectile = new Ray(catapultLineFront.transform.position, Vector3.zero);
 			maxStretchSqr = maxStretch * maxStretch;
-			CircleCollider2D circle = projectile.collider2D as CircleCollider2D;
+			CircleCollider2D circle = collider2D as CircleCollider2D;
 			circleRadius = circle.radius * (float) ratioEchelle * tailleXYZProjectile;
 		}
 
@@ -103,13 +102,13 @@ public class GestionJeu : MonoBehaviour
 			Dragging ();
 		
 		if (spring != null) {
-			if (!projectile.rigidbody2D.isKinematic && prevVelocity.sqrMagnitude > projectile.rigidbody2D.velocity.sqrMagnitude) {
+			if (!rigidbody2D.isKinematic && prevVelocity.sqrMagnitude > rigidbody2D.velocity.sqrMagnitude) {
 				Destroy (spring);
-				projectile.rigidbody2D.velocity = prevVelocity;
+				rigidbody2D.velocity = prevVelocity;
 			}
 			
 			if (!clickedOn)
-				prevVelocity = projectile.rigidbody2D.velocity;
+				prevVelocity = rigidbody2D.velocity;
 			
 			LineRendererUpdate ();
 			
@@ -137,7 +136,7 @@ public class GestionJeu : MonoBehaviour
 	
 	void OnMouseUp () {
 		spring.enabled = true;
-		projectile.rigidbody2D.isKinematic = false;
+		rigidbody2D.isKinematic = false;
 		clickedOn = false;
 	}
 	
@@ -155,7 +154,7 @@ public class GestionJeu : MonoBehaviour
 	}
 	
 	void LineRendererUpdate () {
-		Vector2 catapultToProjectile = projectile.transform.position - catapultLineFront.transform.position;
+		Vector2 catapultToProjectile = transform.position - catapultLineFront.transform.position;
 		leftCatapultToProjectile.direction = catapultToProjectile;
 		Vector3 holdPoint = leftCatapultToProjectile.GetPoint(catapultToProjectile.magnitude + circleRadius);
 		catapultLineFront.SetPosition(1, holdPoint);
