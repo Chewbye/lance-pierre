@@ -4,13 +4,12 @@ using System.Collections;
 
 public class CompteARebours : MonoBehaviour {
 
-	public float tempsRestant = GameController.Jeu.Config.Delai_lancer_projectile; // En seconde
-	Text txt;
+	float tempsRestant; // En seconde
 	
 	// Use this for initialization
 	void Start () 
 	{
-
+		tempsRestant = GameController.Jeu.Config.Delai_lancer_projectile;
 	}
 	
 	// Update is called once per frame
