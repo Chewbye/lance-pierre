@@ -6,7 +6,7 @@ public class GestionJeu : MonoBehaviour
 {
 	public GameObject cible;
 	public GameObject catapulte;
-	public float maxStretch = 3.0f;
+	//public float maxStretch = 3.0f;
 	public LineRenderer catapultLineFront;
 	public LineRenderer catapultLineBack;  
 	
@@ -14,6 +14,7 @@ public class GestionJeu : MonoBehaviour
 	private Transform catapult;
 	private Ray rayToMouse;
 	private Ray leftCatapultToProjectile;
+	private float rigidite;
 	private float maxStretchSqr;
 	private float circleRadius;
 	private bool clickedOn;
@@ -28,7 +29,6 @@ public class GestionJeu : MonoBehaviour
 	void Start () 
 	{
 		double diametreProjectile = renderer.bounds.size.x * GameController.Jeu.Config.Ratio_echelle;
-		Debug.Log("diametre=" + diametreProjectile);
 		// INITIALISATION DES ATTRIBUTS DE JEU
 		if(GameController.Jeu.Tirs_A_Realiser.Count == 0 && GameController.Jeu.Tirs_Realises.Count == 0)// Si les triplets n'ont pas déjà été générés
 		{
@@ -58,6 +58,9 @@ public class GestionJeu : MonoBehaviour
 		
 		if(GameController.Jeu.Tirs_Realises.Count < GameController.Jeu.Nb_lancers) // Si nous ne sommes pas en fin de partie
 		{
+			// CHANGEMENT DE LA RIGIDITE DU LANCE PIERRE
+			rigidite = GameController.Jeu.Config.Rigidite_lancepierre;
+
 			// CHOIX D'UN TIR A REALISER
 			// Choix d'un tir
 			int rang = GameController.Jeu.Rang_Aleatoire.Next(0, GameController.Jeu.Tirs_A_Realiser.Count-1);
@@ -89,12 +92,12 @@ public class GestionJeu : MonoBehaviour
 			LineRendererSetup ();
 			rayToMouse = new Ray(catapult.position, Vector3.zero);
 			leftCatapultToProjectile = new Ray(catapultLineFront.transform.position, Vector3.zero);
-			maxStretchSqr = maxStretch * maxStretch;
+			maxStretchSqr = rigidite * rigidite;
 			CircleCollider2D circle = collider2D as CircleCollider2D;
 			circleRadius = circle.radius * (float) ratioEchelle * tailleXYZProjectile;
 			
 			//rigidbody2D.mass = tirAFaire.Projectile.Poids;
-			rigidbody2D.gravityScale = tirAFaire.Projectile.Poids;
+			rigidbody2D.gravityScale = tirAFaire.Projectile.Poids * GameController.Jeu.Config.Gravite;
 		}
 		
 	}
@@ -149,7 +152,7 @@ public class GestionJeu : MonoBehaviour
 		
 		if (catapultToMouse.sqrMagnitude > maxStretchSqr) {
 			rayToMouse.direction = catapultToMouse;
-			mouseWorldPoint = rayToMouse.GetPoint(maxStretch);
+			mouseWorldPoint = rayToMouse.GetPoint(rigidite);
 		}
 		
 		mouseWorldPoint.z = 0f;

@@ -163,7 +163,7 @@ public class Conf{
 	public Conf(){
 		_Name = "";
 		_Gravite = 1;
-		_Rigidite_lancepierre = 1.0f;
+		_Rigidite_lancepierre = 3.0f;
 		_Nb_lancers = 1;
 		_Afficher_le_score = true;
 		_Nb_points_gagnes_par_cible = 1;
