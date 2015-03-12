@@ -162,12 +162,12 @@ public class Conf{
 	 */
 	public Conf(){
 		_Name = "";
-		_Gravite = 9.81f;
+		_Gravite = 1;
 		_Rigidite_lancepierre = 1.0f;
 		_Nb_lancers = 1;
 		_Afficher_le_score = true;
 		_Nb_points_gagnes_par_cible = 1;
-		_Delai_lancer_projectile = 1.0f;
+		_Delai_lancer_projectile = 20;
 		_Delai_evaluation_cible = 1.0f;
 		_Positions_Cibles = new List<PositionCible> ();
 		_Tailles_Cibles = new List<float> ();
