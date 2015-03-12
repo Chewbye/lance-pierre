@@ -281,61 +281,73 @@ public class MenuTableManager : MonoBehaviour {
 
 
 	/**
-	 * Réinitialise toutes les tables sans aucune ligne
+	 * Créé ou supprime autant de lignes de chaque table pour qu'elles aientt chacune autant de ligne que leur modèle
 	 */
-	public void resetTables(){
-		for(int i=2; i<Table_positions_cibles.transform.childCount - 1; i++){
-			removeRowFromTable (ref Table_positions_cibles, new List<PositionCible>(), i, onValueChangeTablePositionCible, removeRowTablePositionCible);
+	public void initTablesForNewConfig(){
+
+		/** SUPPRESSION DES LIGNES EN TROP DANS CHAQUE TABLE **/
+		int cursor = (Table_positions_cibles.transform.childCount - 2);
+		int end = (Table_positions_cibles.transform.childCount - 1) - ((Table_positions_cibles.transform.childCount - 1) - GameController.Jeu.Config.Positions_Cibles.Count);
+		while (cursor > end) {
+			removeRowFromTable (ref Table_positions_cibles, new List<PositionCible> (), cursor, onValueChangeTablePositionCible, removeRowTablePositionCible);
+			cursor--;
 		}
 
-		for(int i=2; i<Table_tailles_cibles.transform.childCount - 1; i++){
-			removeRowFromTable (ref Table_tailles_cibles, new List<float>(), i, onValueChangeTablePositionCible, removeRowTablePositionCible);
+		cursor = (Table_tailles_cibles.transform.childCount - 2);
+		end = (Table_tailles_cibles.transform.childCount - 1) - ((Table_tailles_cibles.transform.childCount - 1) - GameController.Jeu.Config.Tailles_Cibles.Count);
+		while (cursor > end) {
+			removeRowFromTable (ref Table_tailles_cibles, new List<float>(), cursor, onValueChangeTableTailleCible, removeRowTableTailleCible);
+			cursor--;
 		}
 
-		for(int i=2; i<Table_tailles_projectiles.transform.childCount - 1; i++){
-			removeRowFromTable (ref Table_tailles_projectiles, new List<Projectile>(), i, onValueChangeTablePositionCible, removeRowTablePositionCible);
+		cursor = (Table_tailles_projectiles.transform.childCount - 2);
+		end = (Table_tailles_projectiles.transform.childCount - 1) - ((Table_tailles_projectiles.transform.childCount - 1) - GameController.Jeu.Config.Projectiles.Count);
+		while (cursor > end) {
+			removeRowFromTable (ref Table_tailles_projectiles, new List<Projectile>(), cursor, onValueChangeTableTailleProjectile, removeRowTableTailleProjectile);
+			cursor--;
 		}
 
+
+		/** AJOUT DES LIGNES MANQUANTES DANS CHAQUE TABLE **/
+		int nbRowsToAdd = GameController.Jeu.Config.Positions_Cibles.Count - (Table_positions_cibles.transform.childCount - 2);
+		for (int i=0; i<nbRowsToAdd; i++) {
+			GameObject newRow = addRow<PositionCible> (ref Table_positions_cibles, new List<PositionCible>(), prefabRowTableCible, onValueChangeTablePositionCible, removeRowTablePositionCible);
+		}
+
+		nbRowsToAdd = GameController.Jeu.Config.Tailles_Cibles.Count - (Table_tailles_cibles.transform.childCount - 2);
+		for (int i=0; i<nbRowsToAdd; i++) {
+			GameObject newRow = addRow<float> (ref Table_tailles_cibles, new List<float>(), prefabRowTableTaillesCible, onValueChangeTableTailleCible, removeRowTableTailleCible);
+		}
+
+		nbRowsToAdd = GameController.Jeu.Config.Projectiles.Count - (Table_tailles_projectiles.transform.childCount - 2);
+		for (int i=0; i<nbRowsToAdd; i++) {
+			GameObject newRow = addRow<Projectile> (ref Table_tailles_projectiles, new List<Projectile>(), prefabRowTableTaillesProjectiles, onValueChangeTableTailleProjectile, removeRowTableTailleProjectile);
+		}
 	}
 
+	/**
+	 * Met à jour les valeurs de toutes les tables à partir de leur modèles
+	 */
 	public void refreshGUITables(){
-		Debug.Log ("CHILDS:" + Table_positions_cibles.transform.childCount);
-		GameObject newRow; //= addRow<PositionCible> (ref Table_positions_cibles, new List<PositionCible>(), prefabRowTableCible, onValueChangeTablePositionCible, removeRowTablePositionCible);
+		initTablesForNewConfig ();
 
 
 		//Affichage des valeurs par défaut du fichier de configuration pour le tableau des positions des cibles
 		for(int i=0; i<GameController.Jeu.Config.Positions_Cibles.Count; i++){
-			if(i < GameController.Jeu.Config.Positions_Cibles.Count){
-				newRow = addRow<PositionCible> (ref Table_positions_cibles, new List<PositionCible>(), prefabRowTableCible, onValueChangeTablePositionCible, removeRowTablePositionCible);
-				newRow.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = (i + 1).ToString();
-			} else {
-				newRow = Table_positions_cibles.transform.GetChild(i).gameObject;
-			}
-
-
-			//newRow.transform.GetChild(2).gameObject.transform.GetChild(0).GetComponent<InputField>().text = GameController.Jeu.Config.Positions_Cibles[i].DistanceY.ToString();
-			//setValueAt(Table_positions_cibles, Table_positions_cibles.transform.childCount - 3 - i+1  , 1, GameController.Jeu.Config.Positions_Cibles[i].DistanceX);
-			//setValueAt(Table_positions_cibles, Table_positions_cibles.transform.childCount - 3 -i+1  , 2, GameController.Jeu.Config.Positions_Cibles[i].DistanceY);
+			setValueAt(Table_positions_cibles, i+1  , 1, GameController.Jeu.Config.Positions_Cibles[i].DistanceX);
+			setValueAt(Table_positions_cibles, i+1  , 2, GameController.Jeu.Config.Positions_Cibles[i].DistanceY);
 		}
 
-		for(int i=0; i<GameController.Jeu.Config.Positions_Cibles.Count; i++){
-			Debug.Log("SETVALUEAT:" + i);
-			Table_positions_cibles.transform.GetChild(i+1).transform.GetChild(1).gameObject.transform.GetChild(0).GetComponent<InputField>().text = GameController.Jeu.Config.Positions_Cibles[i].DistanceX.ToString();
-			Table_positions_cibles.transform.GetChild(i+1).transform.GetChild(2).gameObject.transform.GetChild(0).GetComponent<InputField>().text = GameController.Jeu.Config.Positions_Cibles[i].DistanceY.ToString();
-		}
-
-
-		/*
 		//Affichage des valeurs par défaut du fichier de configuration pour le tableau des tailles des cibles
 		for(int i=0; i<GameController.Jeu.Config.Tailles_Cibles.Count; i++){
-			setValueAt(Table_tailles_cibles, i+1, 1, GameController.Jeu.Config.Tailles_Cibles[i]);
+			setValueAt(Table_tailles_cibles, i+1  , 1, GameController.Jeu.Config.Tailles_Cibles[i]);
 		}
-		
+
 		//Affichage des valeurs par défaut du fichier de configuration pour le tableau des tailles des projectiles
 		for(int i=0; i<GameController.Jeu.Config.Projectiles.Count; i++){
 			setValueAt(Table_tailles_projectiles, i+1, 1, GameController.Jeu.Config.Projectiles[i].Taille);
 			setValueAt(Table_tailles_projectiles, i+1, 2, GameController.Jeu.Config.Projectiles[i].Poids);
 		}
-		*/
+
 	}
 }

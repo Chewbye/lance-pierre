@@ -152,7 +152,6 @@ public class Conf{
 	 */
 	public Conf(string confPath){
 		_Name = Path.GetFileNameWithoutExtension (confPath);
-		this.loadConfig (confPath);
 		_Positions_Cibles = new List<PositionCible> (); //TEMPORAIRE
 		_Tailles_Cibles = new List<float> (); //TEMPORAIRE
 		_Projectiles = new List<Projectile> (); //TEMPORAIRE
@@ -210,56 +209,10 @@ public class Conf{
 	
 	/* Sauvegarde la configuration du jeu actuel dans le fichier path */
 	public void saveConfig(string path){
-		/*
-		ConfContainer confContainer = new ConfContainer ();
-		Type type = this.GetType();
-		PropertyInfo[] properties = type.GetProperties();
-
-		confContainer.ConfEntries = new ConfEntry[properties.Length];
-		int i = 0;
-		foreach (PropertyInfo property in properties){
-			if(property.GetValue(this,null) is IList && property.GetValue(this,null).GetType().IsGenericType){
-				var listType = property.PropertyType.GetGenericArguments()[0];
-				var confType = typeof(ConfEntryList<>).MakeGenericType(listType);
-				var item = Activator.CreateInstance(confType,
-				                                    new object [] {property.Name, property.GetValue(this, null)});
-				confContainer.ConfEntries [i] =  (ConfEntry)item;
-			} else{
-				confContainer.ConfEntries [i] = new ConfEntry (property.Name, Convert.ToString(property.GetValue(this, null)));
-			}
-			i++;
-		}
-		confContainer.Save (path);
-		*/
 		XmlSerializer xs = new XmlSerializer(typeof(Conf));
 		using (StreamWriter wr = new StreamWriter(path))
 		{
 			xs.Serialize(wr, this);
-		}
-	}
-	
-	/* Charge la configuration du fichier vers le jeu actuel */
-	public void loadConfig(string path){
-		ConfContainer confContainer = ConfContainer.Load (path);
-		
-		Type type = this.GetType();
-		PropertyInfo pi; 
-		foreach (ConfEntry confEntry in confContainer.ConfEntries){
-
-			pi = type.GetProperty(confEntry.Attribut);
-			int resInt;
-			bool resBool;
-			float resFloat;
-
-			if (int.TryParse (confEntry.Valeur, out resInt)) {
-				pi.SetValue(this, resInt, null);
-			} else if (float.TryParse (confEntry.Valeur, out resFloat)) {
-				pi.SetValue(this, resFloat, null); 
-			} else if(bool.TryParse (confEntry.Valeur, out resBool)){
-				pi.SetValue(this, resBool, null);
-			} else{
-				//pi.SetValue(this, confEntry.Valeur, null);
-			}
 		}
 	}
 

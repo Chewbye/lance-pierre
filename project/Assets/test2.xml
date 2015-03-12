@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Name>test</Name>
+  <Name>test2</Name>
   <Gravite>9.81</Gravite>
   <Rigidite_lancepierre>1</Rigidite_lancepierre>
-  <Nb_lancers>8</Nb_lancers>
+  <Nb_lancers>18</Nb_lancers>
   <Afficher_le_score>true</Afficher_le_score>
   <Nb_points_gagnes_par_cible>1</Nb_points_gagnes_par_cible>
   <Delai_lancer_projectile>1</Delai_lancer_projectile>
@@ -14,12 +14,17 @@
       <DistanceY>0</DistanceY>
     </PositionCible>
     <PositionCible>
+      <DistanceX>1</DistanceX>
+      <DistanceY>1</DistanceY>
+    </PositionCible>
+    <PositionCible>
       <DistanceX>2</DistanceX>
       <DistanceY>4</DistanceY>
     </PositionCible>
   </Positions_Cibles>
   <Tailles_Cibles>
     <float>0</float>
+    <float>1</float>
     <float>2</float>
   </Tailles_Cibles>
   <Projectiles>

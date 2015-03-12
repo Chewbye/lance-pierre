@@ -220,8 +220,8 @@ public class UIManagerScript : MonoBehaviour {
 		refreshGUIFields ();
 
 		//Mise à jour des tableaux
-		menuTableManager.resetTables ();
-		//menuTableManager.refreshGUITables();
+		//menuTableManager.initTablesForNewConfig ();
+		menuTableManager.refreshGUITables();
 	}
 
 	public void CallbackConfExistsDialog(DialogResult result){
