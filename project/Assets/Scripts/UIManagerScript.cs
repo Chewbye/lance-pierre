@@ -159,7 +159,7 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	public void onValueChangeAfficher_le_score(){
-		GameController.Jeu.Config.Afficher_le_score = T_Afficher_le_score.enabled;
+		GameController.Jeu.Config.Afficher_le_score = T_Afficher_le_score.isOn;
 	}
 
 	public void onValueChangeNb_points_gagnes_par_cible(){
