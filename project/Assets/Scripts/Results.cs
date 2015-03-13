@@ -67,8 +67,12 @@ public class Results : MonoBehaviour {
 */		gravite.text = Convert.ToString(GameController.Jeu.Config.Gravite);
 		rigidite_lancepierre.text = Convert.ToString(GameController.Jeu.Config.Rigidite_lancepierre);
 		nb_lancers.text = Convert.ToString(GameController.Jeu.Config.Nb_lancers);
-		//		taille_projectile.text = Convert.ToString(GameController.Jeu.Config.Taille_projectile);
-		afficher_le_score.enabled = GameController.Jeu.Config.Afficher_le_score;
+		nb_series.text = Convert.ToString(GameController.Jeu.Config.NB_series);
+		nb_positions.text = Convert.ToString(GameController.Jeu.Config.Positions_Cibles.Count);
+		nb_tailles_cibles.text = Convert.ToString(GameController.Jeu.Config.Tailles_Cibles.Count);
+		nb_tailles_projectiles.text = Convert.ToString(GameController.Jeu.Config.Projectiles.Count);
+		//taille_projectile.text = Convert.ToString(GameController.Jeu.Config.Taille_projectile);
+		afficher_le_score.isOn = GameController.Jeu.Config.Afficher_le_score;
 		nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
 		delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
