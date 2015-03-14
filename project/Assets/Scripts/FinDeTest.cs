@@ -10,6 +10,7 @@ public class FinDeTest : MonoBehaviour {
 
 	//Enlever ce qui ne sert à rien pour l'XML !
 	//Configuration
+	private string nom_configuration;
 	private string gravite;
 	private string rigidite_lancepierre;
 	private string nb_lancers;
@@ -21,19 +22,6 @@ public class FinDeTest : MonoBehaviour {
 	private string nb_points_gagnes_par_cible;
 	private string delai_lancer_projectile;
 	private string delai_evaluation_cible;
-	
-	//Récapitulatif
-	private string score_final;
-	private string nombre_cibles_touchees;
-	private string nombre_cibles_manquees;
-	/*private string nombre_evaluations_moins_1cm;
-	private string nombre_evaluations_environ_2cm;
-	private string nombre_evaluations_environ_3cm;
-	private string nombre_evaluations_environ_4cm;
-	private string nombre_evaluations_environ_5cm;
-	private string nombre_evaluations_sup_5cm_inf_10cm;
-	private string nombre_evaluations_sup_10cm;
-	private string temps_evaluation_cible;*/
 
 	string fichierCourant;
 
@@ -62,6 +50,7 @@ public class FinDeTest : MonoBehaviour {
 	 */
 	public void setFields(){
 		//Assignation des valeurs définies dans le fichier de config choisi initialement;
+		nom_configuration = Convert.ToString (GameController.Jeu.Config.Name);
 		afficher_le_score = false;
 		gravite = Convert.ToString(GameController.Jeu.Config.Gravite);
 		rigidite_lancepierre = Convert.ToString(GameController.Jeu.Config.Rigidite_lancepierre);
@@ -75,18 +64,6 @@ public class FinDeTest : MonoBehaviour {
 		delai_lancer_projectile = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		delai_evaluation_cible = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
 		
-		//Assignation des valeurs par traitement des résultats obtenus durant la partie
-		score_final = Convert.ToString(GameController.Jeu.Score); 
-		//Ici on comptera le nombre de valeurs correspondantes
-		/*nombre_evaluations_moins_1cm = "2"; //- 1cm
-		nombre_evaluations_environ_2cm = "5"; //entre 1 et 2,4cm
-		nombre_evaluations_environ_3cm = "10"; //entre 2,5 et 3,4cm
-		nombre_evaluations_environ_4cm = "3"; //entre 3,5 et 4,4cm
-		nombre_evaluations_environ_5cm = "0"; //entre 4,5 et 4,9cm
-		nombre_evaluations_sup_5cm_inf_10cm = "0"; //entre 5 et 9,9cm
-		nombre_evaluations_sup_10cm = "0"; //+ 10cm
-		temps_evaluation_cible = "2"; //Ici on fera une moyenne des temps*/
-		
 		writeXML ();
 	}
 	
@@ -96,6 +73,16 @@ public class FinDeTest : MonoBehaviour {
 		//Ici on aura le numéro de la session
 		nomFichier = "Session_" + "1" + ".xml";
 		fichierCourant = nomFichier;
+		int nb_lancers_int = Convert.ToInt32(nb_lancers);
+		int nbReussi = 0;
+		int nbManque = 0;
+
+		for (int i = 0; i < GameController.Jeu.Reussiste_Tirs.Count; i++) {
+			if (GameController.Jeu.Reussiste_Tirs[i] == true) 
+				nbReussi++;
+			else 
+				nbManque++;
+		}
 		
 		if (!File.Exists (nomFichier)) {
 			FileStream fs = File.Open (nomFichier, FileMode.Create);
@@ -124,53 +111,13 @@ public class FinDeTest : MonoBehaviour {
 			
 			text += "<Worksheet ss:Name=\"Configuration\">" + 
 				"<Table>" +
-					"<Column ss:Width=\"150\"/><Column ss:Width=\"120\"/>" +
+					"<Column ss:Width=\"155\"/><Column ss:Width=\"120\"/>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Configuration" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"vraiNomDeConfig" + // à changer par le bon nom de config
-					"</Data></Cell>" +
-					"</Row>" +
-					"<Row>" +
-					/*"<Cell><Data ss:Type=\"String\">" +
-					"Taille de la cible" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					taille_cible + 
-					"</Data></Cell>" +*/
-					"</Row>" +
-					"<Row>" +
-					/*"<Cell><Data ss:Type=\"String\">" +
-					"Hauteur de la cible" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					hauteur_cible + 
-					"</Data></Cell>" +*/
-					"</Row>" +
-					"<Row>" +
-					/*"<Cell><Data ss:Type=\"String\">" +
-					"Distance cible/LP" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					distance_cible_lancepierre + 
-					"</Data></Cell>" +*/
-					"</Row>" +
-					"<Row>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Gravite" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					gravite + 
-					"</Data></Cell>" +
-					"</Row>" +
-					"<Row>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Rigidite du LP" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					rigidite_lancepierre + 
+					nom_configuration + 
 					"</Data></Cell>" +
 					"</Row>" +
 					"<Row>" +
@@ -182,25 +129,65 @@ public class FinDeTest : MonoBehaviour {
 					"</Data></Cell>" +
 					"</Row>" +
 					"<Row>" +
-					/*"<Cell><Data ss:Type=\"String\">" +
-					"Taille du projectile" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Nombre de tailles de cibles" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					taille_projectile + 
-					"</Data></Cell>" +*/
+					nb_tailles_cibles + 
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Nombre de tailles de projectiles" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					nb_tailles_projectiles + 
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Nombre de positions de cibles" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					nb_positions + 
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Nombre de series de lancers" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					nb_series + 
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Gravite" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					gravite + 
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Rigidite du Lance-Pierre" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					rigidite_lancepierre + 
+					"</Data></Cell>" +
 					"</Row>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Affichage du score" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">";
-			if (afficher_le_score == true) {
-				text += "Oui";
-			} else {
-				text += "Non";
-			}
-			text = text + "</Data></Cell>" +
-				"</Row>" +
+				if (afficher_le_score == true) {
+					text += "Oui";
+				} else {
+					text += "Non";
+				}
+				text = text + "</Data></Cell>" +
+					"</Row>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Nombre de points par cible" +
@@ -230,13 +217,12 @@ public class FinDeTest : MonoBehaviour {
 			
 			//Ici on aura N-Passations
 			int dernierLancer = -3;
-			int nb_lancers_int = Convert.ToInt32(nb_lancers);
 			int premierLancer = dernierLancer - (nb_lancers_int - 1); 
 			//int premierLancer = dernierLancer - (2 - 1);
 			text += "<Worksheet ss:Name=\"Passation1\">" + 
 				"<Table>" +
 					"<Column ss:Width=\"150\"/><Column ss:Width=\"110\"/><Column ss:Width=\"90\"/><Column ss:Width=\"90\"/>" +
-					"<Column ss:Width=\"90\"/><Column ss:Width=\"75\"/><Column ss:Width=\"120\"/><Column ss:Width=\"130\"/>" +
+					"<Column ss:Width=\"90\"/><Column ss:Width=\"90\"/><Column ss:Width=\"75\"/><Column ss:Width=\"120\"/><Column ss:Width=\"130\"/>" +
 					"<Column ss:Width=\"60\"/><Column ss:Width=\"80\"/><Column ss:Width=\"90\"/><Column ss:Width=\"55\"/>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
@@ -294,7 +280,10 @@ public class FinDeTest : MonoBehaviour {
 					"Taille de la cible" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Position de la cible" +
+					"Position de la cible X" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Position de la cible Y" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Taille du projectile" +
@@ -323,133 +312,115 @@ public class FinDeTest : MonoBehaviour {
 					"<Cell><Data ss:Type=\"String\">" +
 					"Evaluation" +
 					"</Data></Cell>" +
-					"</Row>" +
-					// Faire pour le bon nombre de lancers
-					"<Row>" +
+					"</Row>";
+			for (int i = 0; i < nb_lancers_int; i++) {
+				text += "<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Lancer 1" + 
+					"Lancer " + (i + 1) + 
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre la vraie taille de la cible
+					GameController.Jeu.Config.Tailles_Cibles[i] +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre la vraie position de la cible
+					GameController.Jeu.Config.Positions_Cibles[i].DistanceX +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre la vraie taille du projectile
+					GameController.Jeu.Config.Positions_Cibles[i].DistanceY +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le vrai poids du projectile
+					GameController.Jeu.Config.Projectiles[i].Taille +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon nombre de points
+					GameController.Jeu.Config.Projectiles[i].Poids +
 					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon temps imparti pour lancer 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon temps imparti pour evaluation 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon temps pour lancer 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon temps pour evaluer
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon résultat du lancer
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre la bonne evaluation
-					"</Data></Cell>" +
-					"</Row>" +
-					// Faire pour le bon nombre de lancers
-					"<Row>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Lancer 2" + 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre la vraie taille de la cible
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre la vraie position de la cible
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre la vraie taille du projectile
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le vrai poids du projectile
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon nombre de points
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon temps imparti pour lancer 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon temps imparti pour evaluation 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon temps pour lancer 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon temps pour evaluer
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon résultat du lancer
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre la bonne evaluation
-					"</Data></Cell>" +
-					"</Row>" +
-					"<Row></Row>" +
-					"<Row>" +
-					"<Cell></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"</Row>" +
-					"<Row><Cell></Cell>" +
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell><Data ss:Type=\"Number\">";
+				if (GameController.Jeu.Reussiste_Tirs[i] == true) 
+					text += GameController.Jeu.Config.Nb_points_gagnes_par_cible;
+				else
+					text += "0";
+				text += "</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						GameController.Jeu.Config.Delai_lancer_projectile +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						GameController.Jeu.Config.Delai_evaluation_cible +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						GameController.Jeu.Temps_Mis_Pour_Tirer[i] +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						"1" + // Mettre le bon temps pour evaluer
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">";
+				if (GameController.Jeu.Reussiste_Tirs[i] == true) 
+					text += "Touche";
+				else 
+					text += "Manque";
+				text += "</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						"1" + // Mettre la bonne evaluation
+						"</Data></Cell>" +
+						"</Row>";
+			}
+			text += "<Row></Row>" +
+				"<Row>" +
+				"<Cell></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Moyenne" +
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row><Cell></Cell>" +
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+				"<Cell><Data ss:Type=\"Number\">";
+				if (nbManque == 0) {
+					text += nbReussi;
+				}
+				else {
+					text += (nbReussi/nbManque);
+				}
+			text += "</Data></Cell>" +
 					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 					"</Row>" +
 					"</Table>" +
@@ -497,7 +468,7 @@ public class FinDeTest : MonoBehaviour {
 			textToWrite += "\">" + 
 				"<Table>" +
 					"<Column ss:Width=\"150\"/><Column ss:Width=\"110\"/><Column ss:Width=\"90\"/><Column ss:Width=\"90\"/>" +
-					"<Column ss:Width=\"90\"/><Column ss:Width=\"75\"/><Column ss:Width=\"120\"/><Column ss:Width=\"130\"/>" +
+					"<Column ss:Width=\"90\"/><Column ss:Width=\"90\"/><Column ss:Width=\"75\"/><Column ss:Width=\"120\"/><Column ss:Width=\"130\"/>" +
 					"<Column ss:Width=\"60\"/><Column ss:Width=\"80\"/><Column ss:Width=\"90\"/><Column ss:Width=\"55\"/>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
@@ -555,7 +526,10 @@ public class FinDeTest : MonoBehaviour {
 					"Taille de la cible" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Position de la cible" +
+					"Position de la cible X" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Position de la cible Y" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Taille du projectile" +
@@ -584,137 +558,119 @@ public class FinDeTest : MonoBehaviour {
 					"<Cell><Data ss:Type=\"String\">" +
 					"Evaluation" +
 					"</Data></Cell>" +
-					"</Row>" +
-					// Faire pour le bon nombre de lancers
-					"<Row>" +
+					"</Row>";
+			for (int i = 0; i < nb_lancers_int; i++) {
+				textToWrite += "<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Lancer 1" + 
-					"</Data></Cell>" +
+						"Lancer " + (i + 1) + 
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						GameController.Jeu.Config.Tailles_Cibles[i] +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						GameController.Jeu.Config.Positions_Cibles[i].DistanceX +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						GameController.Jeu.Config.Positions_Cibles[i].DistanceY +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						GameController.Jeu.Config.Projectiles[i].Taille +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						GameController.Jeu.Config.Projectiles[i].Poids +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">";
+				if (GameController.Jeu.Reussiste_Tirs[i] == true) 
+					textToWrite += GameController.Jeu.Config.Nb_points_gagnes_par_cible;
+				else
+					textToWrite += "0";
+				textToWrite += "</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre la vraie taille de la cible
-					"</Data></Cell>" +
+						GameController.Jeu.Config.Delai_lancer_projectile +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						GameController.Jeu.Config.Delai_evaluation_cible +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						GameController.Jeu.Temps_Mis_Pour_Tirer[i] +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"Number\">" +
+						"1" + // Mettre le bon temps pour evaluer
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">";
+				if (GameController.Jeu.Reussiste_Tirs[i] == true) 
+					textToWrite += "Touche";
+				else 
+					textToWrite += "Manque";
+				textToWrite += "</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre la vraie position de la cible
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre la vraie taille du projectile
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le vrai poids du projectile
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon nombre de points
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon temps imparti pour lancer 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon temps imparti pour evaluation 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon temps pour lancer 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon temps pour evaluer
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon résultat du lancer
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre la bonne evaluation
-					"</Data></Cell>" +
-					"</Row>" +
-					// Faire pour le bon nombre de lancers
-					"<Row>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Lancer 2" + 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre la vraie taille de la cible
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre la vraie position de la cible
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre la vraie taille du projectile
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le vrai poids du projectile
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon nombre de points
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon temps imparti pour lancer 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon temps imparti pour evaluation 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon temps pour lancer 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon temps pour evaluer
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre le bon résultat du lancer
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"3" + // Mettre la bonne evaluation
-					"</Data></Cell>" +
-					"</Row>" +
-					"<Row></Row>" +
-					"<Row>" +
-					"<Cell></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">" +
-					"Moyenne" +
-					"</Data></Cell>" +
-					"</Row>" +
-					"<Row><Cell></Cell>" +
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-					"</Row>" +
-					"</Table>" +
-					"</Worksheet>";
+						"1" + // Mettre la bonne evaluation
+						"</Data></Cell>" +
+						"</Row>";
+			}
+					textToWrite += "<Row></Row>" +
+						"<Row>" +
+						"<Cell></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"<Cell><Data ss:Type=\"String\">" +
+						"Moyenne" +
+						"</Data></Cell>" +
+						"</Row>" +
+						"<Row><Cell></Cell>" +
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+						"<Cell><Data ss:Type=\"Number\">";
+						if (nbManque == 0) {
+							textToWrite += nbReussi;
+						}
+						else {
+							textToWrite += (nbReussi/nbManque);
+						}
+							textToWrite += "</Data></Cell>" +
+								"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+								"</Row>" +
+								"</Table>" +
+								"</Worksheet>";
 			
 			textToWrite += lines[(lines.Length - 2)] + lines[(lines.Length - 1)];
 			
