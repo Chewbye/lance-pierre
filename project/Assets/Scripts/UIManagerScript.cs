@@ -130,7 +130,7 @@ public class UIManagerScript : MonoBehaviour {
 		IF_Gravite.text = Convert.ToString(GameController.Jeu.Config.Gravite);
 		IF_Rigidite_lancepierre.text = Convert.ToString(GameController.Jeu.Config.Rigidite_lancepierre);
 		IF_Nb_lancers.text = Convert.ToString(GameController.Jeu.Config.Nb_lancers);
-		T_Afficher_le_score.enabled = GameController.Jeu.Config.Afficher_le_score;
+		T_Afficher_le_score.isOn = GameController.Jeu.Config.Afficher_le_score;
 		IF_Nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
 		IF_Delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		IF_Delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
