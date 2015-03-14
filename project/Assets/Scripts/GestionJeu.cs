@@ -6,7 +6,6 @@ public class GestionJeu : MonoBehaviour
 {
 	public GameObject cible;
 	public GameObject catapulte;
-	//public float maxStretch = 3.0f;
 	public LineRenderer catapultLineFront;
 	public LineRenderer catapultLineBack;  
 	
@@ -20,7 +19,8 @@ public class GestionJeu : MonoBehaviour
 	private bool clickedOn;
 	private Vector2 prevVelocity;
 	
-	void Awake () {
+	void Awake () 
+	{
 		spring = GetComponent <SpringJoint2D> ();
 		catapult = spring.connectedBody.transform;
 	}
@@ -103,11 +103,13 @@ public class GestionJeu : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
 		if (clickedOn)
 			Dragging ();
 		
-		if (spring != null) {
+		if (spring != null) 
+		{
 			if (!rigidbody2D.isKinematic && prevVelocity.sqrMagnitude > rigidbody2D.velocity.sqrMagnitude) {
 				Destroy (spring);
 				rigidbody2D.velocity = prevVelocity;
@@ -118,13 +120,16 @@ public class GestionJeu : MonoBehaviour
 			
 			LineRendererUpdate ();
 			
-		} else {
+		} 
+		else 
+		{
 			catapultLineFront.enabled = false;
 			catapultLineBack.enabled = false;
 		}
 	}
 	
-	void LineRendererSetup () {
+	void LineRendererSetup () 
+	{
 		catapultLineFront.SetPosition(0, catapultLineFront.transform.position);
 		catapultLineBack.SetPosition(0, catapultLineBack.transform.position);
 		
@@ -135,22 +140,29 @@ public class GestionJeu : MonoBehaviour
 		catapultLineBack.sortingOrder = 1;
 	}
 	
-	void OnMouseDown () {
+	void OnMouseDown () 
+	{
 		spring.enabled = false;
 		clickedOn = true;
 	}
 	
-	void OnMouseUp () {
+	void OnMouseUp () 
+	{
 		spring.enabled = true;
 		rigidbody2D.isKinematic = false;
 		clickedOn = false;
+
+		// On indique le temps mis par le joueur pour tirer
+		GameController.Jeu.Temps_Mis_Pour_Tirer.Add(GameController.Jeu.Config.Delai_lancer_projectile - GameController.Jeu.Temps_Restant_Courant);
 	}
 	
-	void Dragging () {
+	void Dragging () 
+	{
 		Vector3 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		Vector2 catapultToMouse = mouseWorldPoint - catapult.position;
 		
-		if (catapultToMouse.sqrMagnitude > maxStretchSqr) {
+		if (catapultToMouse.sqrMagnitude > maxStretchSqr) 
+		{
 			rayToMouse.direction = catapultToMouse;
 			mouseWorldPoint = rayToMouse.GetPoint(rigidite);
 		}
@@ -159,7 +171,8 @@ public class GestionJeu : MonoBehaviour
 		transform.position = mouseWorldPoint;
 	}
 	
-	void LineRendererUpdate () {
+	void LineRendererUpdate () 
+	{
 		Vector2 catapultToProjectile = transform.position - catapultLineFront.transform.position;
 		leftCatapultToProjectile.direction = catapultToProjectile;
 		Vector3 holdPoint = leftCatapultToProjectile.GetPoint(catapultToProjectile.magnitude + circleRadius);

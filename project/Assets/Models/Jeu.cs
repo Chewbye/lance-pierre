@@ -91,6 +91,28 @@ public class Jeu{
 		}
 	}
 
+	// Indique le temps restant pour le tir courant
+	private float _Temps_Restant_Courant;
+	public float Temps_Restant_Courant {
+		get {
+			return _Temps_Restant_Courant;
+		}
+		set {
+			_Temps_Restant_Courant = value;
+		}
+	}
+
+	// Liste contenant le temps mis par le joueur à tirer pour chacun des tirs
+	private List<float> _Temps_Mis_Pour_Tirer;
+	public List<float> Temps_Mis_Pour_Tirer {
+		get {
+			return _Temps_Mis_Pour_Tirer;
+		}
+		set {
+			_Temps_Mis_Pour_Tirer = value;
+		}
+	}
+
 	// Liste contenant l'ensemble des tirs à réaliser 
 	private List<TripletTirs> _Tirs_A_Realiser;
 	public List<TripletTirs> Tirs_A_Realiser {
@@ -125,6 +147,7 @@ public class Jeu{
 		_Reussite_Tirs = new List<bool> ();
 		_Tirs_A_Realiser = new List<TripletTirs> ();
 		_Tirs_Realises = new List<TripletTirs> ();
+		_Temps_Mis_Pour_Tirer = new List<float> ();
 		refreshConfigFiles ();
 	}
 
@@ -140,6 +163,7 @@ public class Jeu{
 		_Reussite_Tirs = new List<bool> ();
 		_Tirs_A_Realiser = new List<TripletTirs> ();
 		_Tirs_Realises = new List<TripletTirs> ();
+		_Temps_Mis_Pour_Tirer = new List<float> ();
 		refreshConfigFiles ();
 	}
 	
