@@ -60,28 +60,21 @@ public class Results : MonoBehaviour {
 	 * Met à jour les champs du menu principal avec la configuration actuelle du jeu 
 	 */
 	public void setFields(){
-		//Assignation des valeurs définies dans le fichier de config choisi initialement
-		/*		taille_cible.text = Convert.ToString(GameController.Jeu.Config.Taille_cible);
-		hauteur_cible.text = Convert.ToString(GameController.Jeu.Config.Hauteur_cible);
-		distance_cible_lancepierre.text = Convert.ToString(GameController.Jeu.Config.Distance_cible_lancepierre);
-*/		gravite.text = Convert.ToString(GameController.Jeu.Config.Gravite);
+		//Assignation des valeurs définies dans le fichier de config choisi initialement;
+		gravite.text = Convert.ToString(GameController.Jeu.Config.Gravite);
 		rigidite_lancepierre.text = Convert.ToString(GameController.Jeu.Config.Rigidite_lancepierre);
 		nb_lancers.text = Convert.ToString(GameController.Jeu.Config.Nb_lancers);
 		nb_series.text = Convert.ToString(GameController.Jeu.Config.NB_series);
 		nb_positions.text = Convert.ToString(GameController.Jeu.Config.Positions_Cibles.Count);
 		nb_tailles_cibles.text = Convert.ToString(GameController.Jeu.Config.Tailles_Cibles.Count);
 		nb_tailles_projectiles.text = Convert.ToString(GameController.Jeu.Config.Projectiles.Count);
-		//taille_projectile.text = Convert.ToString(GameController.Jeu.Config.Taille_projectile);
 		afficher_le_score.isOn = GameController.Jeu.Config.Afficher_le_score;
 		nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
 		delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
 		
 		//Assignation des valeurs par traitement des résultats obtenus durant la partie
-		//A remplacer par les résultats stockés par Pierre
-		score_final.text = Convert.ToString(GameController.Jeu.Score); // MODIFIE PAR CABRON
-		//nombre_cibles_touchees.text = Convert.ToString(GameController.Jeu.Nb_cible_touchees); SUPPRIME PAR CABRON
-		//nombre_cibles_manquees.text = Convert.ToString(GameController.Jeu.Nb_cible_manquees); SUPPRIME PAR CABRON
+		score_final.text = Convert.ToString(GameController.Jeu.Score); 
 		//Ici on comptera le nombre de valeurs correspondantes
 		/*nombre_evaluations_moins_1cm.text = "2"; //- 1cm
 		nombre_evaluations_environ_2cm.text = "5"; //entre 1 et 2,4cm
@@ -91,206 +84,8 @@ public class Results : MonoBehaviour {
 		nombre_evaluations_sup_5cm_inf_10cm.text = "0"; //entre 5 et 9,9cm
 		nombre_evaluations_sup_10cm.text = "0"; //+ 10cm
 		temps_evaluation_cible.text = "2"; //Ici on fera une moyenne des temps*/
-		
-		//writeCSV();
+
 		writeXML ();
-	}
-	
-	public void writeCSV() {
-		string text; 
-		
-		// Version 1
-		/*
-		FileStream fs = File.Open("resultats.csv", FileMode.Append);
-		text = "Configuration;\n"; // Partie configuration
-
-		text = text + "Nom du fichier de configuration;maConfig;\n"; //à remplacer par le bon nom de config
-
-		text = text + "Taille de la cible (cm);";
-		text = text +  taille_cible.text + ";\n";
-
-		text = text + "Hauteur de la cible (cm);";
-		text = text +  hauteur_cible.text + ";\n";
-
-		text = text + "Distance separant la cible du lance-pierre (cm);";
-		text = text +  distance_cible_lancepierre.text + ";\n";
-
-		text = text + "Gravite;";
-		text = text +  gravite.text + ";\n";
-
-		text = text + "Rigidite du lance-pierre;";
-		text = text +  rigidite_lancepierre.text + ";\n";
-
-		text = text + "Nombre de lancers;";
-		text = text +  nb_lancers.text + ";\n";
-
-		text = text + "Taille des projectiles (cm);";
-		text = text +  taille_projectile.text + ";\n";
-
-		text = text + "Afficher le score;";
-
-		if (afficher_le_score.enabled == true) {
-			text = text + "Oui;\n";
-		} else {
-			text = text + "Non;\n";
-		}
-
-		text = text + "Nombre de points gagnes par cible (points);";
-		text = text +  nb_points_gagnes_par_cible.text + ";\n";
-
-		text = text + "Delai avant de pouvoir lancer le projectile (secondes);";
-		text = text +  delai_lancer_projectile.text + ";\n";
-
-		text = text + "Delai avant de pouvoir evaluer la taille de la cible (secondes);";
-		text = text +  delai_evaluation_cible.text + ";\n\n";
-
-		text = text + "Recapitulatif;\n"; // Partie récapitulatif
-
-		text = text + "Score final (points);";
-		text = text +  score_final.text + ";\n";
-
-		text = text + "Nombre de cibles touchees;";
-		text = text +  nombre_cibles_touchees.text + ";\n";
-
-		text = text + "Nombre de cibles manquees;";
-		text = text +  nombre_cibles_manquees.text + ";\n";
-
-		text = text + "Nombre d'evaluations bonnes a moins de 1cm pres;";
-		text = text +  nombre_evaluations_moins_1cm.text + ";\n";
-
-		text = text + "Nombre d'evaluations bonnes a environ 2cm pres;";
-		text = text +  nombre_evaluations_environ_2cm.text + ";\n";
-
-		text = text + "Nombre d'evaluations bonnes a environ 3cm pres;";
-		text = text +  nombre_evaluations_environ_3cm.text + ";\n";
-
-		text = text + "Nombre d'evaluations bonnes a environ 4cm pres;";
-		text = text +  nombre_evaluations_environ_4cm.text + ";\n";
-
-		text = text + "Nombre d'evaluations bonnes a environ 5cm pres;";
-		text = text +  nombre_evaluations_environ_5cm.text + ";\n";
-
-		text = text + "Nombre d'evaluations bonnes a plus de 5cm et moins de 10cm pres;";
-		text = text +  nombre_evaluations_sup_5cm_inf_10cm.text + ";\n";
-
-		text = text + "Nombre d'evaluations bonnes a plus de 10cm pres;";
-		text = text +  nombre_evaluations_sup_10cm.text + ";\n";
-
-		text = text + "Temps moyen pour evaluer la cible;";
-		text = text +  temps_evaluation_cible.text + ";\n";
-
-		//text = text + "Détails des lancers;\n"; // Partie détails des lancers (selon comment Pierre stocke les lancers)
-
-		text = text + "\n\n\n"; 
-		Byte[] info = new UTF8Encoding(true).GetBytes(text);
-		fs.Write(info, 0, text.Length);
-		*/
-		
-		//Version 2
-		string nomFichier; 
-		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
-		string dateRepertoire = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year;
-		String dateFichier = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year + "-" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second;
-		
-		if (!Directory.Exists(dateRepertoire)) {
-			System.IO.Directory.CreateDirectory(dateRepertoire);
-		}
-		nomFichier = "resultats" + dateFichier + ".csv";
-		string cheminNomFichier = dateRepertoire + "/resultats" + dateFichier + ".csv";
-		FileStream fs = File.Open(cheminNomFichier, FileMode.Create);
-		fichierCourant = nomFichier;
-		nomDossier = dateRepertoire;
-		
-		text = "Date;" + date + ";\n\n";
-		
-		text = text + "Configuration;\n\n"; // Partie configuration
-		
-		text = text + "Nom du fichier de configuration;maConfig;\n"; //à remplacer par le bon nom de config
-		
-		/*text = text + "Taille de la cible (cm);";
-		text = text +  taille_cible.text + ";\n";
-		
-		text = text + "Hauteur de la cible (cm);";
-		text = text +  hauteur_cible.text + ";\n";
-		
-		text = text + "Distance separant la cible du lance-pierre (cm);";
-		text = text +  distance_cible_lancepierre.text + ";\n";*/
-		
-		text = text + "Gravite;";
-		text = text +  gravite.text + ";\n";
-		
-		text = text + "Rigidite du lance-pierre;";
-		text = text +  rigidite_lancepierre.text + ";\n";
-		
-		text = text + "Nombre de lancers;";
-		text = text +  nb_lancers.text + ";\n";
-		
-		/*text = text + "Taille des projectiles (cm);";
-		text = text +  taille_projectile.text + ";\n";*/
-		
-		text = text + "Afficher le score;";
-		
-		if (afficher_le_score.enabled == true) {
-			text = text + "Oui;\n";
-		} else {
-			text = text + "Non;\n";
-		}
-		
-		text = text + "Nombre de points gagnes par cible (points);";
-		text = text +  nb_points_gagnes_par_cible.text + ";\n";
-		
-		text = text + "Delai avant de pouvoir lancer le projectile (secondes);";
-		text = text +  delai_lancer_projectile.text + ";\n";
-		
-		text = text + "Delai avant de pouvoir evaluer la taille de la cible (secondes);";
-		text = text +  delai_evaluation_cible.text + ";\n\n";
-		
-		text = text + "Recapitulatif;\n\n"; // Partie récapitulatif
-		
-		text = text + "Score final (points);";
-		text = text +  score_final.text + ";\n";
-		
-		text = text + "Nombre de cibles touchees;";
-		text = text +  nombre_cibles_touchees.text + ";\n";
-		
-		text = text + "Nombre de cibles manquees;";
-		text = text +  nombre_cibles_manquees.text + ";\n\n";
-		
-		text = text + "Details des lancers;\n\n";
-		
-		int count = 0;
-		/*foreach (bool tir in GameController.Jeu._Un_tir) { //MODIFIE PAR PIERRE CAR TABLEAU SUPPRIME
-			count++;
-			text = text + "Tir numero " + count + ";";
-			if (tir == true) 
-				text = text + "Touche !;\n";
-			else 
-				text = text + "Manque !;\n";
-		}*/
-		Byte[] info = new UTF8Encoding(true).GetBytes(text);
-		fs.Write(info, 0, text.Length);
-		
-		fs.Close();
-	}
-	
-	public void onClickOpenOneCSV() {
-		Directory.SetCurrentDirectory(nomDossier);
-		
-		Process.Start (fichierCourant);
-		
-		Directory.SetCurrentDirectory("..");
-	}
-	
-	public void onClickOpenDayCSVs() {
-		Directory.SetCurrentDirectory(nomDossier);
-		
-		String[] fichiers = Directory.GetFiles (".");
-		
-		foreach (String fichier in fichiers) {
-			Process.Start (fichier);
-		}
-		
-		Directory.SetCurrentDirectory("..");
 	}
 	
 	public void writeXML() {
@@ -313,7 +108,6 @@ public class Results : MonoBehaviour {
 					"xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\" " +
 					"xmlns:html=\"http://www.w3.org/TR/REC-html40\">" +
 					"<ExcelWorkbook xmlns=\"urn:schemas-microsoft-com:office:excel\">" +
-					//"<ActiveSheet>3</ActiveSheet>" +
 					"</ExcelWorkbook>" +
 					"<Styles>" +
 					"<Style ss:ID=\"Default\" ss:Name=\"Normal\">" +
@@ -338,26 +132,26 @@ public class Results : MonoBehaviour {
 					"</Data></Cell>" +
 					"</Row>" +
 					"<Row>" +
-					"<Cell><Data ss:Type=\"String\">" +
+					/*"<Cell><Data ss:Type=\"String\">" +
 					"Taille de la cible" +
 					"</Data></Cell>" +
-					/*"<Cell><Data ss:Type=\"Number\">" +
+					"<Cell><Data ss:Type=\"Number\">" +
 					taille_cible.text + 
 					"</Data></Cell>" +*/
 					"</Row>" +
 					"<Row>" +
-					"<Cell><Data ss:Type=\"String\">" +
+					/*"<Cell><Data ss:Type=\"String\">" +
 					"Hauteur de la cible" +
 					"</Data></Cell>" +
-					/*"<Cell><Data ss:Type=\"Number\">" +
+					"<Cell><Data ss:Type=\"Number\">" +
 					hauteur_cible.text + 
 					"</Data></Cell>" +*/
 					"</Row>" +
 					"<Row>" +
-					"<Cell><Data ss:Type=\"String\">" +
+					/*"<Cell><Data ss:Type=\"String\">" +
 					"Distance cible/LP" +
 					"</Data></Cell>" +
-					/*"<Cell><Data ss:Type=\"Number\">" +
+					"<Cell><Data ss:Type=\"Number\">" +
 					distance_cible_lancepierre.text + 
 					"</Data></Cell>" +*/
 					"</Row>" +
@@ -386,10 +180,10 @@ public class Results : MonoBehaviour {
 					"</Data></Cell>" +
 					"</Row>" +
 					"<Row>" +
-					"<Cell><Data ss:Type=\"String\">" +
+					/*"<Cell><Data ss:Type=\"String\">" +
 					"Taille du projectile" +
 					"</Data></Cell>" +
-					/*"<Cell><Data ss:Type=\"Number\">" +
+					"<Cell><Data ss:Type=\"Number\">" +
 					taille_projectile.text + 
 					"</Data></Cell>" +*/
 					"</Row>" +
@@ -432,11 +226,12 @@ public class Results : MonoBehaviour {
 					"</Table>" +
 					"</Worksheet>";
 			
-			//Ici on aura N-Participations
+			//Ici on aura N-Passations
 			int dernierLancer = -3;
-			//int premierLancer = dernierLancer - (nb_lancers.text - 1); A Decommenter !!!
-			int premierLancer = dernierLancer - (2 - 1);
-			text += "<Worksheet ss:Name=\"Participant1\">" + 
+			int nb_lancers_int = Convert.ToInt32(nb_lancers.text);
+			int premierLancer = dernierLancer - (nb_lancers_int - 1); 
+			//int premierLancer = dernierLancer - (2 - 1);
+			text += "<Worksheet ss:Name=\"Passation1\">" + 
 				"<Table>" +
 					"<Column ss:Width=\"150\"/><Column ss:Width=\"105\"/><Column ss:Width=\"90\"/><Column ss:Width=\"90\"/>" +
 					"<Column ss:Width=\"90\"/><Column ss:Width=\"75\"/><Column ss:Width=\"120\"/><Column ss:Width=\"130\"/>" +
@@ -478,7 +273,7 @@ public class Results : MonoBehaviour {
 					"Main dominante" + 
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Droite" + // Mettre le vrai sexe du participant
+					"Droite" + // Mettre la vraie main dominante du participant
 					"</Data></Cell>" +
 					"</Row>" +
 					"<Row>" +
@@ -486,7 +281,7 @@ public class Results : MonoBehaviour {
 					"Experience dans les jeux videos" + 
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Oui" + // Mettre le vrai sexe du participant
+					"Oui" + // Mettre la vraie expérience du participant
 					"</Data></Cell>" +
 					"</Row>" +
 					"<Row>" +
@@ -678,7 +473,7 @@ public class Results : MonoBehaviour {
 			
 			contenu = System.IO.File.ReadAllText(nomFichier);
 			
-			int numParticipant = this.getNumParticipant (contenu);
+			int numPassation = this.getNumPassation (contenu);
 			
 			string[] lines = Regex.Split(contenu, "</Worksheet>");
 			
@@ -694,9 +489,9 @@ public class Results : MonoBehaviour {
 			int dernierLancer = -3;
 			//int premierLancer = dernierLancer - (nb_lancers.text - 1); A Decommenter !!!
 			int premierLancer = dernierLancer - (2 - 1);
-			String identiteParticipant = "Participant" + numParticipant;
+			String identitePassation = "Passation" + numPassation;
 			textToWrite += "<Worksheet ss:Name=\"";
-			textToWrite += identiteParticipant;
+			textToWrite += identitePassation;
 			textToWrite += "\">" + 
 				"<Table>" +
 					"<Column ss:Width=\"150\"/><Column ss:Width=\"105\"/><Column ss:Width=\"90\"/><Column ss:Width=\"90\"/>" +
@@ -944,22 +739,22 @@ public class Results : MonoBehaviour {
 		Application.LoadLevel ("mainMenu");
 	}
 	
-	public int getNumParticipant(String contenu) {
-		int nbParticipants = 1;
+	public int getNumPassation(String contenu) {
+		int nbPassations = 1;
 		
 		Boolean exists = true;
-		String basis = "Participant";
+		String basis = "Passation";
 		
 		while (exists) {
-			basis += nbParticipants;
+			basis += nbPassations;
 			if (contenu.Contains(basis)) {
-				nbParticipants++;
-				basis = "Participant";
+				nbPassations++;
+				basis = "Passation";
 			}
 			else
 				exists = false;
 		}
 		
-		return nbParticipants;
+		return nbPassations;
 	}
 }
