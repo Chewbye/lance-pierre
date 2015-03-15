@@ -313,25 +313,28 @@ public class FinDeTest : MonoBehaviour {
 					"Evaluation" +
 					"</Data></Cell>" +
 					"</Row>";
-			for (int i = 0; i < nb_lancers_int; i++) {
+			/*Debug.Log("Nombre de tirs : " + GameController.Jeu.Tirs_Realises.Count);
+			Debug.Log("Nombre de réussite tirs : " + GameController.Jeu.Reussiste_Tirs.Count);
+			Debug.Log("Nombre de temps mis pour tirer : " + GameController.Jeu.Temps_Mis_Pour_Tirer.Count);*/
+			for (int i = 0; i < nb_lancers_int; i++) {//Debug.Log("Tour de boucle " + i);
 				text += "<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Lancer " + (i + 1) + 
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Config.Tailles_Cibles[i] +
+					GameController.Jeu.Tirs_Realises[i].Taille_Cible +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Config.Positions_Cibles[i].DistanceX +
+					GameController.Jeu.Tirs_Realises[i].Position_Cible.DistanceX +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Config.Positions_Cibles[i].DistanceY +
+					GameController.Jeu.Tirs_Realises[i].Position_Cible.DistanceY +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Config.Projectiles[i].Taille +
+					GameController.Jeu.Tirs_Realises[i].Projectile.Taille +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Config.Projectiles[i].Poids +
+					GameController.Jeu.Tirs_Realises[i].Projectile.Poids +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">";
 				if (GameController.Jeu.Reussiste_Tirs[i] == true) 
@@ -565,19 +568,19 @@ public class FinDeTest : MonoBehaviour {
 						"Lancer " + (i + 1) + 
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">" +
-						GameController.Jeu.Config.Tailles_Cibles[i] +
+						GameController.Jeu.Tirs_Realises[i].Taille_Cible +
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">" +
-						GameController.Jeu.Config.Positions_Cibles[i].DistanceX +
+						GameController.Jeu.Tirs_Realises[i].Position_Cible.DistanceX +
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">" +
-						GameController.Jeu.Config.Positions_Cibles[i].DistanceY +
+						GameController.Jeu.Tirs_Realises[i].Position_Cible.DistanceY +
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">" +
-						GameController.Jeu.Config.Projectiles[i].Taille +
+						GameController.Jeu.Tirs_Realises[i].Projectile.Taille +
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">" +
-						GameController.Jeu.Config.Projectiles[i].Poids +
+						GameController.Jeu.Tirs_Realises[i].Projectile.Poids +
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">";
 				if (GameController.Jeu.Reussiste_Tirs[i] == true) 
