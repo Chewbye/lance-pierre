@@ -50,12 +50,18 @@ public class UIManagerScript : MonoBehaviour {
 		windowConfName = new Rect((UnityEngine.Screen.width / 2) - 150, (UnityEngine.Screen.height / 2) - 60, 300, 120);
 
 		//Création du modèle Jeu au lancement de l'application
-		GameController.Jeu = new Jeu ();
+		if (GameController.Jeu == null) {
+			GameController.Jeu = new Jeu ();
 
-		//Initialisation des tableaux
-		GameController.Jeu.Config.Positions_Cibles.Add (new PositionCible (1, 1));
-		GameController.Jeu.Config.Tailles_Cibles.Add (1.0f);
-		GameController.Jeu.Config.Projectiles.Add (new Projectile(1,1));
+			//Initialisation des tableaux
+			GameController.Jeu.Config.Positions_Cibles.Add (new PositionCible (1, 1));
+			GameController.Jeu.Config.Tailles_Cibles.Add (1.0f);
+			GameController.Jeu.Config.Projectiles.Add (new Projectile (1, 1));
+		} else{
+			GameController.Jeu.newGame();
+		}
+
+
 
 		refreshGUIFields ();
 
@@ -66,7 +72,9 @@ public class UIManagerScript : MonoBehaviour {
 			newConfigButton.GetComponentsInChildren<Text>()[0].text = conf.Name;
 			string confName = conf.Name;
 			AddListener(newConfigButton, conf.Name);
-		}			
+		}		
+
+		menuTableManager.refreshGUITables();
 	}
 	
 	void Update () {

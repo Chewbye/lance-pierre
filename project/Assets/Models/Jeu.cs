@@ -140,14 +140,7 @@ public class Jeu{
 	 */
 	public Jeu(Conf configuration){
 		_Config = configuration;
-		_Nb_lancers = _Config.Nb_lancers;
-		_Score = 0;
-		_Tir_courant = 0;
-		_Rang_Aleatoire = new System.Random();
-		_Reussite_Tirs = new List<bool> ();
-		_Tirs_A_Realiser = new List<TripletTirs> ();
-		_Tirs_Realises = new List<TripletTirs> ();
-		_Temps_Mis_Pour_Tirer = new List<float> ();
+		newGame ();
 		refreshConfigFiles ();
 	}
 
@@ -156,6 +149,14 @@ public class Jeu{
 	 */
 	public Jeu(){
 		_Config = new Conf ();
+		newGame ();
+		refreshConfigFiles ();
+	}
+
+	/**
+	 * Initialise les variables pour une nouvelle partie
+	 */
+	public void newGame(){
 		_Nb_lancers = _Config.Nb_lancers;
 		_Score = 0;
 		_Tir_courant = 0;
@@ -164,7 +165,6 @@ public class Jeu{
 		_Tirs_A_Realiser = new List<TripletTirs> ();
 		_Tirs_Realises = new List<TripletTirs> ();
 		_Temps_Mis_Pour_Tirer = new List<float> ();
-		refreshConfigFiles ();
 	}
 	
 
