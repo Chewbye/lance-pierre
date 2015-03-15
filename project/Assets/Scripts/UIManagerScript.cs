@@ -192,6 +192,13 @@ public class UIManagerScript : MonoBehaviour {
 	}
 
 	/**
+	 * Méthode appelée lorsqu'on clique sur le bouton "Condition de controle"
+	 */
+	public void onClickConditionControle(){
+		launchGame ("evaluationTailleCible");
+	}
+
+	/**
 	 * Méthode appelée lorsqu'on clique sur le bouton "Pré-test"
 	 */
 	public void onClickPreTest(){
