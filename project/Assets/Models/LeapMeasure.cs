@@ -17,12 +17,12 @@ using Leap;
  */
 
 public class LeapMeasure {
-
+	
 	protected int timer;
 	protected float ancienneDistance;
 	protected float timerMax;
 	protected float borne;
-
+	
 	public float TimerMax {
 		get {
 			return timerMax;
@@ -31,13 +31,13 @@ public class LeapMeasure {
 			timerMax = value;
 		}
 	}
-
+	
 	public float Borne {
 		get {
 			return borne;
 		}
 	}
-
+	
 	public int Timer {
 		get {
 			return this.timer;
@@ -46,8 +46,8 @@ public class LeapMeasure {
 			timer = value;
 		}
 	}
-
-
+	
+	
 	public float AncienneDistance {
 		get {
 			return this.ancienneDistance;
@@ -56,16 +56,15 @@ public class LeapMeasure {
 			ancienneDistance = value;
 		}
 	}
-
+	
 	public LeapMeasure()
 	{
 		timer = 0;
 		ancienneDistance = 0;
-		//timerMax = GameController.Jeu.Config.Delai_evaluation_cible;
-		timerMax = 10;
-		borne = 5; // **** A modifier (Prévoir un parametre qui permet de borner la distance durant le timer)
+		timerMax = GameController.Jeu.Config.Delai_validation_mesure_cible;
+		borne = GameController.Jeu.Config.Marge_stabilisation_validation_cible;
 	}
-
+	
 	/*
 	 * Retourne la liste des indices des doigts "étendus"
 	 */
@@ -73,7 +72,7 @@ public class LeapMeasure {
 	{
 		return (frame.Hands [0].Fingers [0].IsExtended && frame.Hands [0].Fingers [1].IsExtended);
 	}
-
+	
 	/*
 	 * Retourne la distance (en mm) entre deux doigts
 	 */
@@ -94,7 +93,7 @@ public class LeapMeasure {
 		{
 			ancienneDistance = distance;
 			timer++;
-
+			
 			return false;
 		}
 		else
@@ -116,7 +115,7 @@ public class LeapMeasure {
 			else
 			{
 				timer=0;
-
+				
 				return false;
 			}
 		}

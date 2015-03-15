@@ -14,58 +14,58 @@ using System.Collections.Generic;
  */
 
 public class LeapMotion : MonoBehaviour {
-
+	
 	public Controller controller;
 	public LeapMeasure lm;
 	public BarreProgression bp;
+	public int timer;
 	
 	void Start ()
 	{
-		// LeapMeasure étant une classe exterieur à la scene, il faut l'ajouter en tant que composant
 		controller = new Controller();
 		lm = new LeapMeasure(); 
 		bp = new BarreProgression ("BarreVide", "Remplissage", 0, lm.TimerMax);
+		timer = 0;
 	}
 	
 	void Update ()
 	{
-		Frame frame = controller.Frame(); // on récupère les données du leap motion
-
-		if (frame.Hands.Count > 0) // si une main est détectée
-		{
-			bool doigtsValide = lm.fingersMeasure (frame);
-
-			if (doigtsValide) // si on a deux doigts "étendus" 
-			{
-
-				float distance = lm.getDistance (frame); // on récupère la distance 
-
-				// log pour vérifier
-				print("Frame : " + frame.Hands[0].Fingers[0].TipPosition + " - " + frame.Hands [0].Fingers[1].TipPosition + "\n");				
-				print("distance : "+ distance + " mm \n");
-
-				// si le timer atteind le délais de mesure alors la mesure est faite
-				bool done = lm.measureDone (distance);
-
-				if (done)
-				{
-					print("**** distance evalué à : "+ distance + " mm ****\n");
+		if (timer < GameController.Jeu.Config.Delai_evaluation_cible) {
+			
+			Frame frame = controller.Frame (); // on récupère les données du leap motion
+			
+			if (frame.Hands.Count > 0) { // si une main est détectée
+				bool doigtsValide = lm.fingersMeasure (frame);
+				
+				if (doigtsValide) { // si on a deux doigts "étendus"
+					
+					float distance = lm.getDistance (frame); // on récupère la distance 
+					
+					// log pour vérifier
+					print ("Frame : " + frame.Hands [0].Fingers [0].TipPosition + " - " + frame.Hands [0].Fingers [1].TipPosition + "\n");				
+					print ("distance : " + distance + " mm \n");
+					
+					// si le timer atteind le délais de mesure alors la mesure est faite
+					bool done = lm.measureDone (distance);
+					
+					if (done) {
+						print ("**** distance evalué à : " + distance + " mm ****\n");
+						lm.Timer = 0;
+						
+						// **** passage à la scene suivante
+					}
+				} else {
 					lm.Timer = 0;
-
-					// **** passage à la scene suivante
 				}
-			} 
-			else 
-			{
+			} else {
 				lm.Timer = 0;
 			}
-		} 
-		else 
-		{
-			lm.Timer = 0;
+		} else {
+			// **** passage à la scene suivante
 		}
-
-
+		
+		timer++;
+		
 		/* *** A tester en commentant le block du dessus si PB *** 
 		if (lm.Timer == lm.TimerMax) {
 			lm.Timer = 0;
@@ -74,14 +74,14 @@ public class LeapMotion : MonoBehaviour {
 		}
 		*/
 	}
-
+	
 	void OnGUI()
 	{
 		bp.Valeur = lm.Timer;
 		bp.Update (true);
 		bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
 	}
-
+	
 	// permet de quitter "proprement" l'appli sans faire freeze Unity
 	#if UNITY_STANDALONE_WIN
 	[DllImport("mono", SetLastError=true)]
