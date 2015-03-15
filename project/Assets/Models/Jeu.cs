@@ -135,6 +135,17 @@ public class Jeu{
 		}
 	}
 		
+	// Liste contenant l'ensemble des mesures de la taille de la cible
+	private List<float> _Mesures_Taille_Cible;
+	public List<float> Mesures_Taille_Cible {
+		get {
+			return _Mesures_Taille_Cible;
+		}
+		set {
+			_Mesures_Taille_Cible = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Jeu à partir d'un fichier de configuation
 	 */
@@ -165,6 +176,7 @@ public class Jeu{
 		_Tirs_A_Realiser = new List<TripletTirs> ();
 		_Tirs_Realises = new List<TripletTirs> ();
 		_Temps_Mis_Pour_Tirer = new List<float> ();
+		_Mesures_Taille_Cible = new List<float> ();
 	}
 	
 
