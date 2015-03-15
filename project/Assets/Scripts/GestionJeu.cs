@@ -56,16 +56,16 @@ public class GestionJeu : MonoBehaviour
 			Debug.Log("Nombre de combinaisons générées : " + nbCombinaisonsGenerees);
 		}
 		
-		if(GameController.Jeu.Tirs_Realises.Count < GameController.Jeu.Nb_lancers) // Si nous ne sommes pas en fin de partie
+		if(GameController.Jeu.Tirs_A_Realiser.Count > 0) // Si nous ne sommes pas en fin de partie
 		{
 			// CHANGEMENT DE LA RIGIDITE DU LANCE PIERRE
 			rigidite = GameController.Jeu.Config.Rigidite_lancepierre;
-
+			
 			// CHOIX D'UN TIR A REALISER
 			// Choix d'un tir
-			int rang = GameController.Jeu.Rang_Aleatoire.Next(0, GameController.Jeu.Tirs_A_Realiser.Count-1);
+			int rang = GameController.Jeu.Rang_Aleatoire.Next(0, GameController.Jeu.Tirs_A_Realiser.Count);
 			TripletTirs tirAFaire = GameController.Jeu.Tirs_A_Realiser[rang];
-			Debug.Log("Rang = " + rang + ", Tir choisi (DistanceX=" + tirAFaire.Position_Cible.DistanceX + ", DistanceY=" + tirAFaire.Position_Cible.DistanceY
+			Debug.Log("Tir choisi (DistanceX=" + tirAFaire.Position_Cible.DistanceX + ", DistanceY=" + tirAFaire.Position_Cible.DistanceY
 			          + ", TailleCible=" + tirAFaire.Taille_Cible + ", TailleProjectile=" + tirAFaire.Projectile.Taille + ", PoidsProjectile=" + tirAFaire.Projectile.Poids + ")");
 			
 			// Suppression du tir dans la liste des tirs à réaliser
@@ -151,7 +151,7 @@ public class GestionJeu : MonoBehaviour
 		spring.enabled = true;
 		rigidbody2D.isKinematic = false;
 		clickedOn = false;
-
+		
 		// On indique le temps mis par le joueur pour tirer
 		GameController.Jeu.Temps_Mis_Pour_Tirer.Add(GameController.Jeu.Config.Delai_lancer_projectile - GameController.Jeu.Temps_Restant_Courant);
 	}
