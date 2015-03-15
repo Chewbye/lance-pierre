@@ -34,8 +34,6 @@ public class GestionDegats : MonoBehaviour {
 		// On incrémente le tir courant
 		GameController.Jeu.Tir_courant++;
 
-		Debug.Log(GameController.Jeu);
-
 		//On recharge la meme scène
 		Application.LoadLevel (Application.loadedLevel);
 	}

@@ -99,6 +99,10 @@ public class GestionJeu : MonoBehaviour
 			//rigidbody2D.mass = tirAFaire.Projectile.Poids;
 			rigidbody2D.gravityScale = tirAFaire.Projectile.Poids * GameController.Jeu.Config.Gravite;
 		}
+		else
+		{
+			Application.LoadLevel ("finDeTest");
+		}
 		
 	}
 	
