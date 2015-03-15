@@ -17,19 +17,19 @@ public class LeapMotion : MonoBehaviour {
 
 	public Controller controller;
 	public LeapMeasure lm;
+	public BarreProgression bp;
 	
 	void Start ()
 	{
 		// LeapMeasure étant une classe exterieur à la scene, il faut l'ajouter en tant que composant
-		lm = gameObject.AddComponent<LeapMeasure> (); 
 		controller = new Controller();
+		lm = new LeapMeasure(); 
+		bp = new BarreProgression ("BarreVide", "Remplissage", 0, lm.TimerMax);
 	}
 	
 	void Update ()
 	{
 		Frame frame = controller.Frame(); // on récupère les données du leap motion
-
-		//print (lm.Timer+"\n");
 
 		if (frame.Hands.Count > 0) // si une main est détectée
 		{
@@ -65,6 +65,21 @@ public class LeapMotion : MonoBehaviour {
 			lm.Timer = 0;
 		}
 
+
+		/* *** A tester en commentant le block du dessus si PB *** 
+		if (lm.Timer == lm.TimerMax) {
+			lm.Timer = 0;
+		} else {
+			lm.Timer ++;
+		}
+		*/
+	}
+
+	void OnGUI()
+	{
+		bp.Valeur = lm.Timer;
+		bp.Update (true);
+		bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
 	}
 
 	// permet de quitter "proprement" l'appli sans faire freeze Unity

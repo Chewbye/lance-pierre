@@ -16,12 +16,27 @@ using Leap;
  * l'ancienne distance
  */
 
-public class LeapMeasure : MonoBehaviour{
+public class LeapMeasure {
 
 	protected int timer;
 	protected float ancienneDistance;
-	protected static float TIMER_MAX;
-	protected static float BORNE;
+	protected float timerMax;
+	protected float borne;
+
+	public float TimerMax {
+		get {
+			return timerMax;
+		}
+		set {
+			timerMax = value;
+		}
+	}
+
+	public float Borne {
+		get {
+			return borne;
+		}
+	}
 
 	public int Timer {
 		get {
@@ -46,13 +61,9 @@ public class LeapMeasure : MonoBehaviour{
 	{
 		timer = 0;
 		ancienneDistance = 0;
-
-		GameController.Jeu = new Jeu (); // **** à commenter des que le jeu tournera
-
-		GameController.Jeu.Config.Delai_evaluation_cible = 10; // **** à commenter dès que le jeu tournera
-
-		TIMER_MAX = GameController.Jeu.Config.Delai_evaluation_cible;
-		BORNE = 5; // **** A modifier (Prévoir un parametre qui permet de borner la distance durant le timer)
+		//timerMax = GameController.Jeu.Config.Delai_evaluation_cible;
+		timerMax = 10;
+		borne = 5; // **** A modifier (Prévoir un parametre qui permet de borner la distance durant le timer)
 	}
 
 	/*
@@ -64,22 +75,6 @@ public class LeapMeasure : MonoBehaviour{
 	}
 
 	/*
-	public List<int> fingersMeasure(Frame frame)
-	{
-		List<int> l = new List<int>();
-		for (int i=0; i<frame.Hands[0].Fingers.Count; i++)
-		{
-			if (frame.Hands[0].Fingers[i].IsExtended)
-			{
-				l.Add(i);
-			}
-		}
-
-		return l;
-	}
-	*/
-
-	/*
 	 * Retourne la distance (en mm) entre deux doigts
 	 */
 	public float getDistance(Frame frame)
@@ -88,16 +83,7 @@ public class LeapMeasure : MonoBehaviour{
 		
 		return distance;
 	}
-
-	/*
-	public float getDistance(List<int> l,Frame frame)
-	{
-		float distance = frame.Hands [0].Fingers[l[0]].TipPosition.DistanceTo(frame.Hands [0].Fingers[l[1]].TipPosition);
 	
-		return distance;
-	}
-	*/
-
 	/*
 	 * Retourne vrai si la mesure de l'utilisateur est définitive
 	 * Faux sinon et RAZ du timer
@@ -113,12 +99,12 @@ public class LeapMeasure : MonoBehaviour{
 		}
 		else
 		{
-			if (ancienneDistance - BORNE <= distance && distance <= ancienneDistance + BORNE)
+			if (ancienneDistance - borne <= distance && distance <= ancienneDistance + borne)
 			{
 				timer++;
 				ancienneDistance = distance;
 				
-				if (timer == TIMER_MAX)
+				if (timer == timerMax)
 				{
 					return true;
 				}
