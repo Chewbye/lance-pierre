@@ -313,10 +313,10 @@ public class FinDeTest : MonoBehaviour {
 					"Evaluation" +
 					"</Data></Cell>" +
 					"</Row>";
-			/*Debug.Log("Nombre de tirs : " + GameController.Jeu.Tirs_Realises.Count);
+			Debug.Log("Nombre de tirs : " + GameController.Jeu.Tirs_Realises.Count);
 			Debug.Log("Nombre de réussite tirs : " + GameController.Jeu.Reussiste_Tirs.Count);
-			Debug.Log("Nombre de temps mis pour tirer : " + GameController.Jeu.Temps_Mis_Pour_Tirer.Count);*/
-			for (int i = 0; i < nb_lancers_int; i++) {//Debug.Log("Tour de boucle " + i);
+			Debug.Log("Nombre de temps mis pour tirer : " + GameController.Jeu.Temps_Mis_Pour_Tirer.Count);
+			for (int i = 0; i < nb_lancers_int; i++) {Debug.Log("Tour de boucle " + i);
 				text += "<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Lancer " + (i + 1) + 
@@ -465,8 +465,8 @@ public class FinDeTest : MonoBehaviour {
 			
 			//Ici on aura N-Participations
 			int dernierLancer = -3;
-			//int premierLancer = dernierLancer - (nb_lancers.text - 1); A Decommenter !!!
-			int premierLancer = dernierLancer - (2 - 1);
+			int premierLancer = dernierLancer - (nb_lancers_int - 1); 
+			//int premierLancer = dernierLancer - (2 - 1);
 			String identitePassation = "Passation" + numPassation;
 			textToWrite += "<Worksheet ss:Name=\"";
 			textToWrite += identitePassation;
@@ -564,7 +564,10 @@ public class FinDeTest : MonoBehaviour {
 					"Evaluation" +
 					"</Data></Cell>" +
 					"</Row>";
-			for (int i = 0; i < nb_lancers_int; i++) {
+			Debug.Log("Nombre de tirs : " + GameController.Jeu.Tirs_Realises.Count);
+			Debug.Log("Nombre de réussite tirs : " + GameController.Jeu.Reussiste_Tirs.Count);
+			Debug.Log("Nombre de temps mis pour tirer : " + GameController.Jeu.Temps_Mis_Pour_Tirer.Count);
+			for (int i = 0; i < nb_lancers_int; i++) {Debug.Log("Tour de boucle " + i);
 				textToWrite += "<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 						"Lancer " + (i + 1) + 
@@ -669,7 +672,9 @@ public class FinDeTest : MonoBehaviour {
 							textToWrite += nbReussi;
 						}
 						else {
-							textToWrite += (nbReussi/nbManque);
+							double nR = Convert.ToDouble(nbReussi);
+							double nM = Convert.ToDouble(nbManque);
+							textToWrite += Convert.ToDouble(nR/nM);
 						}
 							textToWrite += "</Data></Cell>" +
 								"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
