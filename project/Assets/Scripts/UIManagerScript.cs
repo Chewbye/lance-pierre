@@ -33,6 +33,7 @@ public class UIManagerScript : MonoBehaviour {
 	/* Onglet Evaluation */
 	public InputField IF_Delai_evaluation_cible;
 	public InputField IF_Delai_validation_mesure_cible;
+	public InputField IF_Marge_stabilisation_validation_cible;
 
 	/* Liste des fichiers de configuration */
 	public GameObject Configs_List_Panel;
@@ -137,6 +138,7 @@ public class UIManagerScript : MonoBehaviour {
 		IF_Delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		IF_Delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
 		IF_Delai_validation_mesure_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_validation_mesure_cible);
+		IF_Marge_stabilisation_validation_cible.text = Convert.ToString(GameController.Jeu.Config.Marge_stabilisation_validation_cible);
 		IF_Nb_series.text = Convert.ToString (GameController.Jeu.Config.NB_series);
 	}
 
@@ -198,6 +200,13 @@ public class UIManagerScript : MonoBehaviour {
 		float res;
 		if (float.TryParse (IF_Delai_validation_mesure_cible.text, out res)) {
 			GameController.Jeu.Config.Delai_validation_mesure_cible = res;
+		}
+	}
+
+	public void onValueChangeMarge_stabilisation_validation_cible(){
+		float res;
+		if (float.TryParse (IF_Marge_stabilisation_validation_cible.text, out res)) {
+			GameController.Jeu.Config.Marge_stabilisation_validation_cible = res;
 		}
 	}
 
