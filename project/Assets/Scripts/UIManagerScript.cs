@@ -24,13 +24,15 @@ public class UIManagerScript : MonoBehaviour {
 	
 	/* Onglet Cibles */
 	public InputField IF_Nb_points_gagnes_par_cible;
-	public InputField IF_Delai_evaluation_cible;
 
 
 	/* Onglet Lance-pierre */
 	public InputField IF_Rigidite_lancepierre;
 	public InputField IF_Delai_lancer_projectile;
 
+	/* Onglet Evaluation */
+	public InputField IF_Delai_evaluation_cible;
+	public InputField IF_Delai_validation_mesure_cible;
 
 	/* Liste des fichiers de configuration */
 	public GameObject Configs_List_Panel;
@@ -134,6 +136,7 @@ public class UIManagerScript : MonoBehaviour {
 		IF_Nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
 		IF_Delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		IF_Delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
+		IF_Delai_validation_mesure_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_validation_mesure_cible);
 		IF_Nb_series.text = Convert.ToString (GameController.Jeu.Config.NB_series);
 	}
 
@@ -188,6 +191,13 @@ public class UIManagerScript : MonoBehaviour {
 		float res;
 		if (float.TryParse (IF_Delai_evaluation_cible.text, out res)) {
 			GameController.Jeu.Config.Delai_evaluation_cible = res;
+		}
+	}
+
+	public void onValueChangeDelai_validation_mesure_cible(){
+		float res;
+		if (float.TryParse (IF_Delai_validation_mesure_cible.text, out res)) {
+			GameController.Jeu.Config.Delai_validation_mesure_cible = res;
 		}
 	}
 

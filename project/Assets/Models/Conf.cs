@@ -95,6 +95,17 @@ public class Conf{
 		}
 	}
 
+	private float _Delai_validation_mesure_cible;
+	
+	public float Delai_validation_mesure_cible {
+		get {
+			return _Delai_validation_mesure_cible;
+		}
+		set {
+			_Delai_validation_mesure_cible = value;
+		}
+	}
+
 	private List<PositionCible> _Positions_Cibles;
 	public List<PositionCible> Positions_Cibles {
 		get {
@@ -169,6 +180,7 @@ public class Conf{
 		_Nb_points_gagnes_par_cible = 1;
 		_Delai_lancer_projectile = 20;
 		_Delai_evaluation_cible = 1.0f;
+		_Delai_validation_mesure_cible = 1.0f;
 		_Positions_Cibles = new List<PositionCible> ();
 		_Tailles_Cibles = new List<float> ();
 		_Projectiles = new List<Projectile> ();
@@ -186,6 +198,7 @@ public class Conf{
 		res += "_Nb_points_gagnes_par_cible: " + _Nb_points_gagnes_par_cible + System.Environment.NewLine;
 		res += "_Delai_lancer_projectile: " + _Delai_lancer_projectile + System.Environment.NewLine;
 		res += "_Delai_evaluation_cible: " + _Delai_evaluation_cible + System.Environment.NewLine;
+		res += "_Delai_validation_mesure_cible: " + _Delai_validation_mesure_cible + System.Environment.NewLine;
 		res += "_Ratio_echelle: " + _Ratio_echelle + System.Environment.NewLine;
 		res += "_NB_series: " + _NB_series + System.Environment.NewLine;
 
