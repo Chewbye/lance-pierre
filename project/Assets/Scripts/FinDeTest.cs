@@ -406,25 +406,27 @@ public class FinDeTest : MonoBehaviour {
 				"</Data></Cell>" +
 				"</Row>" +
 				"<Row><Cell></Cell>" +
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
 				"<Cell><Data ss:Type=\"Number\">";
 				if (nbManque == 0) {
 					text += nbReussi;
 				}
 				else {
-					text += (nbReussi/nbManque);
+					double nR = Convert.ToDouble(nbReussi);
+					double nM = Convert.ToDouble(nbManque);
+					text += Convert.ToDouble(nR/nM);
 				}
 			text += "</Data></Cell>" +
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 					"</Row>" +
 					"</Table>" +
 					"</Worksheet>";
@@ -652,16 +654,16 @@ public class FinDeTest : MonoBehaviour {
 						"</Data></Cell>" +
 						"</Row>" +
 						"<Row><Cell></Cell>" +
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
 						"<Cell><Data ss:Type=\"Number\">";
 						if (nbManque == 0) {
 							textToWrite += nbReussi;
@@ -670,7 +672,7 @@ public class FinDeTest : MonoBehaviour {
 							textToWrite += (nbReussi/nbManque);
 						}
 							textToWrite += "</Data></Cell>" +
-								"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C,R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+								"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 								"</Row>" +
 								"</Table>" +
 								"</Worksheet>";

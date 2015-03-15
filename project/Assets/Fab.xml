@@ -7,7 +7,8 @@
   <Afficher_le_score>true</Afficher_le_score>
   <Nb_points_gagnes_par_cible>2</Nb_points_gagnes_par_cible>
   <Delai_lancer_projectile>60</Delai_lancer_projectile>
-  <Delai_evaluation_cible>1</Delai_evaluation_cible>
+  <Delai_evaluation_cible>20</Delai_evaluation_cible>
+  <Delai_validation_mesure_cible>3</Delai_validation_mesure_cible>
   <Positions_Cibles>
     <PositionCible>
       <DistanceX>15</DistanceX>
@@ -41,6 +42,6 @@
       <Poids>1</Poids>
     </Projectile>
   </Projectiles>
-  <Ratio_echelle>0.42657342553138733</Ratio_echelle>
+  <Ratio_echelle>1</Ratio_echelle>
   <NB_series>1</NB_series>
 </Conf>
