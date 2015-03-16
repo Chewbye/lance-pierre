@@ -40,6 +40,7 @@ public class LeapMotion : MonoBehaviour {
 			Frame frame = controller.Frame (); // on récupère les données du leap motion
 			
 			if (frame.Hands.Count > 0) { // si une main est détectée
+
 				bool doigtsValide = lm.fingersMeasure (frame);
 				
 				if (doigtsValide) { // si on a deux doigts "étendus"
@@ -55,20 +56,16 @@ public class LeapMotion : MonoBehaviour {
 					
 					if (done) {
 						print ("**** distance evalué à : " + distance + " mm ****\n");
-
 						//GameController.Jeu.Mesures_Taille_Cible.Add(distance);
-						
 						// **** passage à la scene suivante
 					}
 				} else {
 					lm.PremierMesure = true;
 					lm.Timer = DateTime.Now;
-					beginTimer = DateTime.Now;
 				}
 			} else {
 				lm.PremierMesure = true;
 				lm.Timer = DateTime.Now;
-				beginTimer = DateTime.Now;
 			}
 		} else {
 			//GameController.Jeu.Mesures_Taille_Cible.Add(-1);
@@ -82,7 +79,7 @@ public class LeapMotion : MonoBehaviour {
 
 	void OnGUI()
 	{
-		bp.Valeur = (float) diffTime.TotalSeconds;
+		bp.Valeur = lm.calculNbSecondesEcoule();
 		bp.Update (true);
 		bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
 	}

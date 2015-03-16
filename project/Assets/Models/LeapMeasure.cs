@@ -133,4 +133,10 @@ public class LeapMeasure {
 			}
 		}
 	}
+
+	public float calculNbSecondesEcoule()
+	{
+		TimeSpan diffTime = DateTime.Now - timer;
+		return (float) diffTime.TotalSeconds;
+	}
 }
