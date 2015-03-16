@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using Leap;
 using System.Runtime.InteropServices;
@@ -18,19 +19,23 @@ public class LeapMotion : MonoBehaviour {
 	public Controller controller;
 	public LeapMeasure lm;
 	public BarreProgression bp;
-	public int timer;
+	public DateTime beginTimer;
+	public TimeSpan diffTime;
 	
 	void Start ()
 	{
 		controller = new Controller();
 		lm = new LeapMeasure(); 
 		bp = new BarreProgression ("BarreVide", "Remplissage", 0, lm.TimerMax);
-		timer = 0;
+		beginTimer = DateTime.Now;
+		diffTime = DateTime.Now - beginTimer;
 	}
 	
 	void Update ()
 	{
-		if (timer < GameController.Jeu.Config.Delai_evaluation_cible) {
+		diffTime = DateTime.Now - beginTimer;
+
+		if (diffTime.TotalSeconds < GameController.Jeu.Config.Delai_evaluation_cible) {
 			
 			Frame frame = controller.Frame (); // on récupère les données du leap motion
 			
@@ -50,41 +55,40 @@ public class LeapMotion : MonoBehaviour {
 					
 					if (done) {
 						print ("**** distance evalué à : " + distance + " mm ****\n");
-						lm.Timer = 0;
 
-						GameController.Jeu.Mesures_Taille_Cible.Add(distance);
+						lm.PremierMesure = true;
+						lm.Timer = DateTime.Now;
+
+						beginTimer = DateTime.Now;
+
+						//GameController.Jeu.Mesures_Taille_Cible.Add(distance);
 						
 						// **** passage à la scene suivante
 					}
 				} else {
-					lm.Timer = 0;
+					lm.PremierMesure = true;
+					lm.Timer = DateTime.Now;
 				}
 			} else {
-				lm.Timer = 0;
+				lm.PremierMesure = true;
+				lm.Timer = DateTime.Now;
 			}
 		} else {
-			GameController.Jeu.Mesures_Taille_Cible.Add(-1);
+			//GameController.Jeu.Mesures_Taille_Cible.Add(-1);
 			// **** passage à la scene suivante
+			beginTimer = DateTime.Now;
 		}
-		
-		timer++;
-		
-		/* *** A tester en commentant le block du dessus si PB *** 
-		if (lm.Timer == lm.TimerMax) {
-			lm.Timer = 0;
-		} else {
-			lm.Timer ++;
-		}
-		*/
 	}
-	
+
+
 	void OnGUI()
 	{
-		bp.Valeur = lm.Timer;
+		bp.Valeur = (float) diffTime.TotalSeconds;
 		bp.Update (true);
 		bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
 	}
-	
+
+	/*
 	// permet de quitter "proprement" l'appli sans faire freeze Unity
 	#if UNITY_STANDALONE_WIN
 	[DllImport("mono", SetLastError=true)]
@@ -97,4 +101,5 @@ public class LeapMotion : MonoBehaviour {
 		mono_thread_exit ();
 		#endif
 	}
+	*/
 }

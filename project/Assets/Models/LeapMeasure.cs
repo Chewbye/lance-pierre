@@ -15,13 +15,15 @@ using Leap;
  * - un attribut statique BORNE permettant de borner la distance actuellement mesurée avec
  * l'ancienne distance
  */
+using System;
 
 public class LeapMeasure {
 	
-	protected int timer;
+	protected DateTime timer;
 	protected float ancienneDistance;
 	protected float timerMax;
 	protected float borne;
+	protected bool premierMesure;
 	
 	public float TimerMax {
 		get {
@@ -38,7 +40,7 @@ public class LeapMeasure {
 		}
 	}
 	
-	public int Timer {
+	public DateTime Timer {
 		get {
 			return this.timer;
 		}
@@ -56,13 +58,23 @@ public class LeapMeasure {
 			ancienneDistance = value;
 		}
 	}
+
+	public bool PremierMesure {
+		get {
+			return premierMesure;
+		}
+		set {
+			premierMesure = value;
+		}
+	}
 	
 	public LeapMeasure()
 	{
-		timer = 0;
+		timer = DateTime.Now;
 		ancienneDistance = 0;
 		timerMax = GameController.Jeu.Config.Delai_validation_mesure_cible;
 		borne = GameController.Jeu.Config.Marge_stabilisation_validation_cible;
+		premierMesure = true;
 	}
 	
 	/*
@@ -89,10 +101,10 @@ public class LeapMeasure {
 	 */
 	public bool measureDone(float distance)
 	{
-		if (timer==0)
+		if (premierMesure)
 		{
 			ancienneDistance = distance;
-			timer++;
+			premierMesure = false;
 			
 			return false;
 		}
@@ -100,10 +112,11 @@ public class LeapMeasure {
 		{
 			if (ancienneDistance - borne <= distance && distance <= ancienneDistance + borne)
 			{
-				timer++;
 				ancienneDistance = distance;
-				
-				if (timer == timerMax)
+
+				TimeSpan diffTime = DateTime.Now - timer;
+
+				if (diffTime.TotalSeconds >= timerMax)
 				{
 					return true;
 				}
@@ -114,8 +127,8 @@ public class LeapMeasure {
 			}
 			else
 			{
-				timer=0;
-				
+				premierMesure = true;
+				timer = DateTime.Now;
 				return false;
 			}
 		}
