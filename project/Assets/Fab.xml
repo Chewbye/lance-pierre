@@ -9,6 +9,7 @@
   <Delai_lancer_projectile>60</Delai_lancer_projectile>
   <Delai_evaluation_cible>20</Delai_evaluation_cible>
   <Delai_validation_mesure_cible>3</Delai_validation_mesure_cible>
+  <Marge_stabilisation_validation_cible>0.5</Marge_stabilisation_validation_cible>
   <Positions_Cibles>
     <PositionCible>
       <DistanceX>15</DistanceX>
@@ -42,6 +43,6 @@
       <Poids>1</Poids>
     </Projectile>
   </Projectiles>
-  <Ratio_echelle>1</Ratio_echelle>
+  <Ratio_echelle>0.608391523361206</Ratio_echelle>
   <NB_series>1</NB_series>
 </Conf>
