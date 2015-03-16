@@ -56,11 +56,6 @@ public class LeapMotion : MonoBehaviour {
 					if (done) {
 						print ("**** distance evalué à : " + distance + " mm ****\n");
 
-						lm.PremierMesure = true;
-						lm.Timer = DateTime.Now;
-
-						beginTimer = DateTime.Now;
-
 						//GameController.Jeu.Mesures_Taille_Cible.Add(distance);
 						
 						// **** passage à la scene suivante
@@ -68,14 +63,18 @@ public class LeapMotion : MonoBehaviour {
 				} else {
 					lm.PremierMesure = true;
 					lm.Timer = DateTime.Now;
+					beginTimer = DateTime.Now;
 				}
 			} else {
 				lm.PremierMesure = true;
 				lm.Timer = DateTime.Now;
+				beginTimer = DateTime.Now;
 			}
 		} else {
 			//GameController.Jeu.Mesures_Taille_Cible.Add(-1);
 			// **** passage à la scene suivante
+			lm.PremierMesure = true;
+			lm.Timer = DateTime.Now;
 			beginTimer = DateTime.Now;
 		}
 	}
