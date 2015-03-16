@@ -20,8 +20,12 @@ public class FinDeTest : MonoBehaviour {
 	private string nb_tailles_projectiles;
 	private bool afficher_le_score;
 	private string nb_points_gagnes_par_cible;
+	private string nb_points_perdus_par_cible;
 	private string delai_lancer_projectile;
 	private string delai_evaluation_cible;
+	private string delai_validation_mesure;
+	private string marge_stabilisation_leap;
+	private string condition_test;
 
 	string fichierCourant;
 
@@ -61,18 +65,19 @@ public class FinDeTest : MonoBehaviour {
 		nb_tailles_projectiles = Convert.ToString(GameController.Jeu.Config.Projectiles.Count);
 		afficher_le_score = GameController.Jeu.Config.Afficher_le_score;
 		nb_points_gagnes_par_cible = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
+		//nb_points_perdus_par_cible = Convert.ToString(GameController.Jeu.Config.Nb_points_perdus_par_cible);
 		delai_lancer_projectile = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		delai_evaluation_cible = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
+		delai_validation_mesure = Convert.ToString (GameController.Jeu.Config.Delai_validation_mesure_cible);
+		marge_stabilisation_leap = Convert.ToString (GameController.Jeu.Config.Marge_stabilisation_validation_cible);
+		//condition_test = Convert.ToString (GameController.Jeu.Config.condition_test);
 		
 		writeXML ();
 	}
 	
 	public void writeXML() {
-		string nomFichier; 
 		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
-		//Ici on aura le numéro de la session
-		nomFichier = "Session_" + "1" + ".xml";
-		fichierCourant = nomFichier;
+		fichierCourant = nom_configuration + ".xml";
 		int nb_lancers_int = Convert.ToInt32(nb_lancers);
 		int nbReussi = 0;
 		int nbManque = 0;
@@ -84,8 +89,8 @@ public class FinDeTest : MonoBehaviour {
 				nbManque++;
 		}
 		
-		if (!File.Exists (nomFichier)) {
-			FileStream fs = File.Open (nomFichier, FileMode.Create);
+		if (!File.Exists (fichierCourant)) {
+			FileStream fs = File.Open (fichierCourant, FileMode.Create);
 			
 			string text;
 			
@@ -111,7 +116,7 @@ public class FinDeTest : MonoBehaviour {
 			
 			text += "<Worksheet ss:Name=\"Configuration\">" + 
 				"<Table>" +
-					"<Column ss:Width=\"155\"/><Column ss:Width=\"120\"/>" +
+					"<Column ss:Width=\"210\"/><Column ss:Width=\"120\"/>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Configuration" +
@@ -135,15 +140,28 @@ public class FinDeTest : MonoBehaviour {
 					"<Cell><Data ss:Type=\"Number\">" +
 					nb_tailles_cibles + 
 					"</Data></Cell>" +
-					"</Row>" +
+					"<Cell></Cell>";
+			for (int i = 0; i < Convert.ToInt32(nb_tailles_cibles); i++) {
+				text += "<Cell><Data ss:Type=\"Number\">" +
+					+ GameController.Jeu.Config.Tailles_Cibles[i] +
+					"</Data></Cell>";
+			}
+
+				text += "</Row>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Nombre de tailles de projectiles" +
+					"Nombre de tailles de projectiles et poids" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
 					nb_tailles_projectiles + 
 					"</Data></Cell>" +
-					"</Row>" +
+					"<Cell></Cell>";
+			for (int i = 0; i < Convert.ToInt32(nb_tailles_projectiles); i++) {
+				text += "<Cell><Data ss:Type=\"String\">" +
+					+ GameController.Jeu.Config.Projectiles[i].Taille +
+						" - " + GameController.Jeu.Config.Projectiles[i].Poids + "</Data></Cell>";
+			}
+				text += "</Row>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Nombre de positions de cibles" +
@@ -151,7 +169,13 @@ public class FinDeTest : MonoBehaviour {
 					"<Cell><Data ss:Type=\"Number\">" +
 					nb_positions + 
 					"</Data></Cell>" +
-					"</Row>" +
+					"<Cell></Cell>";
+			for (int i = 0; i < Convert.ToInt32(nb_positions); i++) {
+				text += "<Cell><Data ss:Type=\"String\">[" +
+					+ GameController.Jeu.Config.Positions_Cibles[i].DistanceX + ", " + 
+						GameController.Jeu.Config.Positions_Cibles[i].DistanceY + "]</Data></Cell>";
+			}
+			text += "</Row>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Nombre de series de lancers" +
@@ -190,10 +214,18 @@ public class FinDeTest : MonoBehaviour {
 					"</Row>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Nombre de points par cible" +
+					"Nombre de points gagnes par cible" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
 					nb_points_gagnes_par_cible + 
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Nombre de points perdus par cible" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					0 + // à changer par la bonne valeur (nb_points_perdus_par_cible)
 					"</Data></Cell>" +
 					"</Row>" +
 					"<Row>" +
@@ -206,10 +238,34 @@ public class FinDeTest : MonoBehaviour {
 					"</Row>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Delai pour evaluer la cible" +
+					"Delai imparti pour evaluer la cible" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
 					delai_evaluation_cible + 
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Delai imparti pour valider la mesure" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					delai_validation_mesure + 
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Marge de stabilisation du leap motion" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					marge_stabilisation_leap + 
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Condition de test" +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Pour l'instant rien" + // à changer avec la bonne valeur (condition_test)
 					"</Data></Cell>" +
 					"</Row>" +
 					"</Table>" +
@@ -221,9 +277,9 @@ public class FinDeTest : MonoBehaviour {
 			//int premierLancer = dernierLancer - (2 - 1);
 			text += "<Worksheet ss:Name=\"Passation1\">" + 
 				"<Table>" +
-					"<Column ss:Width=\"150\"/><Column ss:Width=\"110\"/><Column ss:Width=\"90\"/><Column ss:Width=\"90\"/>" +
-					"<Column ss:Width=\"90\"/><Column ss:Width=\"90\"/><Column ss:Width=\"75\"/><Column ss:Width=\"120\"/><Column ss:Width=\"130\"/>" +
-					"<Column ss:Width=\"60\"/><Column ss:Width=\"80\"/><Column ss:Width=\"90\"/><Column ss:Width=\"55\"/>" +
+					"<Column ss:Width=\"170\"/><Column ss:Width=\"130\"/><Column ss:Width=\"110\"/><Column ss:Width=\"110\"/>" +
+					"<Column ss:Width=\"110\"/><Column ss:Width=\"110\"/><Column ss:Width=\"95\"/><Column ss:Width=\"140\"/><Column ss:Width=\"150\"/>" +
+					"<Column ss:Width=\"80\"/><Column ss:Width=\"100\"/><Column ss:Width=\"110\"/><Column ss:Width=\"75\"/>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Date" + 
@@ -295,16 +351,16 @@ public class FinDeTest : MonoBehaviour {
 					"Points obtenus" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Delai imparti pour lancer" +
+					"Delai imparti pour lancer (s)" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Delai imparti pour evaluer" +
+					"Delai imparti pour evaluer (s)" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Delai lancer" +
+					"Delai lancer (s)" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Delai evaluation" +
+					"Delai evaluation (s)" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Resultat du lancer" +
@@ -313,10 +369,7 @@ public class FinDeTest : MonoBehaviour {
 					"Evaluation" +
 					"</Data></Cell>" +
 					"</Row>";
-			Debug.Log("Nombre de tirs : " + GameController.Jeu.Tirs_Realises.Count);
-			Debug.Log("Nombre de réussite tirs : " + GameController.Jeu.Reussiste_Tirs.Count);
-			Debug.Log("Nombre de temps mis pour tirer : " + GameController.Jeu.Temps_Mis_Pour_Tirer.Count);
-			for (int i = 0; i < nb_lancers_int; i++) {Debug.Log("Tour de boucle " + i);
+			for (int i = 0; i < nb_lancers_int; i++) {
 				text += "<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Lancer " + (i + 1) + 
@@ -349,10 +402,10 @@ public class FinDeTest : MonoBehaviour {
 						GameController.Jeu.Config.Delai_evaluation_cible +
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">" +
-						GameController.Jeu.Temps_Mis_Pour_Tirer[i] +
+						Math.Round(GameController.Jeu.Temps_Mis_Pour_Tirer[i], 2) +
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">" +
-						"1" + // Mettre le bon temps pour evaluer
+						"1" + // Mettre le bon temps pour evaluer (Math round 2 comme ci-dessus)
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"String\">";
 				if (GameController.Jeu.Reussiste_Tirs[i] == true) 
@@ -399,34 +452,34 @@ public class FinDeTest : MonoBehaviour {
 				"Moyenne" +
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"String\">" +
-				"Moyenne" +
+				"Taux de reussite" +
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"String\">" +
 				"Moyenne" +
 				"</Data></Cell>" +
 				"</Row>" +
 				"<Row><Cell></Cell>" +
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
 				"<Cell><Data ss:Type=\"Number\">";
 				if (nbManque == 0) {
 					text += nbReussi;
 				}
 				else {
 					double nR = Convert.ToDouble(nbReussi);
-					double nM = Convert.ToDouble(nbManque);
-					text += Convert.ToDouble(nR/nM);
+					double nL = Convert.ToDouble(nb_lancers_int);
+					text += Math.Round(nR/nL, 2);
 				}
 			text += "</Data></Cell>" +
-					"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+					"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 					"</Row>" +
 					"</Table>" +
 					"</Worksheet>";
@@ -449,7 +502,7 @@ public class FinDeTest : MonoBehaviour {
 		} else {
 			String contenu = "";
 			
-			contenu = System.IO.File.ReadAllText(nomFichier);
+			contenu = System.IO.File.ReadAllText(fichierCourant);
 			
 			int numPassation = this.getNumPassation (contenu);
 			
@@ -472,9 +525,9 @@ public class FinDeTest : MonoBehaviour {
 			textToWrite += identitePassation;
 			textToWrite += "\">" + 
 				"<Table>" +
-					"<Column ss:Width=\"150\"/><Column ss:Width=\"110\"/><Column ss:Width=\"90\"/><Column ss:Width=\"90\"/>" +
-					"<Column ss:Width=\"90\"/><Column ss:Width=\"90\"/><Column ss:Width=\"75\"/><Column ss:Width=\"120\"/><Column ss:Width=\"130\"/>" +
-					"<Column ss:Width=\"60\"/><Column ss:Width=\"80\"/><Column ss:Width=\"90\"/><Column ss:Width=\"55\"/>" +
+					"<Column ss:Width=\"170\"/><Column ss:Width=\"130\"/><Column ss:Width=\"110\"/><Column ss:Width=\"110\"/>" +
+					"<Column ss:Width=\"110\"/><Column ss:Width=\"110\"/><Column ss:Width=\"95\"/><Column ss:Width=\"140\"/><Column ss:Width=\"150\"/>" +
+					"<Column ss:Width=\"80\"/><Column ss:Width=\"100\"/><Column ss:Width=\"110\"/><Column ss:Width=\"75\"/>" +
 					"<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Date" + 
@@ -546,16 +599,16 @@ public class FinDeTest : MonoBehaviour {
 					"Points obtenus" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Delai imparti pour lancer" +
+					"Delai imparti pour lancer (s)" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Delai imparti pour evaluer" +
+					"Delai imparti pour evaluer (s)" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Delai lancer" +
+					"Delai lancer (s)" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Delai evaluation" +
+					"Delai evaluation (s)" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
 					"Resultat du lancer" +
@@ -564,10 +617,7 @@ public class FinDeTest : MonoBehaviour {
 					"Evaluation" +
 					"</Data></Cell>" +
 					"</Row>";
-			Debug.Log("Nombre de tirs : " + GameController.Jeu.Tirs_Realises.Count);
-			Debug.Log("Nombre de réussite tirs : " + GameController.Jeu.Reussiste_Tirs.Count);
-			Debug.Log("Nombre de temps mis pour tirer : " + GameController.Jeu.Temps_Mis_Pour_Tirer.Count);
-			for (int i = 0; i < nb_lancers_int; i++) {Debug.Log("Tour de boucle " + i);
+			for (int i = 0; i < nb_lancers_int; i++) {
 				textToWrite += "<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
 						"Lancer " + (i + 1) + 
@@ -600,10 +650,10 @@ public class FinDeTest : MonoBehaviour {
 						GameController.Jeu.Config.Delai_evaluation_cible +
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">" +
-						GameController.Jeu.Temps_Mis_Pour_Tirer[i] +
+						Math.Round(GameController.Jeu.Temps_Mis_Pour_Tirer[i], 2) +
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">" +
-						"1" + // Mettre le bon temps pour evaluer
+						"1" + // Mettre le bon temps pour evaluer (Math round 2 comme ci-dessus)
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"String\">";
 				if (GameController.Jeu.Reussiste_Tirs[i] == true) 
@@ -650,34 +700,34 @@ public class FinDeTest : MonoBehaviour {
 						"Moyenne" +
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"String\">" +
-						"Moyenne" +
+						"Taux de reussite" +
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"String\">" +
 						"Moyenne" +
 						"</Data></Cell>" +
 						"</Row>" +
 						"<Row><Cell></Cell>" +
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-						"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+						"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+						"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+						"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+						"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
 						"<Cell><Data ss:Type=\"Number\">";
 						if (nbManque == 0) {
 							textToWrite += nbReussi;
 						}
 						else {
 							double nR = Convert.ToDouble(nbReussi);
-							double nM = Convert.ToDouble(nbManque);
-							textToWrite += Convert.ToDouble(nR/nM);
+							double nL = Convert.ToDouble(nb_lancers_int);
+							textToWrite += Math.Round(nR/nL, 2);
 						}
 							textToWrite += "</Data></Cell>" +
-								"<Cell ss:Formula=\"=AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+								"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 								"</Row>" +
 								"</Table>" +
 								"</Worksheet>";
@@ -686,7 +736,7 @@ public class FinDeTest : MonoBehaviour {
 			
 			//UnityEngine.Debug.Log(textToWrite);
 			
-			FileStream fs = File.Open (nomFichier, FileMode.Create);
+			FileStream fs = File.Open (fichierCourant, FileMode.Create);
 			
 			Byte[] info = new UTF8Encoding (true).GetBytes (textToWrite);
 			fs.Write (info, 0, textToWrite.Length);
