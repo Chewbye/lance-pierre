@@ -256,6 +256,7 @@ public class UIManagerScript : MonoBehaviour {
 	 * Méthode appelée lorsqu'on clique sur le bouton "Pré-test passation"
 	 */
 	public void onClickPreTestPassation(){
+		GameController.Jeu.isPretest = true;
 		launchGame ("jeu");
 	}
 

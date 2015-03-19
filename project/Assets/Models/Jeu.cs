@@ -157,6 +157,17 @@ public class Jeu{
 		}
 	}
 
+	//booléen passé à vrai pour effectuer une phase de prétest
+	private bool _isPretest;
+	public bool isPretest {
+		get {
+			return _isPretest;
+		}
+		set {
+			_isPretest = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Jeu à partir d'un fichier de configuation
 	 */
@@ -198,6 +209,7 @@ public class Jeu{
 		_Tirs_Realises = new List<TripletTirs> ();
 		_Temps_Mis_Pour_Tirer = new List<float> ();
 		_Mesures_Taille_Cible = new List<float> ();
+		_isPretest = false;
 	}
 	
 
