@@ -11,11 +11,6 @@ public class MenuManager : MonoBehaviour {
 		//Création du modèle Jeu au lancement de l'application
 		if (GameController.Jeu == null) {
 			GameController.Jeu = new Jeu ();
-			
-			//Initialisation des tableaux
-			GameController.Jeu.Config.Positions_Cibles.Add (new PositionCible (1, 1));
-			GameController.Jeu.Config.Tailles_Cibles.Add (1.0f);
-			GameController.Jeu.Config.Projectiles.Add (new Projectile (1, 1));
 		} else{
 			GameController.Jeu.newGame();
 		}
@@ -23,6 +18,11 @@ public class MenuManager : MonoBehaviour {
 		//Affichage du nom de la configuration choisie
 		if (!GameController.Jeu.Config.Name.Equals ("")) {
 			labelConfSelected.text = GameController.Jeu.Config.Name;
+		} else {
+			//Initialisation des tableaux
+			GameController.Jeu.Config.Positions_Cibles.Add (new PositionCible (1, 1));
+			GameController.Jeu.Config.Tailles_Cibles.Add (1.0f);
+			GameController.Jeu.Config.Projectiles.Add (new Projectile (1, 1));
 		}
 	}
 	

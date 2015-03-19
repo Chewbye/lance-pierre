@@ -6,12 +6,14 @@
   <Nb_lancers>8</Nb_lancers>
   <Afficher_le_score>true</Afficher_le_score>
   <Nb_points_gagnes_par_cible>1</Nb_points_gagnes_par_cible>
-  <Delai_lancer_projectile>1</Delai_lancer_projectile>
+  <Delai_lancer_projectile>10</Delai_lancer_projectile>
   <Delai_evaluation_cible>1</Delai_evaluation_cible>
+  <Delai_validation_mesure_cible>1</Delai_validation_mesure_cible>
+  <Marge_stabilisation_validation_cible>0.5</Marge_stabilisation_validation_cible>
   <Positions_Cibles>
     <PositionCible>
-      <DistanceX>0</DistanceX>
-      <DistanceY>0</DistanceY>
+      <DistanceX>5</DistanceX>
+      <DistanceY>5</DistanceY>
     </PositionCible>
     <PositionCible>
       <DistanceX>2</DistanceX>
@@ -19,19 +21,22 @@
     </PositionCible>
   </Positions_Cibles>
   <Tailles_Cibles>
-    <float>0</float>
+    <float>1</float>
     <float>2</float>
   </Tailles_Cibles>
   <Projectiles>
     <Projectile>
-      <Taille>3</Taille>
+      <Taille>1.5</Taille>
       <Poids>3</Poids>
     </Projectile>
     <Projectile>
-      <Taille>5</Taille>
+      <Taille>1</Taille>
       <Poids>6</Poids>
     </Projectile>
   </Projectiles>
-  <Ratio_echelle>1</Ratio_echelle>
+  <Ratio_echelle>0.70909088850021362</Ratio_echelle>
   <NB_series>1</NB_series>
+  <Condition_De_Controle>true</Condition_De_Controle>
+  <Condition_De_Perception>false</Condition_De_Perception>
+  <Condition_De_Memoire>false</Condition_De_Memoire>
 </Conf>

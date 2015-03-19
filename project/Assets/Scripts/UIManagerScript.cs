@@ -64,6 +64,14 @@ public class UIManagerScript : MonoBehaviour {
 			GameController.Jeu.newGame();
 		}
 
+		//Affichage du nom de la configuration choisie
+		if (GameController.Jeu.Config.Name.Equals ("")) {
+			//Initialisation des tableaux
+			GameController.Jeu.Config.Positions_Cibles.Add (new PositionCible (1, 1));
+			GameController.Jeu.Config.Tailles_Cibles.Add (1.0f);
+			GameController.Jeu.Config.Projectiles.Add (new Projectile (1, 1));
+		}
+
 
 		refreshGUIFields ();
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Name>Fab</Name>
+  <Name>Fab2</Name>
   <Gravite>1</Gravite>
   <Rigidite_lancepierre>10</Rigidite_lancepierre>
-  <Nb_lancers>27</Nb_lancers>
+  <Nb_lancers>8</Nb_lancers>
   <Afficher_le_score>true</Afficher_le_score>
   <Nb_points_gagnes_par_cible>2</Nb_points_gagnes_par_cible>
   <Delai_lancer_projectile>60</Delai_lancer_projectile>
@@ -12,22 +12,17 @@
   <Marge_stabilisation_validation_cible>0.5</Marge_stabilisation_validation_cible>
   <Positions_Cibles>
     <PositionCible>
-      <DistanceX>15</DistanceX>
-      <DistanceY>10</DistanceY>
-    </PositionCible>
-    <PositionCible>
-      <DistanceX>15</DistanceX>
-      <DistanceY>0</DistanceY>
-    </PositionCible>
-    <PositionCible>
-      <DistanceX>10</DistanceX>
+      <DistanceX>5</DistanceX>
       <DistanceY>5</DistanceY>
+    </PositionCible>
+    <PositionCible>
+      <DistanceX>1</DistanceX>
+      <DistanceY>1</DistanceY>
     </PositionCible>
   </Positions_Cibles>
   <Tailles_Cibles>
     <float>1</float>
     <float>2</float>
-    <float>3</float>
   </Tailles_Cibles>
   <Projectiles>
     <Projectile>
@@ -37,10 +32,6 @@
     <Projectile>
       <Taille>1</Taille>
       <Poids>2</Poids>
-    </Projectile>
-    <Projectile>
-      <Taille>2</Taille>
-      <Poids>1</Poids>
     </Projectile>
   </Projectiles>
   <Ratio_echelle>0.65034967660903931</Ratio_echelle>
