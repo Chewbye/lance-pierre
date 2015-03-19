@@ -41,27 +41,19 @@ public class LeapMotion : MonoBehaviour {
 			
 			if (frame.Hands.Count > 0) { // si une main est détectée
 
-				bool doigtsValide = lm.fingersMeasure (frame);
+				float distance = lm.getDistance (frame); // on récupère la distance 
 				
-				if (doigtsValide) { // si on a deux doigts "étendus"
-					
-					float distance = lm.getDistance (frame); // on récupère la distance 
-					
-					// log pour vérifier
-					print ("Frame : " + frame.Hands [0].Fingers [0].TipPosition + " - " + frame.Hands [0].Fingers [1].TipPosition + "\n");				
-					print ("distance : " + distance + " mm \n");
-					
-					// si le timer atteind le délais de mesure alors la mesure est faite
-					bool done = lm.measureDone (distance);
-					
-					if (done) {
-						print ("**** distance evalué à : " + distance + " mm ****\n");
-						//GameController.Jeu.Mesures_Taille_Cible.Add(distance);
-						// **** passage à la scene suivante
-					}
-				} else {
-					lm.PremierMesure = true;
-					lm.Timer = DateTime.Now;
+				// log pour vérifier
+				print ("Frame : " + frame.Hands [0].Fingers [0].TipPosition + " - " + frame.Hands [0].Fingers [1].TipPosition + "\n");				
+				print ("distance : " + distance + " mm "+ lm.Borne+"\n");
+				
+				// si le timer atteind le délais de mesure alors la mesure est faite
+				bool done = lm.measureDone (distance);
+				
+				if (done) {
+					print ("**** distance evalué à : " + distance + " mm ****\n");
+					//GameController.Jeu.Mesures_Taille_Cible.Add(distance);
+					// **** passage à la scene suivante
 				}
 			} else {
 				lm.PremierMesure = true;
@@ -84,7 +76,7 @@ public class LeapMotion : MonoBehaviour {
 		bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
 	}
 
-	/*
+
 	// permet de quitter "proprement" l'appli sans faire freeze Unity
 	#if UNITY_STANDALONE_WIN
 	[DllImport("mono", SetLastError=true)]
@@ -97,5 +89,4 @@ public class LeapMotion : MonoBehaviour {
 		mono_thread_exit ();
 		#endif
 	}
-	*/
 }

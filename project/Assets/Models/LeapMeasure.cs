@@ -73,7 +73,7 @@ public class LeapMeasure {
 		timer = DateTime.Now;
 		ancienneDistance = 0;
 		timerMax = GameController.Jeu.Config.Delai_validation_mesure_cible;
-		borne = GameController.Jeu.Config.Marge_stabilisation_validation_cible;
+		borne = (GameController.Jeu.Config.Marge_stabilisation_validation_cible) * 10; // conversion cm -> mm
 		premierMesure = true;
 	}
 	
