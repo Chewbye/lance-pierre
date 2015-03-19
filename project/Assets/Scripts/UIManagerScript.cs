@@ -280,8 +280,11 @@ public class UIManagerScript : MonoBehaviour {
 		refreshGUIFields ();
 
 		//Mise à jour des tableaux
-		//menuTableManager.initTablesForNewConfig ();
 		menuTableManager.refreshGUITables();
+
+		//Mise à jour du dernier fichier de configuration utilisé par l'application
+		GameController.Jeu.AppConfig.LastConfName = filename;
+		GameController.Jeu.AppConfig.saveConfig (UnityEngine.Application.dataPath + "/app.conf");
 	}
 
 	public void CallbackConfExistsDialog(DialogResult result){

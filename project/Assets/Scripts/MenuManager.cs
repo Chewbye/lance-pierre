@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class MenuManager : MonoBehaviour {
+
+	public Text labelConfSelected;
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +19,11 @@ public class MenuManager : MonoBehaviour {
 		} else{
 			GameController.Jeu.newGame();
 		}
+
+		//Affichage du nom de la configuration choisie
+		if (!GameController.Jeu.Config.Name.Equals ("")) {
+			labelConfSelected.text = GameController.Jeu.Config.Name;
+		}
 	}
 	
 	// Update is called once per frame
@@ -25,5 +33,9 @@ public class MenuManager : MonoBehaviour {
 
 	public void onClickConfiguration(){
 		UnityEngine.Application.LoadLevel ("MainMenu");
+	}
+
+	public void onClickDemarrer(){
+		UnityEngine.Application.LoadLevel ("Jeu");
 	}
 }

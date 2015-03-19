@@ -146,6 +146,17 @@ public class Jeu{
 		}
 	}
 
+	//Configuration de l'application
+	private AppConf _AppConfig;
+	public AppConf AppConfig {
+		get {
+			return _AppConfig;
+		}
+		set {
+			_AppConfig = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Jeu à partir d'un fichier de configuation
 	 */
@@ -159,9 +170,17 @@ public class Jeu{
 	 * Créé un modèle Jeu avec des valeurs par défaut
 	 */
 	public Jeu(){
+
 		_Config = new Conf ();
 		newGame ();
 		refreshConfigFiles ();
+
+		loadAppConfig (Application.dataPath + "/app.conf");
+
+		//Charge la dernière configuration sélectionnée avant de quitter l'application
+		if (!_AppConfig.LastConfName.Equals ("")) {
+			loadConfig(Application.dataPath + "/" +_AppConfig.LastConfName + ".xml");
+		}
 	}
 
 	/**
@@ -220,17 +239,38 @@ public class Jeu{
 
 	/* Charge la configuration du fichier vers le jeu actuel */
 	public void loadConfig(string path){
-		//_Config.loadConfig(path);
 		_Config = getConfigFile (path);
 	}
 
+	/* Charge la configuration de l'application */
+	public void loadAppConfig(string path){
+		_AppConfig = getAppConfigFile (path);
+	}
+
 	public Conf getConfigFile(string path){
-		//_Config.loadConfig(path);
 		Conf res = null;
 		XmlSerializer xs = new XmlSerializer(typeof(Conf));
 		using (StreamReader rd = new StreamReader(path))
 		{
 			res = xs.Deserialize(rd) as Conf;
+		}
+		return res;
+	}
+
+	public AppConf getAppConfigFile(string path){
+		//Création du fichier de configuration de l'application la première fois
+		if (!File.Exists (path)) {
+			_AppConfig = new AppConf();
+			if(_ConfigsList.Count>0)
+				_AppConfig.LastConfName = ((Conf)_ConfigsList[_ConfigsList.Count - 1]).Name;
+			_AppConfig.saveConfig(path);
+		}
+
+		AppConf res = null;
+		XmlSerializer xs = new XmlSerializer(typeof(AppConf));
+		using (StreamReader rd = new StreamReader(path))
+		{
+			res = xs.Deserialize(rd) as AppConf;
 		}
 		return res;
 	}
