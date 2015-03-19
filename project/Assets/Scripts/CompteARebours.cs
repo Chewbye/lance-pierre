@@ -23,14 +23,17 @@ public class CompteARebours : MonoBehaviour
 
 	void Reset () 
 	{
-		// On indique que le tir courant est manqué
-		GameController.Jeu.Reussiste_Tirs.Add(false);
+		if(!GameController.Jeu.isEntrainement)
+		{
+			// On indique que le tir courant est manqué
+			GameController.Jeu.Reussiste_Tirs.Add(false);
 
-		// On indique le temps mis par le joueur pour tirer (ici -1 car le joueur n'a pas tiré)
-		GameController.Jeu.Temps_Mis_Pour_Tirer.Add(-1);
+			// On indique le temps mis par le joueur pour tirer (ici -1 car le joueur n'a pas tiré)
+			GameController.Jeu.Temps_Mis_Pour_Tirer.Add(-1);
 
-		// On incrémente le tir courant
-		GameController.Jeu.Tir_courant++;
+			// On incrémente le tir courant
+			GameController.Jeu.Tir_courant++;
+		}
 		
 		//	On recharge la meme scène
 		Application.LoadLevel (Application.loadedLevel);

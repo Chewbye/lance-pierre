@@ -25,14 +25,17 @@ public class GestionDegats : MonoBehaviour {
 	
 	void OnCollisionEnter2D (Collision2D collision) 
 	{
-		// On indique que le tir courant est réussi
-		GameController.Jeu.Reussiste_Tirs.Add(true);
+		if(!GameController.Jeu.isEntrainement)
+		{
+			// On indique que le tir courant est réussi
+			GameController.Jeu.Reussiste_Tirs.Add(true);
 
-		// On augmente le score
-		GameController.Jeu.Score = GameController.Jeu.Score + GameController.Jeu.Config.Nb_points_gagnes_par_cible;
+			// On augmente le score
+			GameController.Jeu.Score = GameController.Jeu.Score + GameController.Jeu.Config.Nb_points_gagnes_par_cible;
 
-		// On incrémente le tir courant
-		GameController.Jeu.Tir_courant++;
+			// On incrémente le tir courant
+			GameController.Jeu.Tir_courant++;
+		}
 
 		//On recharge la meme scène
 		Application.LoadLevel (Application.loadedLevel);

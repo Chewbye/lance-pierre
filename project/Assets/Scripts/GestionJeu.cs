@@ -8,7 +8,8 @@ public class GestionJeu : MonoBehaviour
 	public GameObject catapulte;
 	public LineRenderer catapultLineFront;
 	public LineRenderer catapultLineBack;  
-	
+
+	private double diametreProjectile;
 	private SpringJoint2D spring;
 	private Transform catapult;
 	private Ray rayToMouse;
@@ -28,76 +29,21 @@ public class GestionJeu : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		double diametreProjectile = renderer.bounds.size.x * GameController.Jeu.Config.Ratio_echelle;
+		diametreProjectile = renderer.bounds.size.x * GameController.Jeu.Config.Ratio_echelle;
 		// INITIALISATION DES ATTRIBUTS DE JEU
 		if(GameController.Jeu.Tirs_A_Realiser.Count == 0 && GameController.Jeu.Tirs_Realises.Count == 0)// Si les triplets n'ont pas déjà été générés
 		{
-			Debug.Log("Génération des combinaisons des tirs ...");
-			GameController.Jeu.Nb_lancers = GameController.Jeu.Config.Nb_lancers;
-			Debug.Log("Nombre de lancers : " + GameController.Jeu.Nb_lancers);
-			int nbCombinaisonsGenerees = 0;
-			// Calcul de toutes les combinaisons possibles de Position de Cible, Taille de Cible et Taille de Projectile
-			for(int i = 0; i < GameController.Jeu.Config.NB_series; i++)
-			{
-				for(int j = 0; j <GameController.Jeu.Config.Positions_Cibles.Count; j++)
-				{
-					for( int k = 0; k < GameController.Jeu.Config.Tailles_Cibles.Count; k++)
-					{
-						for(int l = 0; l < GameController.Jeu.Config.Projectiles.Count; l++)
-						{
-							GameController.Jeu.Tirs_A_Realiser.Add(new TripletTirs(GameController.Jeu.Config.Projectiles[l],
-							                                                       GameController.Jeu.Config.Positions_Cibles[j],
-							                                                       GameController.Jeu.Config.Tailles_Cibles[k]));
-							nbCombinaisonsGenerees++;
-						}
-					}
-				}
-			}
-			Debug.Log("Nombre de combinaisons générées : " + nbCombinaisonsGenerees);
+			GenererTirs();
 		}
-		
-		if(GameController.Jeu.Tirs_A_Realiser.Count > 0) // Si nous ne sommes pas en fin de partie
+
+		if(GameController.Jeu.Tirs_Entrainement.Count > 0) // Si nous sommes dans la phase d'entrainement
 		{
-			// CHANGEMENT DE LA RIGIDITE DU LANCE PIERRE
-			rigidite = GameController.Jeu.Config.Rigidite_lancepierre;
-			
-			// CHOIX D'UN TIR A REALISER
-			// Choix d'un tir
-			int rang = GameController.Jeu.Rang_Aleatoire.Next(0, GameController.Jeu.Tirs_A_Realiser.Count);
-			TripletTirs tirAFaire = GameController.Jeu.Tirs_A_Realiser[rang];
-			Debug.Log("Tir choisi (DistanceX=" + tirAFaire.Position_Cible.DistanceX + ", DistanceY=" + tirAFaire.Position_Cible.DistanceY
-			          + ", TailleCible=" + tirAFaire.Taille_Cible + ", TailleProjectile=" + tirAFaire.Projectile.Taille + ", PoidsProjectile=" + tirAFaire.Projectile.Poids + ")");
-			
-			// Suppression du tir dans la liste des tirs à réaliser
-			GameController.Jeu.Tirs_A_Realiser.Remove(tirAFaire);
-			
-			// Ajout du tir dans la liste des tirs effecutés
-			GameController.Jeu.Tirs_Realises.Add(tirAFaire);
-			
-			//CALCUL POSITION DE LA CATAPULTE
-			Vector3 positionCatapulte = catapulte.transform.position;
-			
-			// CHANGEMENT DE LA POSITION ET DE LA TAILLE DE LA CIBLE
-			float positionXCible = catapulte.transform.position.x + (tirAFaire.Position_Cible.DistanceX * (float)diametreProjectile);
-			float positionYCible = catapulte.transform.position.y + (tirAFaire.Position_Cible.DistanceY * (float)diametreProjectile);
-			float positionZCible = cible.transform.position.z * (float)diametreProjectile;
-			cible.transform.position = new Vector3(positionXCible, positionYCible, positionZCible);
-			float tailleXYZCible = tirAFaire.Taille_Cible * (float)GameController.Jeu.Config.Ratio_echelle * cible.transform.localScale.x; // la cible doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
-			cible.transform.localScale = new Vector3(tailleXYZCible, tailleXYZCible, tailleXYZCible);
-			
-			// CHANGEMENT DE LA TAILLE ET DU POIDS DU PROJECTILE
-			double ratioEchelle = GameController.Jeu.Config.Ratio_echelle;
-			float tailleXYZProjectile = tirAFaire.Projectile.Taille;
-			transform.localScale = new Vector3((float) ratioEchelle* tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile);
-			LineRendererSetup ();
-			rayToMouse = new Ray(catapult.position, Vector3.zero);
-			leftCatapultToProjectile = new Ray(catapultLineFront.transform.position, Vector3.zero);
-			maxStretchSqr = rigidite * rigidite;
-			CircleCollider2D circle = collider2D as CircleCollider2D;
-			circleRadius = circle.radius * (float) ratioEchelle * tailleXYZProjectile;
-			
-			//rigidbody2D.mass = tirAFaire.Projectile.Poids;
-			rigidbody2D.gravityScale = tirAFaire.Projectile.Poids * GameController.Jeu.Config.Gravite;
+			ChoisirTirEntrainement();
+		}
+		else if(GameController.Jeu.Tirs_A_Realiser.Count > 0) // Si nous ne sommes pas en fin de partie ni en phase d'entrainement
+		{
+			GameController.Jeu.isEntrainement = false;
+			ChoisirTirJeu();
 		}
 		else
 		{
@@ -131,6 +77,124 @@ public class GestionJeu : MonoBehaviour
 			catapultLineFront.enabled = false;
 			catapultLineBack.enabled = false;
 		}
+	}
+
+	void GenererTirs()
+	{
+		Debug.Log("Génération des combinaisons des tirs ...");
+		GameController.Jeu.Nb_lancers = GameController.Jeu.Config.Nb_lancers;
+		Debug.Log("Nombre de lancers : " + GameController.Jeu.Nb_lancers);
+		int nbCombinaisonsGenerees = 0;
+		// Calcul de toutes les combinaisons possibles de Position de Cible, Taille de Cible et Taille de Projectile
+		for(int i = 0; i < GameController.Jeu.Config.NB_series; i++)
+		{
+			for(int j = 0; j <GameController.Jeu.Config.Positions_Cibles.Count; j++)
+			{
+				for( int k = 0; k < GameController.Jeu.Config.Tailles_Cibles.Count; k++)
+				{
+					for(int l = 0; l < GameController.Jeu.Config.Projectiles.Count; l++)
+					{
+						GameController.Jeu.Tirs_A_Realiser.Add(new TripletTirs(GameController.Jeu.Config.Projectiles[l],
+						                                                       GameController.Jeu.Config.Positions_Cibles[j],
+						                                                       GameController.Jeu.Config.Tailles_Cibles[k]));
+						
+						if(i == 0 && !GameController.Jeu.isPretest) // On enregistre les tirs de la phase d'entrainement
+						{
+							GameController.Jeu.Tirs_Entrainement.Add(new TripletTirs(GameController.Jeu.Config.Projectiles[l],
+							                                                         GameController.Jeu.Config.Positions_Cibles[j],
+							                                                         GameController.Jeu.Config.Tailles_Cibles[k]));
+						}
+						nbCombinaisonsGenerees++;
+					}
+				}
+			}
+		}
+		Debug.Log("Nombre de combinaisons générées : " + nbCombinaisonsGenerees);
+	}
+
+	void ChoisirTirJeu()
+	{
+		// CHANGEMENT DE LA RIGIDITE DU LANCE PIERRE
+		rigidite = GameController.Jeu.Config.Rigidite_lancepierre;
+		
+		// CHOIX D'UN TIR A REALISER
+		// Choix d'un tir
+		int rang = GameController.Jeu.Rang_Aleatoire.Next(0, GameController.Jeu.Tirs_A_Realiser.Count);
+		TripletTirs tirAFaire = GameController.Jeu.Tirs_A_Realiser[rang];
+		Debug.Log("Tir choisi (DistanceX=" + tirAFaire.Position_Cible.DistanceX + ", DistanceY=" + tirAFaire.Position_Cible.DistanceY
+		          + ", TailleCible=" + tirAFaire.Taille_Cible + ", TailleProjectile=" + tirAFaire.Projectile.Taille + ", PoidsProjectile=" + tirAFaire.Projectile.Poids + ")");
+		
+		// Suppression du tir dans la liste des tirs à réaliser
+		GameController.Jeu.Tirs_A_Realiser.Remove(tirAFaire);
+		
+		// Ajout du tir dans la liste des tirs effecutés
+		GameController.Jeu.Tirs_Realises.Add(tirAFaire);
+		
+		//CALCUL POSITION DE LA CATAPULTE
+		Vector3 positionCatapulte = catapulte.transform.position;
+		
+		// CHANGEMENT DE LA POSITION ET DE LA TAILLE DE LA CIBLE
+		float positionXCible = catapulte.transform.position.x + (tirAFaire.Position_Cible.DistanceX * (float)diametreProjectile);
+		float positionYCible = catapulte.transform.position.y + (tirAFaire.Position_Cible.DistanceY * (float)diametreProjectile);
+		float positionZCible = cible.transform.position.z * (float)diametreProjectile;
+		cible.transform.position = new Vector3(positionXCible, positionYCible, positionZCible);
+		float tailleXYZCible = tirAFaire.Taille_Cible * (float)GameController.Jeu.Config.Ratio_echelle * cible.transform.localScale.x; // la cible doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
+		cible.transform.localScale = new Vector3(tailleXYZCible, tailleXYZCible, tailleXYZCible);
+		
+		// CHANGEMENT DE LA TAILLE ET DU POIDS DU PROJECTILE
+		double ratioEchelle = GameController.Jeu.Config.Ratio_echelle;
+		float tailleXYZProjectile = tirAFaire.Projectile.Taille;
+		transform.localScale = new Vector3((float) ratioEchelle* tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile);
+		LineRendererSetup ();
+		rayToMouse = new Ray(catapult.position, Vector3.zero);
+		leftCatapultToProjectile = new Ray(catapultLineFront.transform.position, Vector3.zero);
+		maxStretchSqr = rigidite * rigidite;
+		CircleCollider2D circle = collider2D as CircleCollider2D;
+		circleRadius = circle.radius * (float) ratioEchelle * tailleXYZProjectile;
+		
+		//rigidbody2D.mass = tirAFaire.Projectile.Poids;
+		rigidbody2D.gravityScale = tirAFaire.Projectile.Poids * GameController.Jeu.Config.Gravite;
+	}
+
+	void ChoisirTirEntrainement()
+	{
+		// CHANGEMENT DE LA RIGIDITE DU LANCE PIERRE
+		rigidite = GameController.Jeu.Config.Rigidite_lancepierre;
+		
+		// CHOIX D'UN TIR A REALISER
+		// Choix d'un tir
+		int rang = GameController.Jeu.Rang_Aleatoire.Next(0, GameController.Jeu.Tirs_Entrainement.Count);
+		TripletTirs tirAFaire = GameController.Jeu.Tirs_Entrainement[rang];
+		Debug.Log("Tir choisi (DistanceX=" + tirAFaire.Position_Cible.DistanceX + ", DistanceY=" + tirAFaire.Position_Cible.DistanceY
+		          + ", TailleCible=" + tirAFaire.Taille_Cible + ", TailleProjectile=" + tirAFaire.Projectile.Taille + ", PoidsProjectile=" + tirAFaire.Projectile.Poids + ")");
+		
+		// Suppression du tir dans la liste des tirs à réaliser
+		GameController.Jeu.Tirs_Entrainement.Remove(tirAFaire);
+		
+		//CALCUL POSITION DE LA CATAPULTE
+		Vector3 positionCatapulte = catapulte.transform.position;
+		
+		// CHANGEMENT DE LA POSITION ET DE LA TAILLE DE LA CIBLE
+		float positionXCible = catapulte.transform.position.x + (tirAFaire.Position_Cible.DistanceX * (float)diametreProjectile);
+		float positionYCible = catapulte.transform.position.y + (tirAFaire.Position_Cible.DistanceY * (float)diametreProjectile);
+		float positionZCible = cible.transform.position.z * (float)diametreProjectile;
+		cible.transform.position = new Vector3(positionXCible, positionYCible, positionZCible);
+		float tailleXYZCible = tirAFaire.Taille_Cible * (float)GameController.Jeu.Config.Ratio_echelle * cible.transform.localScale.x; // la cible doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
+		cible.transform.localScale = new Vector3(tailleXYZCible, tailleXYZCible, tailleXYZCible);
+		
+		// CHANGEMENT DE LA TAILLE ET DU POIDS DU PROJECTILE
+		double ratioEchelle = GameController.Jeu.Config.Ratio_echelle;
+		float tailleXYZProjectile = tirAFaire.Projectile.Taille;
+		transform.localScale = new Vector3((float) ratioEchelle* tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile);
+		LineRendererSetup ();
+		rayToMouse = new Ray(catapult.position, Vector3.zero);
+		leftCatapultToProjectile = new Ray(catapultLineFront.transform.position, Vector3.zero);
+		maxStretchSqr = rigidite * rigidite;
+		CircleCollider2D circle = collider2D as CircleCollider2D;
+		circleRadius = circle.radius * (float) ratioEchelle * tailleXYZProjectile;
+		
+		//rigidbody2D.mass = tirAFaire.Projectile.Poids;
+		rigidbody2D.gravityScale = tirAFaire.Projectile.Poids * GameController.Jeu.Config.Gravite;
 	}
 	
 	void LineRendererSetup () 

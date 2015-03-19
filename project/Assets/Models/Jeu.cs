@@ -124,6 +124,17 @@ public class Jeu{
 		}
 	}
 
+	// Liste contenant l'ensemble des tirs à réaliser lors de l'entrainement
+	private List<TripletTirs> _Tirs_Entrainement;
+	public List<TripletTirs> Tirs_Entrainement {
+		get {
+			return _Tirs_Entrainement;
+		}
+		set {
+			_Tirs_Entrainement = value;
+		}
+	}
+
 	// Liste contenant l'ensemble des tirs réalisés 
 	private List<TripletTirs> _Tirs_Realises;
 	public List<TripletTirs> Tirs_Realises {
@@ -217,6 +228,7 @@ public class Jeu{
 		_Rang_Aleatoire = new System.Random();
 		_Reussite_Tirs = new List<bool> ();
 		_Tirs_A_Realiser = new List<TripletTirs> ();
+		_Tirs_Entrainement = new List<TripletTirs> ();
 		_Tirs_Realises = new List<TripletTirs> ();
 		_Temps_Mis_Pour_Tirer = new List<float> ();
 		_Mesures_Taille_Cible = new List<float> ();
