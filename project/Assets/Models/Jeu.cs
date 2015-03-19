@@ -178,8 +178,10 @@ public class Jeu{
 		loadAppConfig (Application.dataPath + "/app.conf");
 
 		//Charge la dernière configuration sélectionnée avant de quitter l'application
-		if (!_AppConfig.LastConfName.Equals ("")) {
-			loadConfig(Application.dataPath + "/" +_AppConfig.LastConfName + ".xml");
+		if (!_AppConfig.LastConfName.Equals ("") && File.Exists (Application.dataPath + "/" + _AppConfig.LastConfName + ".xml")) {
+			loadConfig (Application.dataPath + "/" + _AppConfig.LastConfName + ".xml");
+		} else {
+			_AppConfig.LastConfName = "";
 		}
 	}
 
