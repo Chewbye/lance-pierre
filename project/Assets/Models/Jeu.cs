@@ -168,6 +168,17 @@ public class Jeu{
 		}
 	}
 
+	// Boolean indiquant si l'on est en phase d'entrainement
+	private bool _isEntrainement;
+	public bool isEntrainement {
+		get {
+			return _isEntrainement;
+		}
+		set {
+			_isEntrainement = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Jeu à partir d'un fichier de configuation
 	 */
