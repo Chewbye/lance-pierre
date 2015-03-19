@@ -168,7 +168,41 @@ public class Conf{
 			_NB_series = value;
 		}
 	}
+
+	private bool _Condition_De_Controle; 
+
+	public bool Condition_De_Controle {
+		get {
+			return _Condition_De_Controle;
+		}
+		set {
+			_Condition_De_Controle = value;
+		}
+	}
+
+	private bool _Condition_De_Perception; 
 	
+	public bool Condition_De_Perception {
+		get {
+			return _Condition_De_Perception;
+		}
+		set {
+			_Condition_De_Perception = value;
+		}
+	}
+
+	private bool _Condition_De_Memoire; 
+	
+	public bool Condition_De_Memoire {
+		get {
+			return _Condition_De_Memoire;
+		}
+		set {
+			_Condition_De_Memoire = value;
+		}
+	}
+
+
 	/**
 	 * Créé un modèle Conf à partir d'un fichier de configuation
 	 */
@@ -198,6 +232,9 @@ public class Conf{
 		_Projectiles = new List<Projectile> ();
 		_Ratio_echelle = 1;
 		_NB_series = 1;
+		_Condition_De_Controle = true;
+		_Condition_De_Perception = false;
+		_Condition_De_Memoire = false;
 	}
 	
 	
@@ -214,6 +251,9 @@ public class Conf{
 		res += "_Marge_stabilisation_validation_cible: " + _Marge_stabilisation_validation_cible + System.Environment.NewLine;
 		res += "_Ratio_echelle: " + _Ratio_echelle + System.Environment.NewLine;
 		res += "_NB_series: " + _NB_series + System.Environment.NewLine;
+		res += "_Condition_De_Controle: " + Convert.ToString(_Condition_De_Controle) + System.Environment.NewLine;
+		res += "_Condition_De_Perception: " + Convert.ToString(_Condition_De_Perception) + System.Environment.NewLine;
+		res += "_Condition_De_Memoire: " + Convert.ToString(_Condition_De_Memoire) + System.Environment.NewLine;
 
 		foreach (PositionCible poscible in _Positions_Cibles) {
 			res += "POSITION CIBLE: " + System.Environment.NewLine;

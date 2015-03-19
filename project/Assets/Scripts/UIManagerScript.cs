@@ -34,6 +34,9 @@ public class UIManagerScript : MonoBehaviour {
 	public InputField IF_Delai_evaluation_cible;
 	public InputField IF_Delai_validation_mesure_cible;
 	public InputField IF_Marge_stabilisation_validation_cible;
+	public Toggle T_Condition_De_Controle;
+	public Toggle T_Condition_De_Perception;
+	public Toggle T_Condition_De_Memoire;
 
 	/* Liste des fichiers de configuration */
 	public GameObject Configs_List_Panel;
@@ -52,7 +55,7 @@ public class UIManagerScript : MonoBehaviour {
 		//Création du modèle Jeu au lancement de l'application
 		if (GameController.Jeu == null) {
 			GameController.Jeu = new Jeu ();
-
+			
 			//Initialisation des tableaux
 			GameController.Jeu.Config.Positions_Cibles.Add (new PositionCible (1, 1));
 			GameController.Jeu.Config.Tailles_Cibles.Add (1.0f);
@@ -60,7 +63,6 @@ public class UIManagerScript : MonoBehaviour {
 		} else{
 			GameController.Jeu.newGame();
 		}
-
 
 
 		refreshGUIFields ();
@@ -148,6 +150,9 @@ public class UIManagerScript : MonoBehaviour {
 		IF_Delai_validation_mesure_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_validation_mesure_cible);
 		IF_Marge_stabilisation_validation_cible.text = Convert.ToString(GameController.Jeu.Config.Marge_stabilisation_validation_cible);
 		IF_Nb_series.text = Convert.ToString (GameController.Jeu.Config.NB_series);
+		T_Condition_De_Controle.isOn = GameController.Jeu.Config.Condition_De_Controle;
+		T_Condition_De_Perception.isOn = GameController.Jeu.Config.Condition_De_Perception;
+		T_Condition_De_Memoire.isOn = GameController.Jeu.Config.Condition_De_Memoire;
 	}
 
 	public void onValueChangeGravite(){
@@ -218,18 +223,39 @@ public class UIManagerScript : MonoBehaviour {
 		}
 	}
 
+	public void onValueChangeCondition_de_controle(){
+		GameController.Jeu.Config.Condition_De_Controle = T_Condition_De_Controle.isOn;
+	}
+
+	public void onValueChangeCondition_de_perception(){
+		GameController.Jeu.Config.Condition_De_Perception = T_Condition_De_Perception.isOn;
+	}
+
+	public void onValueChangeCondition_de_memoire(){
+		GameController.Jeu.Config.Condition_De_Memoire = T_Condition_De_Memoire.isOn;
+	}
+
+
+
 	/**
-	 * Méthode appelée lorsqu'on clique sur le bouton "Condition de controle"
+	 * Méthode appelée lorsqu'on clique sur le bouton "Pré-test Leap Motion"
 	 */
-	public void onClickConditionControle(){
+	public void onClickPreTestLeapMotion(){
 		launchGame ("evaluationTailleCible");
 	}
 
 	/**
-	 * Méthode appelée lorsqu'on clique sur le bouton "Pré-test"
+	 * Méthode appelée lorsqu'on clique sur le bouton "Pré-test passation"
 	 */
-	public void onClickPreTest(){
+	public void onClickPreTestPassation(){
 		launchGame ("jeu");
+	}
+
+	/**
+	 * Méthode appelée lorsqu'on clique sur le bouton "Retour au menu"
+	 */
+	public void onClickRetourMenu(){
+		launchGame ("menu");
 	}
 
 	/**
