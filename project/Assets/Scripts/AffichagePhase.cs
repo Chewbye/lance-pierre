@@ -15,7 +15,7 @@ public class AffichagePhase : MonoBehaviour {
 			txt = gameObject.GetComponent<Text>(); 
 			txt.text= "PHASE DE TEST";
 		}
-		else if(GameController.Jeu.isPretest)
+		else if(GameController.Jeu.isEntrainement)
 		{
 			txt = gameObject.GetComponent<Text>(); 
 			txt.text= "PHASE D'ENTRAINEMENT";
