@@ -72,6 +72,17 @@ public class Conf{
 			_Nb_points_gagnes_par_cible = value;
 		}
 	}
+
+	private int _Nb_points_perdus_par_cible_manque;
+	
+	public int Nb_points_perdus_par_cible_manque {
+		get {
+			return _Nb_points_perdus_par_cible_manque;
+		}
+		set {
+			_Nb_points_perdus_par_cible_manque = value;
+		}
+	}
 	
 	private float _Delai_lancer_projectile;
 	
@@ -234,6 +245,7 @@ public class Conf{
 		_Nb_lancers = 1;
 		_Afficher_le_score = true;
 		_Nb_points_gagnes_par_cible = 1;
+		_Nb_points_perdus_par_cible_manque = 1;
 		_Delai_lancer_projectile = 20;
 		_Delai_evaluation_cible = 1.0f;
 		_Delai_validation_mesure_cible = 1.0f;
@@ -257,6 +269,7 @@ public class Conf{
 		res += "_Nb_lancers: " +_Nb_lancers + System.Environment.NewLine;
 		res += "_Afficher_le_score: " + Convert.ToString(_Afficher_le_score) + System.Environment.NewLine;
 		res += "_Nb_points_gagnes_par_cible: " + _Nb_points_gagnes_par_cible + System.Environment.NewLine;
+		res += "_Nb_points_perdus_par_cible_manque: " + _Nb_points_perdus_par_cible_manque + System.Environment.NewLine;
 		res += "_Delai_lancer_projectile: " + _Delai_lancer_projectile + System.Environment.NewLine;
 		res += "_Delai_evaluation_cible: " + _Delai_evaluation_cible + System.Environment.NewLine;
 		res += "_Delai_validation_mesure_cible: " + _Delai_validation_mesure_cible + System.Environment.NewLine;

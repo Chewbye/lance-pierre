@@ -24,6 +24,7 @@ public class UIManagerScript : MonoBehaviour {
 	
 	/* Onglet Cibles */
 	public InputField IF_Nb_points_gagnes_par_cible;
+	public InputField IF_Nb_points_perdus_par_cible_manque;
 
 
 	/* Onglet Lance-pierre */
@@ -161,6 +162,7 @@ public class UIManagerScript : MonoBehaviour {
 		T_Condition_De_Controle.isOn = GameController.Jeu.Config.Condition_De_Controle;
 		T_Condition_De_Perception.isOn = GameController.Jeu.Config.Condition_De_Perception;
 		T_Condition_De_Memoire.isOn = GameController.Jeu.Config.Condition_De_Memoire;
+		IF_Nb_points_perdus_par_cible_manque.text = Convert.ToString(GameController.Jeu.Config.Nb_points_perdus_par_cible_manque);
 	}
 
 	public void onValueChangeGravite(){
@@ -192,6 +194,13 @@ public class UIManagerScript : MonoBehaviour {
 		int res;
 		if (int.TryParse (IF_Nb_points_gagnes_par_cible.text, out res)) {
 			GameController.Jeu.Config.Nb_points_gagnes_par_cible = res;
+		}
+	}
+
+	public void onValueChangeNb_points_perdus_par_cible_manque(){
+		int res;
+		if (int.TryParse (IF_Nb_points_perdus_par_cible_manque.text, out res)) {
+			GameController.Jeu.Config.Nb_points_perdus_par_cible_manque = res;
 		}
 	}
 
