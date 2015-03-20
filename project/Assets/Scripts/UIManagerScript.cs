@@ -41,6 +41,7 @@ public class UIManagerScript : MonoBehaviour {
 	public InputField IF_Delai_avant_disparition_cible;
 	public InputField IF_Delai_avant_evaluation_cible;
 	public GameObject Panel_champs_apres_disparition;
+	public Toggle T_Affichage_Barre_Progression;
 
 	/* Liste des fichiers de configuration */
 	public GameObject Configs_List_Panel;
@@ -168,6 +169,7 @@ public class UIManagerScript : MonoBehaviour {
 		IF_Nb_points_perdus_par_cible_manque.text = Convert.ToString(GameController.Jeu.Config.Nb_points_perdus_par_cible_manque);
 		IF_Delai_avant_disparition_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_disparition_cible);
 		IF_Delai_avant_evaluation_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_evaluation_cible);
+		T_Affichage_Barre_Progression.isOn = GameController.Jeu.Config.Affichage_barre_progression;
 
 		onValueChangeToggleCondition ();
 	}
@@ -281,6 +283,17 @@ public class UIManagerScript : MonoBehaviour {
 			Panel_champs_apres_disparition.SetActive (true);
 		} else {
 			Panel_champs_apres_disparition.SetActive (false);
+		}
+	}
+
+	public void onValueChangeToggleAffichage_barre_progression()
+	{
+		GameController.Jeu.Config.Affichage_barre_progression = T_Affichage_Barre_Progression.isOn;
+
+		if (T_Affichage_Barre_Progression.isOn) {
+			// afficher scene ou bien bouton amenant vers la scene de réglages de la barre (taille,etc...)
+		} else {
+			// masquer scene ou bouton 
 		}
 	}
 

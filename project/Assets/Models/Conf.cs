@@ -246,6 +246,17 @@ public class Conf{
 		}
 	}
 
+	private bool _Affichage_barre_progression;
+
+	public bool Affichage_barre_progression {
+		get {
+			return _Affichage_barre_progression;
+		}
+		set {
+			_Affichage_barre_progression = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Conf à partir d'un fichier de configuation
 	 */
@@ -282,6 +293,7 @@ public class Conf{
 		_Condition_De_Memoire = false;
 		_Delai_avant_evaluation_cible = 2;
 		_Delai_avant_disparition_cible = 2;
+		_Affichage_barre_progression = true;
 	}
 	
 	
@@ -305,6 +317,7 @@ public class Conf{
 		res += "_Condition_De_Memoire: " + Convert.ToString(_Condition_De_Memoire) + System.Environment.NewLine;
 		res += "_Delai_avant_evaluation_cible: " + Convert.ToString(_Delai_avant_evaluation_cible) + System.Environment.NewLine;
 		res += "_Delai_avant_disparition_cible: " + Convert.ToString(_Delai_avant_disparition_cible) + System.Environment.NewLine;
+		res += "_Affichage_barre_progression: " + Convert.ToString(_Affichage_barre_progression) + System.Environment.NewLine;
 
 		foreach (PositionCible poscible in _Positions_Cibles) {
 			res += "POSITION CIBLE: " + System.Environment.NewLine;
