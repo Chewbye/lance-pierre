@@ -153,7 +153,7 @@ public class MenuTableManager : MonoBehaviour {
 
 		//Remise à niveau des identifiants de chaque ligne
 		for (int i=row; i<Table.transform.childCount-1; i++) {
-			int newID = i - 2;
+			int newID = i - 1;
 			Table.transform.GetChild(i).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = newID.ToString();
 			
 			addListenersToRow(Table.transform.GetChild(i).gameObject.transform, fieldChangeMethod, removeRowMethod, -1);
@@ -229,7 +229,6 @@ public class MenuTableManager : MonoBehaviour {
 		//Récupération dernière ligne du tableau
 		Transform lastRow = Table.transform.GetChild (Table.transform.childCount-2);
 
-		Debug.Log ("NOMBRELIGNES:" + (Table.transform.childCount - 2));
 		//Création de la nouvelle ligne du tableau
 		UnityEngine.GameObject newRowTableCibles = CreateRowCible (prefabRow, Table, new Vector2 (0, 0), new Vector2 (0, 0));
 		
@@ -238,7 +237,7 @@ public class MenuTableManager : MonoBehaviour {
 
 		int lastNumCible;
 		if (int.TryParse (lastNumCibleString, out lastNumCible)) {
-			lastNumCible = (Table.transform.childCount-3);
+			lastNumCible = (Table.transform.childCount-3) + 1;
 			//Modification du numéro de cible de la nouvelle ligne en l'incrémentant
 			newRowTableCibles.gameObject.transform.GetChild (0).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = lastNumCible.ToString();
 		}
