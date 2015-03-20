@@ -159,7 +159,6 @@ public class Conf{
 	}
 
 	private double _Ratio_echelle;
-	
 	public double Ratio_echelle {
 		get {
 			return _Ratio_echelle;
@@ -170,13 +169,32 @@ public class Conf{
 	}
 
 	private double _Taille_Hauteur_Catapulte;
-	
 	public double Taille_Hauteur_Catapulte {
 		get {
 			return _Taille_Hauteur_Catapulte;
 		}
 		set {
 			_Taille_Hauteur_Catapulte = value;
+		}
+	}
+
+	private double _Distance_X_Catapulte;
+	public double Distance_X_Catapulte {
+		get {
+			return _Distance_X_Catapulte;
+		}
+		set {
+			_Distance_X_Catapulte = value;
+		}
+	}
+	
+	private double _Distance_Y_Catapulte;
+	public double Distance_Y_Catapulte {
+		get {
+			return _Distance_Y_Catapulte;
+		}
+		set {
+			_Distance_Y_Catapulte = value;
 		}
 	}
 
@@ -287,6 +305,8 @@ public class Conf{
 		_Projectiles = new List<Projectile> ();
 		_Ratio_echelle = 1;
 		_Taille_Hauteur_Catapulte = 3;
+		_Distance_X_Catapulte = -10;
+		_Distance_Y_Catapulte = -4;
 		_NB_series = 1;
 		_Condition_De_Controle = true;
 		_Condition_De_Perception = false;
@@ -310,7 +330,9 @@ public class Conf{
 		res += "_Delai_validation_mesure_cible: " + _Delai_validation_mesure_cible + System.Environment.NewLine;
 		res += "_Marge_stabilisation_validation_cible: " + _Marge_stabilisation_validation_cible + System.Environment.NewLine;
 		res += "_Ratio_echelle: " + _Ratio_echelle + System.Environment.NewLine;
-		res += "_Ratio_echelle: " + _Taille_Hauteur_Catapulte + System.Environment.NewLine;
+		res += "_Taille_Hauteur_Catapulte: " + _Taille_Hauteur_Catapulte + System.Environment.NewLine;
+		res += "_Distance_X_Catapulte: " + _Distance_X_Catapulte + System.Environment.NewLine;
+		res += "_Distance_Y_Catapulte: " + _Distance_Y_Catapulte + System.Environment.NewLine;
 		res += "_NB_series: " + _NB_series + System.Environment.NewLine;
 		res += "_Condition_De_Controle: " + Convert.ToString(_Condition_De_Controle) + System.Environment.NewLine;
 		res += "_Condition_De_Perception: " + Convert.ToString(_Condition_De_Perception) + System.Environment.NewLine;

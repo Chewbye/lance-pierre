@@ -8,7 +8,7 @@ public class GestionJeu : MonoBehaviour
 	public GameObject catapulte;
 	public LineRenderer catapultLineFront;
 	public LineRenderer catapultLineBack;  
-
+	
 	private double diametreProjectile;
 	private SpringJoint2D spring;
 	private Transform catapult;
@@ -19,6 +19,7 @@ public class GestionJeu : MonoBehaviour
 	private float circleRadius;
 	private bool clickedOn;
 	private Vector2 prevVelocity;
+	private double ratioEchelle;
 	
 	void Awake () 
 	{
@@ -29,13 +30,35 @@ public class GestionJeu : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		ratioEchelle = GameController.Jeu.Config.Ratio_echelle;
 		diametreProjectile = renderer.bounds.size.x * GameController.Jeu.Config.Ratio_echelle;
-		// INITIALISATION DES ATTRIBUTS DE JEU
+		Vector3 positionCatapulte = catapulte.transform.position;
+		
+		// CHANGEMENT DE LA TAILLE DE LA CATAPULTE
+		double hauteurCatapulteCm = GameController.Jeu.Config.Taille_Hauteur_Catapulte;
+		double hauteurCatapulte = GameController.Jeu.Config.Taille_Hauteur_Catapulte 
+			* (float)GameController.Jeu.Config.Ratio_echelle 
+				* catapulte.transform.localScale.x; // la catapulte doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
+		catapulte.transform.localScale = new Vector3((float) hauteurCatapulte, (float) hauteurCatapulte, (float)hauteurCatapulte);
+		
+		// CHANGEMENT DE LA POSITION DE LA CATAPULTE
+		float positionXCatapulte = (float) (GameController.Jeu.Config.Distance_X_Catapulte * diametreProjectile);
+		float positionYCatapulte = (float) (GameController.Jeu.Config.Distance_Y_Catapulte * diametreProjectile);
+		float positionZCatapulte = catapulte.transform.position.z;
+		catapulte.transform.position = new Vector3(positionXCatapulte, positionYCatapulte, positionZCatapulte);
+		
+		// CHANGEMENT DE LA POSITION DU PROJECTILE
+		float positionXProjectile = (float) (GameController.Jeu.Config.Distance_X_Catapulte * diametreProjectile + (-1 * diametreProjectile));
+		float positionYProjectile = (float) (GameController.Jeu.Config.Distance_Y_Catapulte * diametreProjectile + (-1 * diametreProjectile));
+		float positionZProjectile = transform.position.z;
+		transform.position = new Vector3(positionXProjectile, positionYProjectile, positionZProjectile);
+		
+		LineRendererSetup ();
 		if(GameController.Jeu.Tirs_A_Realiser.Count == 0 && GameController.Jeu.Tirs_Realises.Count == 0)// Si les triplets n'ont pas déjà été générés
 		{
 			GenererTirs();
 		}
-
+		
 		if(GameController.Jeu.Tirs_Entrainement.Count > 0) // Si nous sommes dans la phase d'entrainement
 		{
 			ChoisirTirEntrainement();
@@ -78,7 +101,7 @@ public class GestionJeu : MonoBehaviour
 			catapultLineBack.enabled = false;
 		}
 	}
-
+	
 	void GenererTirs()
 	{
 		Debug.Log("Génération des combinaisons des tirs ...");
@@ -111,7 +134,7 @@ public class GestionJeu : MonoBehaviour
 		}
 		Debug.Log("Nombre de combinaisons générées : " + nbCombinaisonsGenerees);
 	}
-
+	
 	void ChoisirTirJeu()
 	{
 		// CHANGEMENT DE LA RIGIDITE DU LANCE PIERRE
@@ -155,7 +178,7 @@ public class GestionJeu : MonoBehaviour
 		//rigidbody2D.mass = tirAFaire.Projectile.Poids;
 		rigidbody2D.gravityScale = tirAFaire.Projectile.Poids * GameController.Jeu.Config.Gravite;
 	}
-
+	
 	void ChoisirTirEntrainement()
 	{
 		// CHANGEMENT DE LA RIGIDITE DU LANCE PIERRE
