@@ -224,6 +224,27 @@ public class Conf{
 		}
 	}
 
+	private float _Delai_avant_evaluation_cible;
+	
+	public float Delai_avant_evaluation_cible {
+		get {
+			return _Delai_avant_evaluation_cible;
+		}
+		set {
+			_Delai_avant_evaluation_cible = value;
+		}
+	}
+
+	private float _Delai_avant_disparition_cible;
+	
+	public float Delai_avant_disparition_cible {
+		get {
+			return _Delai_avant_disparition_cible;
+		}
+		set {
+			_Delai_avant_disparition_cible = value;
+		}
+	}
 
 	/**
 	 * Créé un modèle Conf à partir d'un fichier de configuation
@@ -259,6 +280,8 @@ public class Conf{
 		_Condition_De_Controle = true;
 		_Condition_De_Perception = false;
 		_Condition_De_Memoire = false;
+		_Delai_avant_evaluation_cible = 2;
+		_Delai_avant_disparition_cible = 2;
 	}
 	
 	
@@ -280,6 +303,8 @@ public class Conf{
 		res += "_Condition_De_Controle: " + Convert.ToString(_Condition_De_Controle) + System.Environment.NewLine;
 		res += "_Condition_De_Perception: " + Convert.ToString(_Condition_De_Perception) + System.Environment.NewLine;
 		res += "_Condition_De_Memoire: " + Convert.ToString(_Condition_De_Memoire) + System.Environment.NewLine;
+		res += "_Delai_avant_evaluation_cible: " + Convert.ToString(_Delai_avant_evaluation_cible) + System.Environment.NewLine;
+		res += "_Delai_avant_disparition_cible: " + Convert.ToString(_Delai_avant_disparition_cible) + System.Environment.NewLine;
 
 		foreach (PositionCible poscible in _Positions_Cibles) {
 			res += "POSITION CIBLE: " + System.Environment.NewLine;

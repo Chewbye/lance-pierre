@@ -38,6 +38,9 @@ public class UIManagerScript : MonoBehaviour {
 	public Toggle T_Condition_De_Controle;
 	public Toggle T_Condition_De_Perception;
 	public Toggle T_Condition_De_Memoire;
+	public InputField IF_Delai_avant_disparition_cible;
+	public InputField IF_Delai_avant_evaluation_cible;
+	public GameObject Panel_champs_apres_disparition;
 
 	/* Liste des fichiers de configuration */
 	public GameObject Configs_List_Panel;
@@ -163,6 +166,10 @@ public class UIManagerScript : MonoBehaviour {
 		T_Condition_De_Perception.isOn = GameController.Jeu.Config.Condition_De_Perception;
 		T_Condition_De_Memoire.isOn = GameController.Jeu.Config.Condition_De_Memoire;
 		IF_Nb_points_perdus_par_cible_manque.text = Convert.ToString(GameController.Jeu.Config.Nb_points_perdus_par_cible_manque);
+		IF_Delai_avant_disparition_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_disparition_cible);
+		IF_Delai_avant_evaluation_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_evaluation_cible);
+
+		onValueChangeToggleCondition ();
 	}
 
 	public void onValueChangeGravite(){
@@ -242,17 +249,40 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void onValueChangeCondition_de_controle(){
 		GameController.Jeu.Config.Condition_De_Controle = T_Condition_De_Controle.isOn;
+		onValueChangeToggleCondition ();
 	}
 
 	public void onValueChangeCondition_de_perception(){
 		GameController.Jeu.Config.Condition_De_Perception = T_Condition_De_Perception.isOn;
+		onValueChangeToggleCondition ();
 	}
 
 	public void onValueChangeCondition_de_memoire(){
 		GameController.Jeu.Config.Condition_De_Memoire = T_Condition_De_Memoire.isOn;
+		onValueChangeToggleCondition ();
 	}
 
+	public void onValueChangeDelai_avant_evaluation_cible(){
+		float res;
+		if (float.TryParse (IF_Delai_avant_evaluation_cible.text, out res)) {
+			GameController.Jeu.Config.Delai_avant_evaluation_cible = res;
+		}
+	}
 
+	public void onValueChangeDelai_avant_disparition_cible(){
+		float res;
+		if (float.TryParse (IF_Delai_avant_disparition_cible.text, out res)) {
+			GameController.Jeu.Config.Delai_avant_disparition_cible = res;
+		}
+	}
+
+	public void onValueChangeToggleCondition(){
+		if (T_Condition_De_Memoire.isOn) {
+			Panel_champs_apres_disparition.SetActive (true);
+		} else {
+			Panel_champs_apres_disparition.SetActive (false);
+		}
+	}
 
 	/**
 	 * Méthode appelée lorsqu'on clique sur le bouton "Pré-test Leap Motion"
