@@ -29,20 +29,16 @@ public class MenuSecondaire : MonoBehaviour {
 	{
 		int res;
 		if (int.TryParse (IF_numero.text, out res)) {
-			Debug.Log("ok 1");
 			GameController.Jeu.Participant.Numero = res;
 		}
-		Debug.Log(IF_numero.text.Length);
 	}
 
 	public void onChangeValueAge()
 	{
 		int res;
 		if (int.TryParse (IF_age.text, out res)) {
-			Debug.Log("ok 2");
 			GameController.Jeu.Participant.Age = res;
 		}
-		Debug.Log("---");
 	}
 
 	public void onChangeToggleSexeHomme()
