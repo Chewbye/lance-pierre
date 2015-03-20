@@ -27,10 +27,10 @@ public class ReinitProjectile : MonoBehaviour {
 			}
 
 			//	If the spring had been destroyed (indicating we have launched the projectile) and our projectile's velocity is below the threshold...
-			if (spring == null && projectile.velocity.sqrMagnitude < resetSpeedSqr) {
+			/*if (spring == null && projectile.velocity.sqrMagnitude < resetSpeedSqr) {
 				//	... call the Reset() function
 				Reset ();
-			}
+			}*/
 	}
 	
 	void OnTriggerExit2D (Collider2D other) {

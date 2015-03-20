@@ -102,6 +102,17 @@ public class Jeu{
 		}
 	}
 
+	// Indique pour le tir courant si la cible est touchee
+	private bool _Cible_Touchee;
+	public bool Cible_Touchee {
+		get {
+			return _Cible_Touchee;
+		}
+		set {
+			_Cible_Touchee = value;
+		}
+	}
+
 	// Liste contenant le temps mis par le joueur à tirer pour chacun des tirs
 	private List<float> _Temps_Mis_Pour_Tirer;
 	public List<float> Temps_Mis_Pour_Tirer {
@@ -239,6 +250,7 @@ public class Jeu{
 		_Nb_lancers = _Config.Nb_lancers;
 		_Score = 0;
 		_Tir_courant = 0;
+		_Cible_Touchee = false;
 		_Rang_Aleatoire = new System.Random();
 		_Reussite_Tirs = new List<bool> ();
 		_Tirs_A_Realiser = new List<TripletTirs> ();

@@ -35,9 +35,12 @@ public class GestionDegats : MonoBehaviour {
 
 			// On incrémente le tir courant
 			GameController.Jeu.Tir_courant++;
+
 		}
 
+		GameController.Jeu.Cible_Touchee = true;
+		particleSystem.Play();
 		//On recharge la meme scène
-		Application.LoadLevel (Application.loadedLevel);
+		//Application.LoadLevel (Application.loadedLevel);
 	}
 }

@@ -13,11 +13,14 @@ public class CompteARebours : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		GameController.Jeu.Temps_Restant_Courant -= Time.deltaTime;
-		if (GameController.Jeu.Temps_Restant_Courant <= 0.0f)
+		if(!GameController.Jeu.Cible_Touchee)
 		{
-			Debug.Log("Temps écoulé !");
-			Reset ();
+			GameController.Jeu.Temps_Restant_Courant -= Time.deltaTime;
+			if (GameController.Jeu.Temps_Restant_Courant <= 0.0f)
+			{
+				Debug.Log("Temps écoulé !");
+				Reset ();
+			}
 		}
 	}
 
