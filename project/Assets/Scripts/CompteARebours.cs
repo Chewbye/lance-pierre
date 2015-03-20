@@ -31,6 +31,9 @@ public class CompteARebours : MonoBehaviour
 			// On indique le temps mis par le joueur pour tirer (ici -1 car le joueur n'a pas tiré)
 			GameController.Jeu.Temps_Mis_Pour_Tirer.Add(-1);
 
+			// On baisse le score
+			GameController.Jeu.Score = GameController.Jeu.Score - GameController.Jeu.Config.Nb_points_perdus_par_cible_manque;
+
 			// On incrémente le tir courant
 			GameController.Jeu.Tir_courant++;
 		}

@@ -48,6 +48,9 @@ public class ReinitProjectile : MonoBehaviour {
 			// On indique que le tir courant est manqué
 			GameController.Jeu.Reussiste_Tirs.Add(false);
 
+			// On baisse le score
+			GameController.Jeu.Score = GameController.Jeu.Score - GameController.Jeu.Config.Nb_points_perdus_par_cible_manque;
+
 			// On incrémente le tir courant
 			GameController.Jeu.Tir_courant++;
 		}
