@@ -260,15 +260,7 @@ public class UIManagerScript : MonoBehaviour {
 	public void onClickPreTestLeapMotion(){
 		launchGame ("evaluationTailleCible");
 	}
-
-	/**
-	 * Méthode appelée lorsqu'on clique sur le bouton "Pré-test passation"
-	 */
-	public void onClickPreTestPassation(){
-		GameController.Jeu.isPretest = true;
-		launchGame ("jeu");
-	}
-
+	
 	/**
 	 * Méthode appelée lorsqu'on clique sur le bouton "Retour au menu"
 	 */
