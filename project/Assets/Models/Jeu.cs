@@ -190,11 +190,24 @@ public class Jeu{
 		}
 	}
 
+	//Participant du test
+	private Participant _participant;
+
+	public Participant Participant {
+		get {
+			return _participant;
+		}
+		set {
+			_participant = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Jeu à partir d'un fichier de configuation
 	 */
 	public Jeu(Conf configuration){
 		_Config = configuration;
+		_participant = new Participant ();
 		newGame ();
 		refreshConfigFiles ();
 	}
@@ -205,6 +218,7 @@ public class Jeu{
 	public Jeu(){
 
 		_Config = new Conf ();
+		_participant = new Participant ();
 		newGame ();
 		refreshConfigFiles ();
 
