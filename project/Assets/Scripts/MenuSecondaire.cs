@@ -13,11 +13,19 @@ public class MenuSecondaire : MonoBehaviour {
 	public Toggle T_Oui;
 	public Toggle T_Non;
 
+	public bool erreur;
+	public string typeErreur;
+
 
 	// Use this for initialization
 	void Start () {
 		GameController.Jeu = new Jeu ();
 		GameController.Jeu.Participant = new Participant ();
+		GameController.Jeu.Participant.Sexe = "homme";
+		GameController.Jeu.Participant.MainDominante = "droite";
+		GameController.Jeu.Participant.PratiqueJeuxVideo = "oui";
+		erreur = false;
+		typeErreur = "";
 	}
 	
 	// Update is called once per frame
@@ -45,7 +53,6 @@ public class MenuSecondaire : MonoBehaviour {
 	{
 		if (T_Homme.isOn) {
 			GameController.Jeu.Participant.Sexe = "homme";
-			T_Femme.isOn = false; 
 		}
 	}
 
@@ -53,7 +60,6 @@ public class MenuSecondaire : MonoBehaviour {
 	{
 		if (T_Femme.isOn) {
 			GameController.Jeu.Participant.Sexe = "femme";
-			T_Homme.isOn = false;
 		}
 	}
 
@@ -61,7 +67,6 @@ public class MenuSecondaire : MonoBehaviour {
 	{
 		if (T_Gauche.isOn) {
 			GameController.Jeu.Participant.MainDominante = "gauche";
-			T_Droite.isOn  = false; 
 		}
 
 	}
@@ -70,7 +75,6 @@ public class MenuSecondaire : MonoBehaviour {
 	{
 		if (T_Droite.isOn) {
 			GameController.Jeu.Participant.MainDominante = "droite";
-			T_Gauche.isOn = false;
 		}
 	}
 
@@ -78,7 +82,6 @@ public class MenuSecondaire : MonoBehaviour {
 	{
 		if (T_Oui.isOn) {
 			GameController.Jeu.Participant.PratiqueJeuxVideo = "oui";
-			T_Non.isOn = false;
 		}
 	}
 
@@ -86,13 +89,48 @@ public class MenuSecondaire : MonoBehaviour {
 	{
 		if (T_Non.isOn) {
 			GameController.Jeu.Participant.PratiqueJeuxVideo = "non";
-			T_Oui.isOn = false;
 		}
 	}
 
 
 	public void onClickButtonLancerTest()
 	{
-		Debug.Log(GameController.Jeu.Participant.ToString()+ "\n");
+		if (GameController.Jeu.Participant.numeroValide ()) {
+			if (GameController.Jeu.Participant.ageValide ()) {
+				Debug.Log(GameController.Jeu.Participant.ToString()+ "\n");
+				//passage à la scene suivante
+			} else {
+				Debug.Log("age invalide \n");
+				erreur = true;
+				typeErreur = "age invalide";
+			}
+		} else {
+			Debug.Log("numero invalide \n");
+			erreur = true;
+			typeErreur = "numero invalide";
+
+		}
+
+	}
+
+	public void onClickButtonRevenirMenu()
+	{
+		UnityEngine.Application.LoadLevel ("menu");
+	}
+
+	void OnGUI()
+	{
+		if (erreur) {
+			UnityEngine.Rect rect = new Rect(Screen.width/2,Screen.height/2,100,100);
+			GUI.Window (1,rect,DoMyWindows,typeErreur);
+		}
+
+	}
+
+	void DoMyWindows (int id)
+	{
+		if (GUI.Button (new Rect (10, 70, 80, 20), "OK")) {
+			erreur = false;
+		}
 	}
 }
