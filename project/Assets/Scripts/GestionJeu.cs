@@ -70,7 +70,7 @@ public class GestionJeu : MonoBehaviour
 		}
 		else
 		{
-			GameController.Jeu.isPretest = false;
+			//GameController.Jeu.isPretest = false;
 			Application.LoadLevel ("finDeTest");
 		}
 		

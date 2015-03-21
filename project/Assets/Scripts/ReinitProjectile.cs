@@ -43,8 +43,7 @@ public class ReinitProjectile : MonoBehaviour {
 	
 	void Reset () 
 	{
-		if(!GameController.Jeu.isEntrainement)
-		{
+		if(!GameController.Jeu.isEntrainement) {
 			// On indique que le tir courant est manqué
 			GameController.Jeu.Reussiste_Tirs.Add(false);
 

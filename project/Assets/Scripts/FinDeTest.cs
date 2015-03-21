@@ -65,19 +65,27 @@ public class FinDeTest : MonoBehaviour {
 		nb_tailles_projectiles = Convert.ToString(GameController.Jeu.Config.Projectiles.Count);
 		afficher_le_score = GameController.Jeu.Config.Afficher_le_score;
 		nb_points_gagnes_par_cible = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
-		//nb_points_perdus_par_cible = Convert.ToString(GameController.Jeu.Config.Nb_points_perdus_par_cible);
+		nb_points_perdus_par_cible = Convert.ToString(GameController.Jeu.Config.Nb_points_perdus_par_cible_manque);
 		delai_lancer_projectile = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		delai_evaluation_cible = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
 		delai_validation_mesure = Convert.ToString (GameController.Jeu.Config.Delai_validation_mesure_cible);
 		marge_stabilisation_leap = Convert.ToString (GameController.Jeu.Config.Marge_stabilisation_validation_cible);
-		//condition_test = Convert.ToString (GameController.Jeu.Config.condition_test);
+		if (GameController.Jeu.Config.Condition_De_Memoire)
+			condition_test = "Mémoire";
+		else if (GameController.Jeu.Config.Condition_De_Controle)
+			condition_test = "Controle";
+		else if (GameController.Jeu.Config.Condition_De_Perception)
+			condition_test = "Perception";
 		
 		writeXML ();
 	}
 	
 	public void writeXML() {
 		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
-		fichierCourant = nom_configuration + ".xml";
+		if (GameController.Jeu.isPretest) 
+			fichierCourant = nom_configuration + "_pretest.xml";
+		else
+			fichierCourant = nom_configuration + ".xml";
 		int nb_lancers_int = Convert.ToInt32(nb_lancers);
 		int nbReussi = 0;
 		int nbManque = 0;
@@ -225,7 +233,7 @@ public class FinDeTest : MonoBehaviour {
 					"Nombre de points perdus par cible" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-					0 + // à changer par la bonne valeur (nb_points_perdus_par_cible)
+					nb_points_perdus_par_cible +
 					"</Data></Cell>" +
 					"</Row>" +
 					"<Row>" +
@@ -265,7 +273,7 @@ public class FinDeTest : MonoBehaviour {
 					"Condition de test" +
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Pour l'instant rien" + // à changer avec la bonne valeur (condition_test)
+					condition_test +
 					"</Data></Cell>" +
 					"</Row>" +
 					"</Table>" +
@@ -391,9 +399,9 @@ public class FinDeTest : MonoBehaviour {
 					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">";
 				if (GameController.Jeu.Reussiste_Tirs[i] == true) 
-					text += GameController.Jeu.Config.Nb_points_gagnes_par_cible;
+					text += nb_points_gagnes_par_cible;
 				else
-					text += "0";
+					text += "-" + nb_points_perdus_par_cible;;
 				text += "</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">" +
 						GameController.Jeu.Config.Delai_lancer_projectile +
@@ -639,9 +647,9 @@ public class FinDeTest : MonoBehaviour {
 						"</Data></Cell>" +
 						"<Cell><Data ss:Type=\"Number\">";
 				if (GameController.Jeu.Reussiste_Tirs[i] == true) 
-					textToWrite += GameController.Jeu.Config.Nb_points_gagnes_par_cible;
+					textToWrite += nb_points_gagnes_par_cible;
 				else
-					textToWrite += "0";
+					textToWrite += "-" + nb_points_perdus_par_cible;
 				textToWrite += "</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
 						GameController.Jeu.Config.Delai_lancer_projectile +

@@ -53,8 +53,10 @@ public class Results : MonoBehaviour {
 			GameController.Jeu = new Jeu ();
 
 		string nomFichier; 
-		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
-		nomFichier = GameController.Jeu.Config.Name + ".xml";
+		if (GameController.Jeu.isPretest) 
+			nomFichier = GameController.Jeu.Config.Name + "_pretest.xml";
+		else 
+			nomFichier = GameController.Jeu.Config.Name + ".xml";
 		fichierCourant = nomFichier;
 
 		setFields ();
@@ -76,12 +78,17 @@ public class Results : MonoBehaviour {
 		nb_tailles_projectiles.text = Convert.ToString(GameController.Jeu.Config.Projectiles.Count);
 		afficher_le_score.isOn = GameController.Jeu.Config.Afficher_le_score;
 		nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
-		//nb_points_perdus_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_perdus_par_cible);
+		nb_points_perdus_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_perdus_par_cible_manque);
 		delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
 		delai_validation_mesure.text = Convert.ToString (GameController.Jeu.Config.Delai_validation_mesure_cible);
 		marge_stabilisation_leap.text = Convert.ToString (GameController.Jeu.Config.Marge_stabilisation_validation_cible);
-		//condition_test.text = Convert.ToString (GameController.Jeu.Config.condition_test);
+		if (GameController.Jeu.Config.Condition_De_Memoire)
+			condition_test.text = "M";
+		else if (GameController.Jeu.Config.Condition_De_Controle)
+			condition_test.text = "C";
+		else if (GameController.Jeu.Config.Condition_De_Perception)
+			condition_test.text = "P";
 
 		//Assignation des valeurs par traitement des résultats obtenus durant la partie
 		score_final.text = Convert.ToString(GameController.Jeu.Score); 
