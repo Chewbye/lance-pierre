@@ -98,7 +98,7 @@ public class MenuSecondaire : MonoBehaviour {
 		if (GameController.Jeu.Participant.numeroValide ()) {
 			if (GameController.Jeu.Participant.ageValide ()) {
 				Debug.Log(GameController.Jeu.Participant.ToString()+ "\n");
-				//passage à la scene suivante
+				UnityEngine.Application.LoadLevel ("Jeu");
 			} else {
 				Debug.Log("age invalide \n");
 				erreur = true;
@@ -115,6 +115,7 @@ public class MenuSecondaire : MonoBehaviour {
 
 	public void onClickButtonRevenirMenu()
 	{
+		GameController.Jeu.isPretest = true;
 		UnityEngine.Application.LoadLevel ("menu");
 	}
 

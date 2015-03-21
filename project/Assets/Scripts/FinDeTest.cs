@@ -42,6 +42,7 @@ public class FinDeTest : MonoBehaviour {
 	}
 
 	public void onMenu() {
+		GameController.Jeu.isPretest = false;
 		Application.LoadLevel ("menu");
 	}
 

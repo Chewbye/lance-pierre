@@ -199,6 +199,7 @@ public class Results : MonoBehaviour {
 	}
 	
 	public void onMenu() {
+		GameController.Jeu.isPretest = false;
 		Application.LoadLevel ("menu");
 	}
 }

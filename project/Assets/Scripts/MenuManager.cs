@@ -38,7 +38,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void onClickDemarrer(){
-		UnityEngine.Application.LoadLevel ("Jeu");
+		UnityEngine.Application.LoadLevel ("menuSecondaire");
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class MenuManager : MonoBehaviour {
 	 */
 	public void onClickPreTestPassation(){
 		GameController.Jeu.isPretest = true;
-		UnityEngine.Application.LoadLevel ("Jeu");
+		UnityEngine.Application.LoadLevel ("menuSecondaire");
 	}
 
 	/**
