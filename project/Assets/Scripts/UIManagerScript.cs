@@ -42,6 +42,8 @@ public class UIManagerScript : MonoBehaviour {
 	public InputField IF_Delai_avant_evaluation_cible;
 	public GameObject Panel_champs_apres_disparition;
 	public Toggle T_Affichage_Barre_Progression;
+	public GameObject Panel_Boutons_Reglages_Barre;
+
 
 	/* Liste des fichiers de configuration */
 	public GameObject Configs_List_Panel;
@@ -172,6 +174,7 @@ public class UIManagerScript : MonoBehaviour {
 		T_Affichage_Barre_Progression.isOn = GameController.Jeu.Config.Affichage_barre_progression;
 
 		onValueChangeToggleCondition ();
+		onValueChangeToggleAffichage_barre_progression ();
 	}
 
 	public void onValueChangeGravite(){
@@ -291,10 +294,20 @@ public class UIManagerScript : MonoBehaviour {
 		GameController.Jeu.Config.Affichage_barre_progression = T_Affichage_Barre_Progression.isOn;
 
 		if (T_Affichage_Barre_Progression.isOn) {
-			// afficher scene ou bien bouton amenant vers la scene de réglages de la barre (taille,etc...)
+			Panel_Boutons_Reglages_Barre.SetActive(true);
 		} else {
-			// masquer scene ou bouton 
+			Panel_Boutons_Reglages_Barre.SetActive(false);
 		}
+	}
+
+	public void onClickButtonReglagesTailleBarre()
+	{
+		launchGame ("reglageTailleBarre");
+	}
+
+	public void onClickButtonReglagesCouleurBarre()
+	{
+		//lancer la scène réglage de la couleur
 	}
 
 	/**

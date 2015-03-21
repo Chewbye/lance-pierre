@@ -275,6 +275,28 @@ public class Conf{
 		}
 	}
 
+	private int _Largeur_barre_progression;
+
+	public int Largeur_barre_progression {
+		get {
+			return _Largeur_barre_progression;
+		}
+		set {
+			_Largeur_barre_progression = value;
+		}
+	}
+
+	private int _Hauteur_barre_progression;
+
+	public int Hauteur_barre_progression {
+		get {
+			return _Hauteur_barre_progression;
+		}
+		set {
+			_Hauteur_barre_progression = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Conf à partir d'un fichier de configuation
 	 */
@@ -314,6 +336,8 @@ public class Conf{
 		_Delai_avant_evaluation_cible = 2;
 		_Delai_avant_disparition_cible = 2;
 		_Affichage_barre_progression = true;
+		_Largeur_barre_progression = 512;
+		_Hauteur_barre_progression = 256;
 	}
 	
 	
@@ -340,6 +364,8 @@ public class Conf{
 		res += "_Delai_avant_evaluation_cible: " + Convert.ToString(_Delai_avant_evaluation_cible) + System.Environment.NewLine;
 		res += "_Delai_avant_disparition_cible: " + Convert.ToString(_Delai_avant_disparition_cible) + System.Environment.NewLine;
 		res += "_Affichage_barre_progression: " + Convert.ToString(_Affichage_barre_progression) + System.Environment.NewLine;
+		res += "_Largeur_barre_progression: " + Convert.ToString(_Largeur_barre_progression) + System.Environment.NewLine;
+		res += "_Hauteur_barre_progression: " + Convert.ToString(_Hauteur_barre_progression) + System.Environment.NewLine;
 
 		foreach (PositionCible poscible in _Positions_Cibles) {
 			res += "POSITION CIBLE: " + System.Environment.NewLine;
