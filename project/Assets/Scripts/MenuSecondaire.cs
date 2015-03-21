@@ -15,6 +15,9 @@ public class MenuSecondaire : MonoBehaviour {
 
 	public bool erreur;
 	public string typeErreur;
+	public int largeurPopup;
+	public int hauteurPopup;
+
 
 
 	// Use this for initialization
@@ -26,6 +29,8 @@ public class MenuSecondaire : MonoBehaviour {
 		GameController.Jeu.Participant.PratiqueJeuxVideo = "oui";
 		erreur = false;
 		typeErreur = "";
+		this.largeurPopup = 150;
+		this.hauteurPopup = 150;
 	}
 	
 	// Update is called once per frame
@@ -35,18 +40,24 @@ public class MenuSecondaire : MonoBehaviour {
 
 	public void onChangeValueNumero()
 	{
-		int res;
-		if (int.TryParse (IF_numero.text, out res)) {
+		if (IF_numero.text.Length > 0) {
+			int res = int.Parse(IF_numero.text);
 			GameController.Jeu.Participant.Numero = res;
+		} else {
+			GameController.Jeu.Participant.Numero = 0;
 		}
+
 	}
 
 	public void onChangeValueAge()
 	{
-		int res;
-		if (int.TryParse (IF_age.text, out res)) {
+		if (IF_age.text.Length > 0) {
+			int res = int.Parse(IF_age.text);
 			GameController.Jeu.Participant.Age = res;
+		} else {
+			GameController.Jeu.Participant.Age = 0;
 		}
+
 	}
 
 	public void onChangeToggleSexeHomme()
@@ -122,7 +133,7 @@ public class MenuSecondaire : MonoBehaviour {
 	void OnGUI()
 	{
 		if (erreur) {
-			UnityEngine.Rect rect = new Rect(Screen.width/2,Screen.height/2,100,100);
+			UnityEngine.Rect rect = new Rect((Screen.width-largeurPopup)/2,(Screen.height-hauteurPopup)/2,largeurPopup,hauteurPopup);
 			GUI.Window (1,rect,DoMyWindows,typeErreur);
 		}
 
@@ -130,7 +141,7 @@ public class MenuSecondaire : MonoBehaviour {
 
 	void DoMyWindows (int id)
 	{
-		if (GUI.Button (new Rect (10, 70, 80, 20), "OK")) {
+		if (GUI.Button (new Rect ((largeurPopup-80)/2, (hauteurPopup-20)/2, 80, 20), "OK")) {
 			erreur = false;
 		}
 	}
