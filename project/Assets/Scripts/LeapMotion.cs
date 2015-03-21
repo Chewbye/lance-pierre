@@ -71,11 +71,9 @@ public class LeapMotion : MonoBehaviour {
 
 	void OnGUI()
 	{
-		if (GameController.Jeu.Config.Affichage_barre_progression) {
-			bp.Valeur = lm.calculNbSecondesEcoule ();
-			bp.Update (true);
-			bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
-		}
+		bp.Valeur = lm.calculNbSecondesEcoule();
+		bp.Update (true);
+		bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
 	}
 
 

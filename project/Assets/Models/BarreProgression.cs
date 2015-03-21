@@ -18,8 +18,6 @@ public class BarreProgression{
 	protected float lastValeur;
 	protected float valeur;
 
-	protected int largeur;
-	protected int hauteur;
 
 	public Texture2D Cadre {
 		get {
@@ -93,28 +91,11 @@ public class BarreProgression{
 		}
 	}
 
-	public int Largeur {
-		get {
-			return largeur;
-		}
-		set {
-			largeur = value;
-		}
-	}
-
-	public int Hauteur {
-		get {
-			return hauteur;
-		}
-		set {
-			hauteur = value;
-		}
-	}
-
 	public BarreProgression(string nomTextureCadre, string nomTextureRemplissage, float min, float max)
 	{
 		this.cadre = Resources.Load (nomTextureCadre) as Texture2D;
 		this.remplissage = Resources.Load (nomTextureRemplissage) as Texture2D;
+
 
 		this.sizeX = this.remplissage.width;
 		this.sizeY = this.remplissage.height;
@@ -123,9 +104,6 @@ public class BarreProgression{
 
 		this.Min = min;
 		this.Max = max;
-
-		this.largeur = GameController.Jeu.Config.Largeur_barre_progression;
-		this.hauteur = GameController.Jeu.Config.Hauteur_barre_progression;
 
 		this.memoireRemplissage = new Color[this.sizeX, this.sizeY];
 
@@ -175,8 +153,8 @@ public class BarreProgression{
 
 	public void Show(int x, int y)
 	{
-		GUI.DrawTexture (new Rect ((x-this.largeur)/2, (y-this.hauteur)/2, this.largeur, this.hauteur), this.cadre);
-		GUI.DrawTexture (new Rect ((x-this.largeur)/2, (y-this.hauteur)/2, this.largeur, this.hauteur), this.affichage);
+		GUI.DrawTexture (new Rect ((x-this.cadre.width)/2, (y-this.cadre.height)/2, this.cadre.width, this.cadre.height), this.cadre);
+		GUI.DrawTexture (new Rect ((x-this.sizeX)/2, (y-this.sizeY)/2, this.sizeX, this.sizeY), this.affichage);
 	}
 
 
