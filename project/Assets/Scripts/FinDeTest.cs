@@ -42,7 +42,7 @@ public class FinDeTest : MonoBehaviour {
 	}
 
 	public void onMenu() {
-		Application.LoadLevel ("mainMenu");
+		Application.LoadLevel ("menu");
 	}
 
 	public void onResultats() {

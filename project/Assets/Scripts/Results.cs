@@ -31,6 +31,27 @@ public class Results : MonoBehaviour {
 	public Text delai_validation_mesure;
 	public Text marge_stabilisation_leap;
 	public Text condition_test;
+	public Text delai_avant_disparition_cible;
+	public Text delai_avant_evaluation_cible;
+	public Text intitule_delai_avant_disparition_cible;
+	public Text intitule_delai_avant_evaluation_cible;
+	public GameObject bg_delai_avant_disparition_cible;
+	public GameObject bg_delai_avant_evaluation_cible;
+	public GameObject position_gravite;
+	public GameObject poition_rigidite_lancepierre;
+	public GameObject position_nb_lancers;
+	public GameObject position_nb_series;
+	public GameObject position_nb_positions;
+	public GameObject position_nb_tailles_cibles;
+	public GameObject position_nb_tailles_projectiles;
+	public GameObject position_afficher_le_score;
+	public GameObject position_nb_points_gagnes_par_cible;
+	public GameObject position_nb_points_perdus_par_cible;
+	public GameObject position_delai_lancer_projectile;
+	public GameObject position_delai_evaluation_cible;
+	public GameObject position_delai_validation_mesure;
+	public GameObject position_marge_stabilisation_leap;
+	public GameObject position_condition_test;
 	
 	//Récapitulatif
 	public Text score_final;
@@ -83,12 +104,68 @@ public class Results : MonoBehaviour {
 		delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
 		delai_validation_mesure.text = Convert.ToString (GameController.Jeu.Config.Delai_validation_mesure_cible);
 		marge_stabilisation_leap.text = Convert.ToString (GameController.Jeu.Config.Marge_stabilisation_validation_cible);
-		if (GameController.Jeu.Config.Condition_De_Memoire)
+		if (GameController.Jeu.Config.Condition_De_Memoire) {
 			condition_test.text = "M";
-		else if (GameController.Jeu.Config.Condition_De_Controle)
-			condition_test.text = "C";
-		else if (GameController.Jeu.Config.Condition_De_Perception)
-			condition_test.text = "P";
+			intitule_delai_avant_disparition_cible.text = "Délai avant disparition de la cible :";
+			intitule_delai_avant_evaluation_cible.text = "Délai avant évaluation de la cible :";
+			delai_avant_disparition_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_disparition_cible);
+			delai_avant_evaluation_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_evaluation_cible);
+		}
+		else {
+			bg_delai_avant_disparition_cible.SetActive(false);
+			bg_delai_avant_evaluation_cible.SetActive(false);
+			int y_modif = 25;
+			Vector3 v = position_gravite.transform.position;
+			position_gravite.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = poition_rigidite_lancepierre.transform.position;
+			poition_rigidite_lancepierre.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = position_nb_lancers.transform.position;
+			position_nb_lancers.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = position_nb_series.transform.position;
+			position_nb_series.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = position_nb_positions.transform.position;
+			position_nb_positions.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = position_nb_tailles_cibles.transform.position;
+			position_nb_tailles_cibles.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = position_nb_tailles_projectiles.transform.position;
+			position_nb_tailles_projectiles.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = position_afficher_le_score.transform.position;
+			position_afficher_le_score.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = position_nb_points_gagnes_par_cible.transform.position;
+			position_nb_points_gagnes_par_cible.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = position_nb_points_perdus_par_cible.transform.position;
+			position_nb_points_perdus_par_cible.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = position_delai_lancer_projectile.transform.position;
+			position_delai_lancer_projectile.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = position_delai_evaluation_cible.transform.position;
+			position_delai_evaluation_cible.transform.position = new Vector3(v.x, v.y-y_modif);
+			
+			v = position_delai_validation_mesure.transform.position;
+			position_delai_validation_mesure.transform.position = new Vector3(v.x, v.y-y_modif);
+			
+			v = position_marge_stabilisation_leap.transform.position;
+			position_marge_stabilisation_leap.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			v = position_condition_test.transform.position;
+			position_condition_test.transform.position = new Vector3(v.x, v.y-y_modif);
+
+			if (GameController.Jeu.Config.Condition_De_Controle) {
+				condition_test.text = "C";
+			} else if (GameController.Jeu.Config.Condition_De_Perception) {
+				condition_test.text = "P";
+			}
+		}
 
 		//Assignation des valeurs par traitement des résultats obtenus durant la partie
 		score_final.text = Convert.ToString(GameController.Jeu.Score); 
@@ -122,6 +199,6 @@ public class Results : MonoBehaviour {
 	}
 	
 	public void onMenu() {
-		Application.LoadLevel ("mainMenu");
+		Application.LoadLevel ("menu");
 	}
 }
