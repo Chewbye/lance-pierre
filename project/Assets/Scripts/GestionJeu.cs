@@ -19,18 +19,20 @@ public class GestionJeu : MonoBehaviour
 	private float circleRadius;
 	private bool clickedOn;
 	private Vector2 prevVelocity;
+
 	private double ratioEchelle;
+	private double ratioCalibrage;
 	
 	void Awake () 
 	{
 		spring = GetComponent <SpringJoint2D> ();
 		catapult = spring.connectedBody.transform;
 	}
-	
-	// Use this for initialization
+
 	void Start () 
 	{
 		ratioEchelle = GameController.Jeu.Config.Ratio_echelle;
+		ratioCalibrage = 4;
 		diametreProjectile = renderer.bounds.size.x * GameController.Jeu.Config.Ratio_echelle;
 		Vector3 positionCatapulte = catapulte.transform.position;
 		
@@ -38,18 +40,18 @@ public class GestionJeu : MonoBehaviour
 		double hauteurCatapulteCm = GameController.Jeu.Config.Taille_Hauteur_Catapulte;
 		double hauteurCatapulte = GameController.Jeu.Config.Taille_Hauteur_Catapulte 
 			* (float)GameController.Jeu.Config.Ratio_echelle 
-				* catapulte.transform.localScale.x; // la catapulte doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
+				* catapulte.transform.localScale.x / ratioCalibrage; // la catapulte doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
 		catapulte.transform.localScale = new Vector3((float) hauteurCatapulte, (float) hauteurCatapulte, (float)hauteurCatapulte);
 		
 		// CHANGEMENT DE LA POSITION DE LA CATAPULTE
-		float positionXCatapulte = (float) (GameController.Jeu.Config.Distance_X_Catapulte * diametreProjectile);
-		float positionYCatapulte = (float) (GameController.Jeu.Config.Distance_Y_Catapulte * diametreProjectile);
+		float positionXCatapulte = (float) (GameController.Jeu.Config.Distance_X_Catapulte * diametreProjectile / ratioCalibrage);
+		float positionYCatapulte = (float) (GameController.Jeu.Config.Distance_Y_Catapulte * diametreProjectile / ratioCalibrage);
 		float positionZCatapulte = catapulte.transform.position.z;
 		catapulte.transform.position = new Vector3(positionXCatapulte, positionYCatapulte, positionZCatapulte);
 		
 		// CHANGEMENT DE LA POSITION DU PROJECTILE
-		float positionXProjectile = (float) (GameController.Jeu.Config.Distance_X_Catapulte * diametreProjectile + (-1 * diametreProjectile));
-		float positionYProjectile = (float) (GameController.Jeu.Config.Distance_Y_Catapulte * diametreProjectile + (-1 * diametreProjectile));
+		float positionXProjectile = (float) ((GameController.Jeu.Config.Distance_X_Catapulte * diametreProjectile + (-1 * diametreProjectile)) / ratioCalibrage);
+		float positionYProjectile = (float) ((GameController.Jeu.Config.Distance_Y_Catapulte * diametreProjectile + (-1 * diametreProjectile)) / ratioCalibrage);
 		float positionZProjectile = transform.position.z;
 		transform.position = new Vector3(positionXProjectile, positionYProjectile, positionZProjectile);
 		
@@ -157,16 +159,15 @@ public class GestionJeu : MonoBehaviour
 		Vector3 positionCatapulte = catapulte.transform.position;
 		
 		// CHANGEMENT DE LA POSITION ET DE LA TAILLE DE LA CIBLE
-		float positionXCible = catapulte.transform.position.x + (tirAFaire.Position_Cible.DistanceX * (float)diametreProjectile);
-		float positionYCible = catapulte.transform.position.y + (tirAFaire.Position_Cible.DistanceY * (float)diametreProjectile);
-		float positionZCible = cible.transform.position.z * (float)diametreProjectile;
+		float positionXCible = catapulte.transform.position.x + (tirAFaire.Position_Cible.DistanceX * (float)(diametreProjectile / ratioCalibrage));
+		float positionYCible = catapulte.transform.position.y + (tirAFaire.Position_Cible.DistanceY * (float)(diametreProjectile / ratioCalibrage));
+		float positionZCible = cible.transform.position.z * (float)diametreProjectile / 4;
 		cible.transform.position = new Vector3(positionXCible, positionYCible, positionZCible);
-		float tailleXYZCible = tirAFaire.Taille_Cible * (float)GameController.Jeu.Config.Ratio_echelle * cible.transform.localScale.x; // la cible doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
+		float tailleXYZCible = tirAFaire.Taille_Cible * (float)(GameController.Jeu.Config.Ratio_echelle * cible.transform.localScale.x / ratioCalibrage); // la cible doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
 		cible.transform.localScale = new Vector3(tailleXYZCible, tailleXYZCible, tailleXYZCible);
 		
 		// CHANGEMENT DE LA TAILLE ET DU POIDS DU PROJECTILE
-		double ratioEchelle = GameController.Jeu.Config.Ratio_echelle;
-		float tailleXYZProjectile = tirAFaire.Projectile.Taille;
+		float tailleXYZProjectile = (float) (tirAFaire.Projectile.Taille / ratioCalibrage);
 		transform.localScale = new Vector3((float) ratioEchelle* tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile);
 		LineRendererSetup ();
 		rayToMouse = new Ray(catapult.position, Vector3.zero);
