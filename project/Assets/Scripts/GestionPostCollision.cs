@@ -4,8 +4,9 @@ using System.Collections;
 public class GestionPostCollision : MonoBehaviour 
 {
 	public GameObject projectile;
+
 	private float tempsRestant;
-	// Use this for initialization
+	
 	void Start () 
 	{
 		tempsRestant = 2;

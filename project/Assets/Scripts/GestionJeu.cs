@@ -59,11 +59,11 @@ public class GestionJeu : MonoBehaviour
 			GenererTirs();
 		}
 		
-		if(GameController.Jeu.Tirs_Entrainement.Count > 0) // Si nous sommes dans la phase d'entrainement
+		/*if(GameController.Jeu.Tirs_Entrainement.Count > 0) // Si nous sommes dans la phase d'entrainement
 		{
 			ChoisirTirEntrainement();
 		}
-		else if(GameController.Jeu.Tirs_A_Realiser.Count > 0) // Si nous ne sommes pas en fin de partie ni en phase d'entrainement
+		else*/ if(GameController.Jeu.Tirs_A_Realiser.Count > 0) // Si nous ne sommes pas en fin de partie ni en phase d'entrainement
 		{
 			GameController.Jeu.isEntrainement = false;
 			ChoisirTirJeu();
@@ -121,12 +121,12 @@ public class GestionJeu : MonoBehaviour
 						                                                       GameController.Jeu.Config.Positions_Cibles[j],
 						                                                       GameController.Jeu.Config.Tailles_Cibles[k]));
 						
-						if(i == 0 && !GameController.Jeu.isPretest) // On enregistre les tirs de la phase d'entrainement
+						/*if(i == 0 && !GameController.Jeu.isPretest) // On enregistre les tirs de la phase d'entrainement
 						{
 							GameController.Jeu.Tirs_Entrainement.Add(new TripletTirs(GameController.Jeu.Config.Projectiles[l],
 							                                                         GameController.Jeu.Config.Positions_Cibles[j],
 							                                                         GameController.Jeu.Config.Tailles_Cibles[k]));
-						}
+						}*/
 						nbCombinaisonsGenerees++;
 					}
 				}
@@ -179,7 +179,7 @@ public class GestionJeu : MonoBehaviour
 		rigidbody2D.gravityScale = tirAFaire.Projectile.Poids * GameController.Jeu.Config.Gravite;
 	}
 	
-	void ChoisirTirEntrainement()
+	/*void ChoisirTirEntrainement()
 	{
 		// CHANGEMENT DE LA RIGIDITE DU LANCE PIERRE
 		rigidite = GameController.Jeu.Config.Rigidite_lancepierre;
@@ -218,7 +218,7 @@ public class GestionJeu : MonoBehaviour
 		
 		//rigidbody2D.mass = tirAFaire.Projectile.Poids;
 		rigidbody2D.gravityScale = tirAFaire.Projectile.Poids * GameController.Jeu.Config.Gravite;
-	}
+	}*/
 	
 	void LineRendererSetup () 
 	{

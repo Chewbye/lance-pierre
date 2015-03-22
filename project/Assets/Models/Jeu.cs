@@ -259,7 +259,7 @@ public class Jeu{
 		_Temps_Mis_Pour_Tirer = new List<float> ();
 		_Mesures_Taille_Cible = new List<float> ();
 		_isPretest = false;
-		_isEntrainement = true;
+		_isEntrainement = false;
 	}
 	
 

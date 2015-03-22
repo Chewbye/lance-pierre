@@ -25,8 +25,8 @@ public class GestionDegats : MonoBehaviour {
 	
 	void OnCollisionEnter2D (Collision2D collision) 
 	{
-		if(!GameController.Jeu.isEntrainement)
-		{
+		//if(!GameController.Jeu.isEntrainement)
+		//{
 			// On indique que le tir courant est réussi
 			GameController.Jeu.Reussiste_Tirs.Add(true);
 
@@ -35,8 +35,7 @@ public class GestionDegats : MonoBehaviour {
 
 			// On incrémente le tir courant
 			GameController.Jeu.Tir_courant++;
-
-		}
+		//}
 
 		GameController.Jeu.Cible_Touchee = true;
 		particleSystem.Play();

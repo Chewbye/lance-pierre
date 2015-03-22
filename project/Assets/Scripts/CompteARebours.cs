@@ -26,8 +26,8 @@ public class CompteARebours : MonoBehaviour
 
 	void Reset () 
 	{
-		if(!GameController.Jeu.isEntrainement)
-		{
+		//if(!GameController.Jeu.isEntrainement)
+		//{
 			// On indique que le tir courant est manqué
 			GameController.Jeu.Reussiste_Tirs.Add(false);
 
@@ -39,7 +39,7 @@ public class CompteARebours : MonoBehaviour
 
 			// On incrémente le tir courant
 			GameController.Jeu.Tir_courant++;
-		}
+		//}
 		
 		//	On recharge la meme scène
 		Application.LoadLevel (Application.loadedLevel);
