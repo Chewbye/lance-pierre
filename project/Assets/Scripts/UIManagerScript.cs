@@ -30,6 +30,9 @@ public class UIManagerScript : MonoBehaviour {
 	/* Onglet Lance-pierre */
 	public InputField IF_Rigidite_lancepierre;
 	public InputField IF_Delai_lancer_projectile;
+	public InputField IF_Hauteur_lancepierre;
+	public InputField IF_Distance_X_lancepierre;
+	public InputField IF_Distance_Y_lancepierre;
 
 	/* Onglet Evaluation */
 	public InputField IF_Delai_evaluation_cible;
@@ -172,7 +175,9 @@ public class UIManagerScript : MonoBehaviour {
 		IF_Delai_avant_disparition_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_disparition_cible);
 		IF_Delai_avant_evaluation_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_evaluation_cible);
 		T_Affichage_Barre_Progression.isOn = GameController.Jeu.Config.Affichage_barre_progression;
-
+		IF_Hauteur_lancepierre.text = Convert.ToString (GameController.Jeu.Config.Taille_Hauteur_Catapulte);
+		IF_Distance_X_lancepierre.text = Convert.ToString (GameController.Jeu.Config.Distance_X_Catapulte);
+		IF_Distance_Y_lancepierre.text = Convert.ToString (GameController.Jeu.Config.Distance_Y_Catapulte);
 		onValueChangeToggleCondition ();
 		onValueChangeToggleAffichage_barre_progression ();
 	}
@@ -281,6 +286,9 @@ public class UIManagerScript : MonoBehaviour {
 		}
 	}
 
+	/**
+	 * Affiche les champs associés à "après disparition" ssi la case "après disparition" est cochée
+	 */
 	public void onValueChangeToggleCondition(){
 		if (T_Condition_De_Memoire.isOn) {
 			Panel_champs_apres_disparition.SetActive (true);
@@ -288,7 +296,7 @@ public class UIManagerScript : MonoBehaviour {
 			Panel_champs_apres_disparition.SetActive (false);
 		}
 	}
-
+	
 	public void onValueChangeToggleAffichage_barre_progression()
 	{
 		GameController.Jeu.Config.Affichage_barre_progression = T_Affichage_Barre_Progression.isOn;
@@ -308,6 +316,27 @@ public class UIManagerScript : MonoBehaviour {
 	public void onClickButtonReglagesCouleurBarre()
 	{
 		//lancer la scène réglage de la couleur
+	}
+
+	public void onValueChangeHauteur_lancepierre(){
+		float res;
+		if (float.TryParse (IF_Hauteur_lancepierre.text, out res)) {
+			GameController.Jeu.Config.Taille_Hauteur_Catapulte = res;
+		}
+	}
+
+	public void onValueChangeDistance_X_lancepierre(){
+		float res;
+		if (float.TryParse (IF_Distance_X_lancepierre.text, out res)) {
+			GameController.Jeu.Config.Distance_X_Catapulte = res;
+		}
+	}
+
+	public void onValueChangeDistance_Y_lancepierre(){
+		float res;
+		if (float.TryParse (IF_Distance_Y_lancepierre.text, out res)) {
+			GameController.Jeu.Config.Distance_Y_Catapulte = res;
+		}
 	}
 
 	/**
