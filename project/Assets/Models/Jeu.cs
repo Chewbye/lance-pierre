@@ -113,6 +113,17 @@ public class Jeu{
 		}
 	}
 
+	// Indique pour le tir courant si la cible est manquee
+	private bool _Cible_Manquee;
+	public bool Cible_Manquee {
+		get {
+			return _Cible_Manquee;
+		}
+		set {
+			_Cible_Manquee = value;
+		}
+	}
+
 	// Liste contenant le temps mis par le joueur à tirer pour chacun des tirs
 	private List<float> _Temps_Mis_Pour_Tirer;
 	public List<float> Temps_Mis_Pour_Tirer {
@@ -251,6 +262,7 @@ public class Jeu{
 		_Score = 0;
 		_Tir_courant = 0;
 		_Cible_Touchee = false;
+		_Cible_Manquee = false;
 		_Rang_Aleatoire = new System.Random();
 		_Reussite_Tirs = new List<bool> ();
 		_Tirs_A_Realiser = new List<TripletTirs> ();

@@ -65,7 +65,7 @@ public class GestionJeu : MonoBehaviour
 		{
 			ChoisirTirEntrainement();
 		}
-		else*/ if(GameController.Jeu.Tirs_A_Realiser.Count > 0) // Si nous ne sommes pas en fin de partie ni en phase d'entrainement
+		else*/ if(GameController.Jeu.Tirs_Realises.Count < GameController.Jeu.Config.Nb_lancers) // Si nous ne sommes pas en fin de partie ni en phase d'entrainement
 		{
 			GameController.Jeu.isEntrainement = false;
 			ChoisirTirJeu();
