@@ -19,7 +19,7 @@ public class AffichageGagnePerdu : MonoBehaviour
 		Vector3 positionCible = cible.transform.position;
 		double diametreCible = cible.renderer.bounds.size.x;
 
-		transform.position = new Vector3((float) (positionCible.x - 2*diametreCible), positionCible.y, transform.position.z);
+		transform.position = new Vector3((float)(positionCible.x - diametreCible), (float)(positionCible.y - diametreCible), transform.position.z);
 
 		if(GameController.Jeu.Cible_Touchee)
 		{
