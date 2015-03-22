@@ -102,6 +102,17 @@ public class Jeu{
 		}
 	}
 
+	// Indique pour le tir courant si le tir est effectue
+	private bool _Tir_Effectue;
+	public bool Tir_Effectue {
+		get {
+			return _Tir_Effectue;
+		}
+		set {
+			_Tir_Effectue = value;
+		}
+	}
+
 	// Indique pour le tir courant si la cible est touchee
 	private bool _Cible_Touchee;
 	public bool Cible_Touchee {
@@ -261,6 +272,7 @@ public class Jeu{
 		_Nb_lancers = _Config.Nb_lancers;
 		_Score = 0;
 		_Tir_courant = 0;
+		_Tir_Effectue = false;
 		_Cible_Touchee = false;
 		_Cible_Manquee = false;
 		_Rang_Aleatoire = new System.Random();

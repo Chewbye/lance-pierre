@@ -26,5 +26,10 @@ public class GestionPostCollision : MonoBehaviour
 				Application.LoadLevel (Application.loadedLevel);
 			}
 		}
+
+		if(GameController.Jeu.Cible_Manquee)
+		{
+
+		}
 	}
 }

@@ -24,7 +24,15 @@ public class AffichageGagnePerdu : MonoBehaviour
 		if(GameController.Jeu.Cible_Touchee)
 		{
 			TextMesh textMesh = GetComponent(typeof(TextMesh)) as TextMesh;
+			textMesh.color = Color.green;
 			textMesh.text = "+" + GameController.Jeu.Config.Nb_points_gagnes_par_cible + " points";
+		}
+
+		if(GameController.Jeu.Cible_Manquee)
+		{
+			TextMesh textMesh = GetComponent(typeof(TextMesh)) as TextMesh;
+			textMesh.color = Color.red;
+			textMesh.text = "-" + GameController.Jeu.Config.Nb_points_perdus_par_cible_manque + " points";
 		}
 	}
 }
