@@ -22,8 +22,6 @@ public class MenuSecondaire : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GameController.Jeu = new Jeu ();
-		GameController.Jeu.Participant = new Participant ();
 		GameController.Jeu.Participant.Sexe = "homme";
 		GameController.Jeu.Participant.MainDominante = "droite";
 		GameController.Jeu.Participant.PratiqueJeuxVideo = "oui";
@@ -40,24 +38,22 @@ public class MenuSecondaire : MonoBehaviour {
 
 	public void onChangeValueNumero()
 	{
-		if (IF_numero.text.Length > 0) {
-			int res = int.Parse(IF_numero.text);
+		int res = 0;
+		if (int.TryParse(IF_numero.text,out res)) {
 			GameController.Jeu.Participant.Numero = res;
 		} else {
 			GameController.Jeu.Participant.Numero = 0;
 		}
-
 	}
 
 	public void onChangeValueAge()
 	{
-		if (IF_age.text.Length > 0) {
-			int res = int.Parse(IF_age.text);
+		int res = 0;
+		if (int.TryParse (IF_age.text, out res)) {
 			GameController.Jeu.Participant.Age = res;
 		} else {
 			GameController.Jeu.Participant.Age = 0;
 		}
-
 	}
 
 	public void onChangeToggleSexeHomme()
