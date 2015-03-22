@@ -18,6 +18,10 @@ public class AppConf{
 		}
 	}
 
+	public AppConf(){
+		_LastConfName = "";
+	}
+
 	/* Sauvegarde la configuration du jeu actuel dans le fichier path */
 	public void saveConfig(string path){
 		XmlSerializer xs = new XmlSerializer(typeof(AppConf));
