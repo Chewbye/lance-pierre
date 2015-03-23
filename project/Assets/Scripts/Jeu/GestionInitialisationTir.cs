@@ -283,22 +283,38 @@ public class GestionInitialisationTir : MonoBehaviour
 	// Le joueur clique sur le projectile
 	void OnMouseDown() 
 	{
-		spring.enabled = false;
-		clickedOn = true;
+		if(!GameController.Jeu.Cible_Manquee)
+		{
+			spring.enabled = false;
+			clickedOn = true;
+		}
+		else
+		{
+			clickedOn = false;
+			rigidbody2D.isKinematic = true;
+		}
 	}
 
 	// Le joueur lache le projectile
 	void OnMouseUp() 
 	{
-		spring.enabled = true;
-		rigidbody2D.isKinematic = false;
-		clickedOn = false;
-		
-		// On indique le temps mis par le joueur pour tirer
-		GameController.Jeu.Temps_Mis_Pour_Tirer.Add(GameController.Jeu.Config.Delai_lancer_projectile - GameController.Jeu.Temps_Restant_Courant);
-
-		// On indique que le tir est effectue
-		GameController.Jeu.Tir_Effectue = true;
+		if(!GameController.Jeu.Cible_Manquee)
+		{
+			spring.enabled = true;
+			rigidbody2D.isKinematic = false;
+			clickedOn = false;
+			
+			// On indique le temps mis par le joueur pour tirer
+			GameController.Jeu.Temps_Mis_Pour_Tirer.Add(GameController.Jeu.Config.Delai_lancer_projectile - GameController.Jeu.Temps_Restant_Courant);
+			
+			// On indique que le tir est effectue
+			GameController.Jeu.Tir_Effectue = true;
+		}
+		else
+		{
+			clickedOn = false;
+			rigidbody2D.isKinematic = true;
+		}
 	}
 	
 	void Dragging() 

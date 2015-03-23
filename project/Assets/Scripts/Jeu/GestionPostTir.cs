@@ -42,15 +42,7 @@ public class GestionPostTir : MonoBehaviour
 		// Le tir a ete manque
 		else if(GameController.Jeu.Cible_Manquee)
 		{
-			// On desactive l'affichage de la cible
-			cible.rigidbody2D.isKinematic = true;
-			cible.renderer.enabled = false;
-			
-			// On desactive l'affichage du projectile
 			projectile.rigidbody2D.isKinematic = true;
-			projectile.renderer.enabled = false;
-			SpringJoint2D spring = projectile.GetComponent <SpringJoint2D> ();
-			spring.enabled = true;
 
 			tempsRestant -= Time.deltaTime;
 			if (tempsRestant <= 0.0f)
