@@ -61,6 +61,17 @@ public class Conf{
 			_Afficher_le_score = value;
 		}
 	}
+
+	private bool _Prise_en_compte_du_score;
+	
+	public bool Prise_en_compte_du_score {
+		get {
+			return _Prise_en_compte_du_score;
+		}
+		set {
+			_Prise_en_compte_du_score = value;
+		}
+	}
 	
 	private int _Nb_points_gagnes_par_cible;
 	
@@ -316,6 +327,7 @@ public class Conf{
 		_Rigidite_lancepierre = 3.0f;
 		_Nb_lancers = 1;
 		_Afficher_le_score = true;
+		_Prise_en_compte_du_score = true;
 		_Nb_points_gagnes_par_cible = 1;
 		_Nb_points_perdus_par_cible_manque = 1;
 		_Delai_lancer_projectile = 20;
@@ -347,6 +359,7 @@ public class Conf{
 		res += "_Rigidite_lancepierre: " +_Rigidite_lancepierre + System.Environment.NewLine;
 		res += "_Nb_lancers: " +_Nb_lancers + System.Environment.NewLine;
 		res += "_Afficher_le_score: " + Convert.ToString(_Afficher_le_score) + System.Environment.NewLine;
+		res += "_Prise_en_compte_du_score: " + Convert.ToString(_Prise_en_compte_du_score) + System.Environment.NewLine;
 		res += "_Nb_points_gagnes_par_cible: " + _Nb_points_gagnes_par_cible + System.Environment.NewLine;
 		res += "_Nb_points_perdus_par_cible_manque: " + _Nb_points_perdus_par_cible_manque + System.Environment.NewLine;
 		res += "_Delai_lancer_projectile: " + _Delai_lancer_projectile + System.Environment.NewLine;

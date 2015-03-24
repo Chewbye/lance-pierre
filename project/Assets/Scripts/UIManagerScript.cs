@@ -20,6 +20,7 @@ public class UIManagerScript : MonoBehaviour {
 	public InputField IF_Gravite;
 	public InputField IF_Nb_lancers;
 	public Toggle T_Afficher_le_score;
+	public Toggle T_Prise_en_compte_du_score;
 	public InputField IF_Nb_series;
 	
 	/* Onglet Cibles */
@@ -162,6 +163,7 @@ public class UIManagerScript : MonoBehaviour {
 		IF_Rigidite_lancepierre.text = Convert.ToString(GameController.Jeu.Config.Rigidite_lancepierre);
 		IF_Nb_lancers.text = Convert.ToString(GameController.Jeu.Config.Nb_lancers);
 		T_Afficher_le_score.isOn = GameController.Jeu.Config.Afficher_le_score;
+		T_Prise_en_compte_du_score.isOn = GameController.Jeu.Config.Prise_en_compte_du_score;
 		IF_Nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
 		IF_Delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		IF_Delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
@@ -205,6 +207,10 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void onValueChangeAfficher_le_score(){
 		GameController.Jeu.Config.Afficher_le_score = T_Afficher_le_score.isOn;
+	}
+
+	public void onValueChangePrise_en_compte_du_score(){
+		GameController.Jeu.Config.Prise_en_compte_du_score = T_Prise_en_compte_du_score.isOn;
 	}
 
 	public void onValueChangeNb_points_gagnes_par_cible(){
