@@ -1,17 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class GestionPostTir : MonoBehaviour 
 {
 	public GameObject projectile;
 	public GameObject cible;
+	public AudioClip sonReussite;
+	public AudioClip sonEchec;
 
 	private float tempsRestant; // Indique combien de temps en seconde les particules et l'info gagne/perdu doivent apparaitre
+	private bool sonDejaJoue;
 
 	// Use this for initialization
 	void Start () 
 	{
 		tempsRestant = 2;
+		sonDejaJoue = false;
 	}
 
 	void Update () 
@@ -24,6 +29,13 @@ public class GestionPostTir : MonoBehaviour
 		// Le tir a ete reussi
 		if(GameController.Jeu.Cible_Touchee)
 		{
+			if(!sonDejaJoue)
+			{
+				// On joue le son de reussite
+				audio.PlayOneShot(sonReussite, 1);
+				sonDejaJoue =  true;
+			}
+
 			// On desactive l'affichage de la cible
 			cible.rigidbody2D.isKinematic = true;
 			cible.renderer.enabled = false;
@@ -42,6 +54,13 @@ public class GestionPostTir : MonoBehaviour
 		// Le tir a ete manque
 		else if(GameController.Jeu.Cible_Manquee)
 		{
+			if(!sonDejaJoue)
+			{
+				// On joue le son de reussite
+				audio.PlayOneShot(sonEchec, 1);
+				sonDejaJoue =  true;
+			}
+
 			projectile.rigidbody2D.isKinematic = true;
 
 			tempsRestant -= Time.deltaTime;
