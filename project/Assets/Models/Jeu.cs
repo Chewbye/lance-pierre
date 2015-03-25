@@ -113,6 +113,17 @@ public class Jeu{
 		}
 	}
 
+	// Indique pour le tir courant si le tir est fini (les 2sec ecoulees)
+	private bool _Tir_Fini;
+	public bool Tir_Fini {
+		get {
+			return _Tir_Fini;
+		}
+		set {
+			_Tir_Fini = value;
+		}
+	}
+
 	// Indique pour le tir courant si la cible est touchee
 	private bool _Cible_Touchee;
 	public bool Cible_Touchee {
@@ -273,6 +284,7 @@ public class Jeu{
 		_Score = 0;
 		_Tir_courant = 0;
 		_Tir_Effectue = false;
+		_Tir_Fini = false;
 		_Cible_Touchee = false;
 		_Cible_Manquee = false;
 		_Rang_Aleatoire = new System.Random();

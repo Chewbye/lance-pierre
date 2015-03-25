@@ -56,7 +56,7 @@ public class GestionPostTir : MonoBehaviour
 		{
 			if(!sonDejaJoue)
 			{
-				// On joue le son de reussite
+				// On joue le son d'echec
 				audio.PlayOneShot(sonEchec, 1);
 				sonDejaJoue =  true;
 			}
@@ -76,11 +76,12 @@ public class GestionPostTir : MonoBehaviour
 		// On indique que le tir courant est reussi
 		GameController.Jeu.Reussiste_Tirs.Add(true);
 		
-		// On baisse le score
+		// On augmente le score
 		GameController.Jeu.Score = GameController.Jeu.Score + GameController.Jeu.Config.Nb_points_gagnes_par_cible;
 
 		//On recharge la meme scène
 		GameController.Jeu.Tir_Effectue = false;
+		GameController.Jeu.Tir_Fini = false;
 		GameController.Jeu.Cible_Touchee = false;
 		GameController.Jeu.Cible_Manquee = false;
 		Application.LoadLevel (Application.loadedLevel);
@@ -102,6 +103,7 @@ public class GestionPostTir : MonoBehaviour
 
 		//On recharge la meme scène
 		GameController.Jeu.Tir_Effectue = false;
+		GameController.Jeu.Tir_Fini = false;
 		GameController.Jeu.Cible_Touchee = false;
 		GameController.Jeu.Cible_Manquee = false;
 		Application.LoadLevel (Application.loadedLevel);
