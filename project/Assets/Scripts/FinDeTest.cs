@@ -41,6 +41,16 @@ public class FinDeTest : MonoBehaviour {
 	
 	}
 
+	public void onSujetSuivant() {
+		resetAll ();
+		GameController.Jeu.isPretest = false;
+		Application.LoadLevel ("menuSecondaire");
+	}
+
+	public void resetAll() {
+		GameController.Jeu.newGame ();
+	}
+
 	public void onMenu() {
 		GameController.Jeu.isPretest = false;
 		Application.LoadLevel ("menu");

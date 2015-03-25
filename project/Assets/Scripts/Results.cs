@@ -202,4 +202,14 @@ public class Results : MonoBehaviour {
 		GameController.Jeu.isPretest = false;
 		Application.LoadLevel ("menu");
 	}
+
+	public void onSujetSuivant() {
+		resetAll ();
+		GameController.Jeu.isPretest = false;
+		Application.LoadLevel ("menuSecondaire");
+	}
+
+	public void resetAll() {
+		GameController.Jeu.newGame ();
+	}
 }
