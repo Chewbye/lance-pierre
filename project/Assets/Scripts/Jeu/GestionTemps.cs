@@ -5,9 +5,14 @@ using System.Collections;
 // Classe utilisee pour limiter le temps que peut mettre le joeur pour tirer
 public class GestionTemps : MonoBehaviour 
 {
+	private float delainAvantEvaluation;
+	private float delaiApresEvaluation;
+
 	// Use this for initialization
 	void Start () 
 	{
+		delainAvantEvaluation = GameController.Jeu.Delai_Avant_Evaluation;
+		delaiApresEvaluation = GameController.Jeu.Delai_Apres_Evaluation;
 		GameController.Jeu.Temps_Restant_Courant = GameController.Jeu.Config.Delai_lancer_projectile;
 	}
 	

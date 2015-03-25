@@ -102,6 +102,28 @@ public class Jeu{
 		}
 	}
 
+	// Indique le temps restant entre l'apparation/disparition de la cible  et le debut de l'evaluation (cond controle et memoire)
+	private float _Delai_Avant_Evaluation;
+	public float Delai_Avant_Evaluation {
+		get {
+			return _Delai_Avant_Evaluation;
+		}
+		set {
+			_Delai_Avant_Evaluation = value;
+		}
+	}
+
+	// Indique le temps restant apres l'evaluation (trois cond)
+	private float _Delai_Apres_Evaluation;
+	public float Delai_Apres_Evaluation {
+		get {
+			return _Delai_Apres_Evaluation;
+		}
+		set {
+			_Delai_Apres_Evaluation = value;
+		}
+	}
+
 	// Indique pour le tir courant si le tir est effectue
 	private bool _Tir_Effectue;
 	public bool Tir_Effectue {
@@ -282,6 +304,8 @@ public class Jeu{
 	public void newGame(){
 		_Nb_lancers = _Config.Nb_lancers;
 		_Score = 0;
+		_Delai_Avant_Evaluation = 2;
+		_Delai_Apres_Evaluation = 2;
 		_Tir_courant = 0;
 		_Tir_Effectue = false;
 		_Tir_Fini = false;
