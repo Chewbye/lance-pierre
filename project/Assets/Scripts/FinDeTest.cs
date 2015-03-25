@@ -26,6 +26,11 @@ public class FinDeTest : MonoBehaviour {
 	private string delai_validation_mesure;
 	private string marge_stabilisation_leap;
 	private string condition_test;
+	private string numParticipant;
+	private string ageParticipant;
+	private string sexeParticipant;
+	private string mainForteParticipant;
+	private string experienceJeuxVideosParticipant;
 
 	string fichierCourant;
 
@@ -87,6 +92,11 @@ public class FinDeTest : MonoBehaviour {
 			condition_test = "Controle";
 		else if (GameController.Jeu.Config.Condition_De_Perception)
 			condition_test = "Perception";
+		numParticipant = Convert.ToString (GameController.Jeu.Participant.Numero);
+		ageParticipant = Convert.ToString (GameController.Jeu.Participant.Age);
+		sexeParticipant = Convert.ToString (GameController.Jeu.Participant.Sexe);
+		mainForteParticipant = Convert.ToString (GameController.Jeu.Participant.MainDominante);
+		experienceJeuxVideosParticipant = Convert.ToString (GameController.Jeu.Participant.PratiqueJeuxVideo);
 		
 		writeXML ();
 	}
@@ -308,8 +318,8 @@ public class FinDeTest : MonoBehaviour {
 				"<Cell><Data ss:Type=\"String\">" +
 				"Numero de participant" + 
 				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"Number\">" +
-				"1" + // Mettre le vrai numéro de participant
+				"<Cell><Data ss:Type=\"Number\">" + 
+				numParticipant +
 				"</Data></Cell>" +
 				"</Row>" +
 				"<Row>" +
@@ -317,15 +327,15 @@ public class FinDeTest : MonoBehaviour {
 				"Age" + 
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"Number\">" +
-				"22" + // Mettre le vrai age du participant
+				ageParticipant +
 				"</Data></Cell>" +
 				"</Row>" +
 				"<Row>" +
 				"<Cell><Data ss:Type=\"String\">" +
 				"Sexe" + 
 				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Homme" + // Mettre le vrai sexe du participant
+				"<Cell><Data ss:Type=\"String\">" + 
+				sexeParticipant +
 				"</Data></Cell>" +
 				"</Row>" +
 				"<Row>" +
@@ -333,7 +343,7 @@ public class FinDeTest : MonoBehaviour {
 				"Main dominante" + 
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"String\">" +
-				"Droite" + // Mettre la vraie main dominante du participant
+				mainForteParticipant +
 				"</Data></Cell>" +
 				"</Row>" +
 				"<Row>" +
@@ -341,7 +351,7 @@ public class FinDeTest : MonoBehaviour {
 				"Experience dans les jeux videos" + 
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"String\">" +
-				"Oui" + // Mettre la vraie expérience du participant
+				experienceJeuxVideosParticipant +
 				"</Data></Cell>" +
 				"</Row>" +
 				"<Row>" +
