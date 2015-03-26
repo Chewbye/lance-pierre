@@ -124,6 +124,28 @@ public class Jeu{
 		}
 	}
 
+	// Indique pour le tir courant si l'evaluation a ete effectuee
+	private bool _Evaluation_Effectuee;
+	public bool Evaluation_Effectuee {
+		get {
+			return _Evaluation_Effectuee;
+		}
+		set {
+			_Evaluation_Effectuee = value;
+		}
+	}
+
+	// Indique pour le tir courant si l'evaluation est en cours
+	private bool _Evaluation_En_Cours;
+	public bool Evaluation_En_Cours {
+		get {
+			return _Evaluation_En_Cours;
+		}
+		set {
+			_Evaluation_En_Cours = value;
+		}
+	}
+
 	// Indique pour le tir courant si le tir est effectue
 	private bool _Tir_Effectue;
 	public bool Tir_Effectue {
@@ -306,6 +328,8 @@ public class Jeu{
 		_Score = 0;
 		_Delai_Avant_Evaluation = 2;
 		_Delai_Apres_Evaluation = 2;
+		_Evaluation_En_Cours = false;
+		_Evaluation_Effectuee = false;
 		_Tir_courant = 0;
 		_Tir_Effectue = false;
 		_Tir_Fini = false;
