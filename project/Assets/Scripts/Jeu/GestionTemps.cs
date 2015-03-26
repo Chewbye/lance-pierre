@@ -8,9 +8,13 @@ public class GestionTemps : MonoBehaviour
 	private float delainAvantEvaluation;
 	private float delaiApresEvaluation;
 
+	private float simulationEvaluation;
+
 	// Use this for initialization
 	void Start () 
 	{
+		// On simule un temps d'evaluation de 5s
+		simulationEvaluation = 5;
 		delainAvantEvaluation = GameController.Jeu.Delai_Avant_Evaluation;
 		delaiApresEvaluation = GameController.Jeu.Delai_Apres_Evaluation;
 		GameController.Jeu.Temps_Restant_Courant = GameController.Jeu.Config.Delai_lancer_projectile;
@@ -19,17 +23,54 @@ public class GestionTemps : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if(!GameController.Jeu.Tir_Effectue)
+		// Si nous sommes en CONDITION DE CONTROLE
+		if(GameController.Jeu.Config.Condition_De_Controle)
 		{
-			GameController.Jeu.Temps_Restant_Courant -= Time.deltaTime;
-			if (GameController.Jeu.Temps_Restant_Courant <= 0.0f)
+			// Si nous sommes en Condition de Controle et que l'evaluation n'est pas encore faite : attendre puis evaluation
+			if(!GameController.Jeu.Evaluation_Effectuee)
 			{
-				Conclure();
+				GameController.Jeu.Delai_Avant_Evaluation -= Time.deltaTime;
+			}
+
+			// SIMULATION EVALUATION
+			if(GameController.Jeu.Delai_Avant_Evaluation <= 0.0f)
+			{
+				GameController.Jeu.Evaluation_En_Cours = true;
+				simulationEvaluation -= Time.deltaTime;
+				if (simulationEvaluation <= 0.0f)
+				{
+					GameController.Jeu.Evaluation_En_Cours = false;
+					GameController.Jeu.Evaluation_Effectuee = true;
+				}
+			}
+			
+			// Si nous sommes en Condition de Controle et que l'evaluation est faite : attendre puis permettre tir
+			if(GameController.Jeu.Evaluation_Effectuee)
+			{
+				GameController.Jeu.Delai_Apres_Evaluation -= Time.deltaTime;
+			}
+
+			// Le joueur a un certain temps pour tirer
+			if(GameController.Jeu.Delai_Apres_Evaluation <= 0.0f && !GameController.Jeu.Tir_Effectue)
+			{
+				GameController.Jeu.Temps_Restant_Courant -= Time.deltaTime;
+				if (GameController.Jeu.Temps_Restant_Courant <= 0.0f)
+				{
+					Conclure();
+				}
 			}
 		}
-		else
+
+		// Si nous sommes en CONDITION DE PERCEPTION
+		if(GameController.Jeu.Config.Condition_De_Perception)
 		{
-			Debug.Log("Arret du compte a rebours : Le joueur a lance le projectile");
+			Debug.Log("STOP FABIEN");
+		}
+
+		// Si nous sommes en CONDITION DE MEMOIRE
+		if(GameController.Jeu.Config.Condition_De_Memoire)
+		{
+			Debug.Log("STOP FABIEN");
 		}
 	}
 

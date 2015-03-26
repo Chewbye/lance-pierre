@@ -7,6 +7,8 @@ public class GestionInitialisationTir : MonoBehaviour
 {
 	public GameObject cible;
 	public GameObject catapulte;
+	public GameObject catapulteFront;
+	public GameObject projectile;
 	public LineRenderer catapultLineFront;
 	public LineRenderer catapultLineBack;  
 	
@@ -25,7 +27,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	private double ratioCalibrage;
 
 	private TripletTirs tirAFaire;
-	
+
+	private bool catapulteActivee;
+
 	void Awake () 
 	{
 		spring = GetComponent <SpringJoint2D> ();
@@ -41,7 +45,9 @@ public class GestionInitialisationTir : MonoBehaviour
 		GameController.Jeu.Tir_Effectue = false;
 		GameController.Jeu.Cible_Touchee = false;
 		GameController.Jeu.Cible_Manquee = false;
-
+		
+		catapulteActivee = false;
+		
 		diametreProjectile = renderer.bounds.size.x * GameController.Jeu.Config.Ratio_echelle;
 		Vector3 positionCatapulte = catapulte.transform.position;
 		
@@ -50,16 +56,16 @@ public class GestionInitialisationTir : MonoBehaviour
 		
 		// CHANGEMENT DE LA POSITION DE LA CATAPULTE ET DU PROJECTILE
 		ChangerPositionCatapulte();
-
+		
 		// On initilalise le rendu de la corde de la catapulte
 		LineRendererSetup ();
-
+		
 		// Si les triplets de tirs n'ont pas déjà été générés
 		if(GameController.Jeu.Tirs_A_Realiser.Count == 0 && GameController.Jeu.Tirs_Realises.Count == 0)
 		{
 			GenererTirs();
 		}
-
+		
 		// Si nous ne sommes pas en fin de partie
 		if(GameController.Jeu.Tirs_Realises.Count < GameController.Jeu.Config.Nb_lancers)
 		{
@@ -72,11 +78,28 @@ public class GestionInitialisationTir : MonoBehaviour
 			Application.LoadLevel ("finDeTest");
 		}
 		
+		if(GameController.Jeu.Config.Condition_De_Controle)
+		{
+			// On desactive la catapulte
+			catapulte.renderer.enabled = false;
+			catapulteFront.renderer.enabled = false;
+			catapultLineFront.enabled = false;
+			catapultLineBack.enabled = false;
+			
+			// On desactive le projectile
+			projectile.renderer.enabled = false;
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+		// Si nous sommes en mode Condtion de Controle
+		if(GameController.Jeu.Config.Condition_De_Controle)
+		{
+			// On reactive la catapulte et le projectile
+			ActiverCatapulteModeControle();
+		}
 		// Si le joueur clique sur le projectile
 		if (clickedOn)
 		{
@@ -102,6 +125,23 @@ public class GestionInitialisationTir : MonoBehaviour
 		{
 			catapultLineFront.enabled = false;
 			catapultLineBack.enabled = false;
+		}
+	}
+
+	void ActiverCatapulteModeControle()
+	{
+		if(!catapulteActivee && GameController.Jeu.Evaluation_Effectuee && (GameController.Jeu.Delai_Apres_Evaluation <= 0.0f))
+		{
+			// On active la catapulte
+			catapulte.renderer.enabled = true;
+			catapulteFront.renderer.enabled = true;
+			catapultLineFront.enabled = true;
+			catapultLineBack.enabled = true;
+			
+			// On active le projectile
+			projectile.renderer.enabled = true;
+
+			catapulteActivee = true;
 		}
 	}
 	

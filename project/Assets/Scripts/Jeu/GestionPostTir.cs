@@ -80,10 +80,14 @@ public class GestionPostTir : MonoBehaviour
 		GameController.Jeu.Score = GameController.Jeu.Score + GameController.Jeu.Config.Nb_points_gagnes_par_cible;
 
 		//On recharge la meme scène
+		GameController.Jeu.Evaluation_Effectuee = false;
+		GameController.Jeu.Evaluation_En_Cours = false;
 		GameController.Jeu.Tir_Effectue = false;
 		GameController.Jeu.Tir_Fini = false;
 		GameController.Jeu.Cible_Touchee = false;
 		GameController.Jeu.Cible_Manquee = false;
+		GameController.Jeu.Delai_Avant_Evaluation = 2;
+		GameController.Jeu.Delai_Apres_Evaluation = 2;
 		Application.LoadLevel (Application.loadedLevel);
 	}
 
@@ -102,10 +106,14 @@ public class GestionPostTir : MonoBehaviour
 		GameController.Jeu.Score = GameController.Jeu.Score - GameController.Jeu.Config.Nb_points_perdus_par_cible_manque;
 
 		//On recharge la meme scène
+		GameController.Jeu.Evaluation_Effectuee = false;
+		GameController.Jeu.Evaluation_En_Cours = false;
 		GameController.Jeu.Tir_Effectue = false;
 		GameController.Jeu.Tir_Fini = false;
 		GameController.Jeu.Cible_Touchee = false;
 		GameController.Jeu.Cible_Manquee = false;
+		GameController.Jeu.Delai_Avant_Evaluation = 2;
+		GameController.Jeu.Delai_Apres_Evaluation = 2;
 		Application.LoadLevel (Application.loadedLevel);
 	}
 }
