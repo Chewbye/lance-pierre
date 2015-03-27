@@ -5,8 +5,8 @@ using System.Collections;
 // Classe utilisee pour limiter le temps que peut mettre le joeur pour tirer
 public class GestionTemps : MonoBehaviour 
 {
-	private float delainAvantEvaluation;
-	private float delaiApresEvaluation;
+	//private float delainAvantEvaluation;
+	//private float delaiApresEvaluation;
 
 	private float simulationEvaluation;
 
@@ -15,8 +15,6 @@ public class GestionTemps : MonoBehaviour
 	{
 		// On simule un temps d'evaluation de 5s
 		simulationEvaluation = 5;
-		delainAvantEvaluation = GameController.Jeu.Delai_Avant_Evaluation;
-		delaiApresEvaluation = GameController.Jeu.Delai_Apres_Evaluation;
 		GameController.Jeu.Temps_Restant_Courant = GameController.Jeu.Config.Delai_lancer_projectile;
 	}
 	
@@ -64,13 +62,48 @@ public class GestionTemps : MonoBehaviour
 		// Si nous sommes en CONDITION DE PERCEPTION
 		if(GameController.Jeu.Config.Condition_De_Perception)
 		{
-			Debug.Log("STOP FABIEN");
+			// Le joueur a un certain temps pour tirer
+			if(!GameController.Jeu.Tir_Effectue)
+			{
+				GameController.Jeu.Temps_Restant_Courant -= Time.deltaTime;
+				if (GameController.Jeu.Temps_Restant_Courant <= 0.0f)
+				{
+					Conclure();
+				}
+			}
+
+			// On attend puis l'evaluation commence
+			if(GameController.Jeu.Tir_Fini)
+			{
+				// SIMULATION EVALUATION
+				GameController.Jeu.Evaluation_En_Cours = true;
+				simulationEvaluation -= Time.deltaTime;
+				if (simulationEvaluation <= 0.0f)
+				{
+					GameController.Jeu.Evaluation_En_Cours = false;
+					GameController.Jeu.Evaluation_Effectuee = true;
+				}
+			}
+
+			// Apres l'evaluation, on attend 2sec pour commencer un nouveau tir
+			if(GameController.Jeu.Evaluation_Effectuee)
+			{
+				GameController.Jeu.Delai_Apres_Evaluation -= Time.deltaTime;
+			}
 		}
 
 		// Si nous sommes en CONDITION DE MEMOIRE
 		if(GameController.Jeu.Config.Condition_De_Memoire)
 		{
-			Debug.Log("STOP FABIEN");
+			// Le joueur a un certain temps pour tirer
+			if(!GameController.Jeu.Tir_Effectue)
+			{
+				GameController.Jeu.Temps_Restant_Courant -= Time.deltaTime;
+				if (GameController.Jeu.Temps_Restant_Courant <= 0.0f)
+				{
+					Conclure();
+				}
+			}
 		}
 	}
 

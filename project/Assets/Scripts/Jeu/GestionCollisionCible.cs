@@ -21,7 +21,15 @@ public class GestionCollisionCible : MonoBehaviour
 		// Le tir est donc reussi
 		GameController.Jeu.Cible_Touchee = true;
 
-		// Affichage des particules autour de la cible
-		particleSystem.Play();
+		// Si nous ne sommes pas pendant ou apres une evaluation
+		if(GameController.Jeu.Evaluation_En_Cours || GameController.Jeu.Evaluation_Effectuee)
+		{
+			particleSystem.Stop();
+		}
+		else
+		{
+			// Affichage des particules autour de la cible
+			particleSystem.Play();
+		}
 	}
 }

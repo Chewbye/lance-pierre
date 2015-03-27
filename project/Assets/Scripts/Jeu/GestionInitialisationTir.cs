@@ -100,6 +100,14 @@ public class GestionInitialisationTir : MonoBehaviour
 			// On reactive la catapulte et le projectile
 			ActiverCatapulteModeControle();
 		}
+
+		// Si nous sommes en mode Condtion de Perception
+		if(GameController.Jeu.Config.Condition_De_Perception)
+		{
+			// On desactive la catapulte et le projectile
+			DesactiverCatapulteModePerception();
+		}
+
 		// Si le joueur clique sur le projectile
 		if (clickedOn)
 		{
@@ -142,6 +150,26 @@ public class GestionInitialisationTir : MonoBehaviour
 			projectile.renderer.enabled = true;
 
 			catapulteActivee = true;
+		}
+	}
+
+	void DesactiverCatapulteCibleModeMemoire()
+	{
+
+	}
+
+	void DesactiverCatapulteModePerception()
+	{
+		if(GameController.Jeu.Tir_Fini)
+		{
+			// On desactive la catapulte
+			catapulte.renderer.enabled = false;
+			catapulteFront.renderer.enabled = false;
+			catapultLineFront.enabled = false;
+			catapultLineBack.enabled = false;
+			
+			// On desactive le projectile
+			projectile.renderer.enabled = false;
 		}
 	}
 	

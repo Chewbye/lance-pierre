@@ -99,20 +99,28 @@ public class GestionAffichageInfoEcran : MonoBehaviour
 
 		// Changement de la position du texte affichant les points perdus ou gagnes a proximite de la cible
 		infoGagnePerdu.transform.position = new Vector3((float)(positionCible.x - diametreCible), (float)(positionCible.y - diametreCible), infoGagnePerdu.transform.position.z);
-		
-		if(GameController.Jeu.Cible_Touchee) // On affiche un message en vert indiquant le nombre de points gagnes
+
+		// On affiche un message en vert indiquant le nombre de points gagnes
+		if(GameController.Jeu.Cible_Touchee) 
 		{
 			TextMesh textMesh = infoGagnePerdu.GetComponent(typeof(TextMesh)) as TextMesh;
 			textMesh.color = Color.green;
 			textMesh.text = "+" + GameController.Jeu.Config.Nb_points_gagnes_par_cible + " points";
 		}
-		
-		if(GameController.Jeu.Cible_Manquee) // On affiche un message en rouge indiquant le nombre de points perdus
+
+		// On affiche un message en rouge indiquant le nombre de points perdus
+		if(GameController.Jeu.Cible_Manquee) 
 		{
 			TextMesh textMesh = infoGagnePerdu.GetComponent(typeof(TextMesh)) as TextMesh;
 			textMesh.color = Color.red;
 			textMesh.text = "-" + GameController.Jeu.Config.Nb_points_perdus_par_cible_manque + " points";
 		}
 
+		if(GameController.Jeu.Evaluation_En_Cours || GameController.Jeu.Evaluation_Effectuee)
+		{
+			cible.renderer.enabled = true;
+			TextMesh textMesh = infoGagnePerdu.GetComponent(typeof(TextMesh)) as TextMesh;
+			textMesh.text = "";
+		}
 	}
 }
