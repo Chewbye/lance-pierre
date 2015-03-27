@@ -9,7 +9,7 @@
   <Nb_points_gagnes_par_cible>2</Nb_points_gagnes_par_cible>
   <Nb_points_perdus_par_cible_manque>1</Nb_points_perdus_par_cible_manque>
   <Delai_lancer_projectile>60</Delai_lancer_projectile>
-  <Delai_evaluation_cible>20</Delai_evaluation_cible>
+  <Delai_evaluation_cible>5</Delai_evaluation_cible>
   <Delai_validation_mesure_cible>3</Delai_validation_mesure_cible>
   <Marge_stabilisation_validation_cible>0.5</Marge_stabilisation_validation_cible>
   <Positions_Cibles>

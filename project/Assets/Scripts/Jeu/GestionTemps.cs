@@ -35,7 +35,7 @@ public class GestionTemps : MonoBehaviour
 				GameController.Jeu.Delai_Avant_Evaluation -= Time.deltaTime;
 			}
 
-			// SIMULATION EVALUATION
+			/*// SIMULATION EVALUATION
 			if(GameController.Jeu.Delai_Avant_Evaluation <= 0.0f) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
 			{
 				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
@@ -45,7 +45,7 @@ public class GestionTemps : MonoBehaviour
 					GameController.Jeu.Evaluation_En_Cours = false;
 					GameController.Jeu.Evaluation_Effectuee = true;
 				}
-			}
+			}*/
 			
 			// Si nous sommes en Condition de Controle et que l'evaluation est faite : attendre puis permettre tir
 			if(GameController.Jeu.Evaluation_Effectuee)
@@ -80,14 +80,14 @@ public class GestionTemps : MonoBehaviour
 			// On attend puis l'evaluation commence
 			if(GameController.Jeu.Tir_Fini) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
 			{
-				// SIMULATION EVALUATION 
+				/*// SIMULATION EVALUATION 
 				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
 				simulationEvaluation -= Time.deltaTime;
 				if (simulationEvaluation <= 0.0f)
 				{
 					GameController.Jeu.Evaluation_En_Cours = false;
 					GameController.Jeu.Evaluation_Effectuee = true;
-				}
+				}*/
 			}
 
 			// Apres l'evaluation, on attend 2sec pour commencer un nouveau tir
@@ -118,14 +118,14 @@ public class GestionTemps : MonoBehaviour
 			// On attend et on commence l'evaluation
 			if(GameController.Jeu.Delai_Avant_Evaluation <= 0.0f) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
 			{
-				// SIMULATION EVALUATION
+				/*// SIMULATION EVALUATION
 				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
 				simulationEvaluation -= Time.deltaTime;
 				if (simulationEvaluation <= 0.0f)
 				{
 					GameController.Jeu.Evaluation_En_Cours = false;
 					GameController.Jeu.Evaluation_Effectuee = true;
-				}
+				}*/
 			}
 
 			// Apres l'evaluation, on attend 2sec pour commencer un nouveau tir
