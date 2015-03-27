@@ -22,7 +22,7 @@ public class GestionCollisionCible : MonoBehaviour
 		GameController.Jeu.Cible_Touchee = true;
 
 		// Si nous ne sommes pas pendant ou apres une evaluation
-		if(GameController.Jeu.Evaluation_En_Cours || GameController.Jeu.Evaluation_Effectuee)
+		if((GameController.Jeu.Evaluation_En_Cours || GameController.Jeu.Evaluation_Effectuee) && !GameController.Jeu.Config.Condition_De_Controle)
 		{
 			particleSystem.Stop();
 		}

@@ -101,7 +101,7 @@ public class GestionAffichageInfoEcran : MonoBehaviour
 		infoGagnePerdu.transform.position = new Vector3((float)(positionCible.x - diametreCible), (float)(positionCible.y - diametreCible), infoGagnePerdu.transform.position.z);
 
 		// On affiche un message en vert indiquant le nombre de points gagnes
-		if(GameController.Jeu.Cible_Touchee) 
+		if(GameController.Jeu.Cible_Touchee && GameController.Jeu.Config.Afficher_le_score) 
 		{
 			TextMesh textMesh = infoGagnePerdu.GetComponent(typeof(TextMesh)) as TextMesh;
 			textMesh.color = Color.green;
@@ -109,7 +109,7 @@ public class GestionAffichageInfoEcran : MonoBehaviour
 		}
 
 		// On affiche un message en rouge indiquant le nombre de points perdus
-		if(GameController.Jeu.Cible_Manquee) 
+		if(GameController.Jeu.Cible_Manquee && GameController.Jeu.Config.Afficher_le_score) 
 		{
 			TextMesh textMesh = infoGagnePerdu.GetComponent(typeof(TextMesh)) as TextMesh;
 			textMesh.color = Color.red;
