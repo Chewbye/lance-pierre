@@ -45,6 +45,8 @@ public class Results : MonoBehaviour {
 	public Text sexe_participant;
 	public Text main_forte_participant;
 	public Text exp_participant;
+	public Toggle afficher_barre_progression;
+	public Text intitule_afficher_barre_progression;
 
 	public GameObject bg_delai_avant_disparition_cible;
 	public GameObject bg_delai_avant_evaluation_cible;
@@ -73,6 +75,8 @@ public class Results : MonoBehaviour {
 	public GameObject position_sexe_participant;
 	public GameObject position_main_forte_participant;
 	public GameObject position_exp_participant;
+	public GameObject position_afficher_barre_progression;
+	public GameObject bg_afficher_barre_progression;
 	
 	//Récapitulatif
 	public Text score_final;
@@ -141,12 +145,15 @@ public class Results : MonoBehaviour {
 			intitule_delai_avant_evaluation_cible.text = "Délai avant évaluation de la cible :";
 			delai_avant_disparition_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_disparition_cible);
 			delai_avant_evaluation_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_evaluation_cible);
+			intitule_afficher_barre_progression.text = "Afficher la barre de progression :";
+			afficher_barre_progression.isOn = GameController.Jeu.Config.Affichage_barre_progression;
 		}
 		else {
 			bg_delai_avant_disparition_cible.SetActive(false);
 			bg_delai_avant_evaluation_cible.SetActive(false);
+			bg_afficher_barre_progression.SetActive(false);
 
-			int y_modif = 25;
+			/*int y_modif = 25;
 			Vector3 v = position_gravite.transform.position;
 			position_gravite.transform.position = new Vector3(v.x, v.y-y_modif);
 
@@ -191,7 +198,7 @@ public class Results : MonoBehaviour {
 
 			v = position_condition_test.transform.position;
 			position_condition_test.transform.position = new Vector3(v.x, v.y-y_modif);
-
+		*/
 			if (GameController.Jeu.Config.Condition_De_Controle) {
 				condition_test.text = "C";
 			} else if (GameController.Jeu.Config.Condition_De_Perception) {

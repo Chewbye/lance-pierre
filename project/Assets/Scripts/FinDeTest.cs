@@ -34,6 +34,9 @@ public class FinDeTest : MonoBehaviour {
 	private string hauteurLancePierre;
 	private string positionXLP;
 	private string positionYLP;
+	public string delai_avant_disparition_cible;
+	public string delai_avant_evaluation_cible;
+	public bool afficher_barre_progression;
 
 	string fichierCourant;
 
@@ -104,6 +107,9 @@ public class FinDeTest : MonoBehaviour {
 		hauteurLancePierre = Convert.ToString (GameController.Jeu.Config.Taille_Hauteur_Catapulte);
 		positionXLP = Convert.ToString (GameController.Jeu.Config.Distance_X_Catapulte);
 		positionYLP = Convert.ToString (GameController.Jeu.Config.Distance_Y_Catapulte);
+		delai_avant_disparition_cible = Convert.ToString (GameController.Jeu.Config.Delai_avant_disparition_cible);
+		delai_avant_evaluation_cible = Convert.ToString (GameController.Jeu.Config.Delai_evaluation_cible);
+		afficher_barre_progression = GameController.Jeu.Config.Affichage_barre_progression;
 		
 		writeXML ();
 	}
@@ -219,7 +225,6 @@ public class FinDeTest : MonoBehaviour {
 			rigidite_lancepierre + 
 			"</Data></Cell>" +
 			"</Row>" +
-			"</Row>" +
 			"<Row>" +
 			"<Cell><Data ss:Type=\"String\">" +
 			"Hauteur du Lance-Pierre" +
@@ -323,8 +328,38 @@ public class FinDeTest : MonoBehaviour {
 				"<Cell><Data ss:Type=\"String\">" +
 				condition_test +
 				"</Data></Cell>" +
+				"</Row>";
+			if (condition_test == "Memoire") {
+			Config += "<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Delai avant disparition de la cible" +
+				"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+				delai_avant_disparition_cible +
+				"</Data></Cell>" +
 				"</Row>" +
-				"</Table>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Delai avant evaluation de la cible" +
+				"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+				delai_avant_evaluation_cible +
+				"</Data></Cell>" +
+				"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Affichage barre de progression" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">";
+			if (afficher_barre_progression == true) {
+				Config += "Oui";
+			} else {
+				Config += "Non";
+			}
+			Config += "</Data></Cell>" +
+				"</Row>";
+			}
+			Config +="</Table>" +
 				"</Worksheet>";
 
 		return Config;
@@ -332,12 +367,12 @@ public class FinDeTest : MonoBehaviour {
 
 	public String writePassation(int nbPassation) {
 		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
-		int nb_lancers_int = Convert.ToInt32(nb_lancers);
+		int nb_lancers_int = Convert.ToInt32 (nb_lancers);
 		int nbReussi = 0;
 		int nbManque = 0;
 
 		for (int i = 0; i < GameController.Jeu.Reussiste_Tirs.Count; i++) {
-			if (GameController.Jeu.Reussiste_Tirs[i] == true) 
+			if (GameController.Jeu.Reussiste_Tirs [i] == true) 
 				nbReussi++;
 			else 
 				nbManque++;
@@ -347,195 +382,207 @@ public class FinDeTest : MonoBehaviour {
 		int premierLancer = dernierLancer - (nb_lancers_int - 1); 
 		String passation = "<Worksheet ss:Name=\"Passation" + nbPassation + "\">" + 
 			"<Table>" +
-				"<Column ss:Width=\"170\"/><Column ss:Width=\"130\"/><Column ss:Width=\"110\"/><Column ss:Width=\"110\"/>" +
-				"<Column ss:Width=\"110\"/><Column ss:Width=\"110\"/><Column ss:Width=\"95\"/><Column ss:Width=\"140\"/><Column ss:Width=\"150\"/>" +
-				"<Column ss:Width=\"80\"/><Column ss:Width=\"100\"/><Column ss:Width=\"110\"/><Column ss:Width=\"75\"/>" +
-				"<Row>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Date" + 
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				date + 
-				"</Data></Cell>" +
-				"</Row>" +
-				"<Row>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Numero de participant" + 
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"Number\">" + 
-				numParticipant +
-				"</Data></Cell>" +
-				"</Row>" +
-				"<Row>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Age" + 
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"Number\">" +
-				ageParticipant +
-				"</Data></Cell>" +
-				"</Row>" +
-				"<Row>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Sexe" + 
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" + 
-				sexeParticipant +
-				"</Data></Cell>" +
-				"</Row>" +
-				"<Row>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Main dominante" + 
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				mainForteParticipant +
-				"</Data></Cell>" +
-				"</Row>" +
-				"<Row>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Experience dans les jeux videos" + 
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				experienceJeuxVideosParticipant +
-				"</Data></Cell>" +
-				"</Row>" +
-				"<Row>" +
-				"</Row>" +
-				"<Row>" +
-				"<Cell></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Taille de la cible" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Position de la cible X" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Position de la cible Y" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Taille du projectile" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Poids du projectile" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
+			"<Column ss:Width=\"170\"/><Column ss:Width=\"130\"/><Column ss:Width=\"110\"/><Column ss:Width=\"110\"/>" +
+			"<Column ss:Width=\"110\"/><Column ss:Width=\"110\"/>";
+
+		if (prise_en_compte_score == true) 
+			passation += "<Column ss:Width=\"95\"/>";
+
+		passation += "<Column ss:Width=\"140\"/><Column ss:Width=\"150\"/>" +
+			"<Column ss:Width=\"80\"/><Column ss:Width=\"100\"/><Column ss:Width=\"110\"/><Column ss:Width=\"75\"/>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Date" + 
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			date + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Numero de participant" + 
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" + 
+			numParticipant +
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Age" + 
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			ageParticipant +
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Sexe" + 
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" + 
+			sexeParticipant +
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Main dominante" + 
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			mainForteParticipant +
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Experience dans les jeux videos" + 
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			experienceJeuxVideosParticipant +
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Taille de la cible" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Position de la cible X" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Position de la cible Y" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Taille du projectile" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Poids du projectile" +
+			"</Data></Cell>";
+		if (prise_en_compte_score == true) {
+			passation += "<Cell><Data ss:Type=\"String\">" +
 				"Points obtenus" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Delai imparti pour lancer (s)" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Delai imparti pour evaluer (s)" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Delai lancer (s)" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Delai evaluation (s)" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Resultat du lancer" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Evaluation" +
-				"</Data></Cell>" +
-				"</Row>";
+				"</Data></Cell>";
+		}
+		passation += "<Cell><Data ss:Type=\"String\">" +
+			"Delai imparti pour lancer (s)" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Delai imparti pour evaluer (s)" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Delai lancer (s)" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Delai evaluation (s)" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Resultat du lancer" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Evaluation" +
+			"</Data></Cell>" +
+			"</Row>";
 		for (int i = 0; i < nb_lancers_int; i++) {
 			passation += "<Row>" +
 				"<Cell><Data ss:Type=\"String\">" +
-					"Lancer " + (i + 1) + 
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Tirs_Realises[i].Taille_Cible +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Tirs_Realises[i].Position_Cible.DistanceX +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Tirs_Realises[i].Position_Cible.DistanceY +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Tirs_Realises[i].Projectile.Taille +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Tirs_Realises[i].Projectile.Poids +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">";
-			if (GameController.Jeu.Reussiste_Tirs[i] == true) 
-				passation += nb_points_gagnes_par_cible;
-			else
-				passation += "-" + nb_points_perdus_par_cible;;
-			passation += "</Data></Cell>" +
+				"Lancer " + (i + 1) + 
+				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Config.Delai_lancer_projectile +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					GameController.Jeu.Config.Delai_evaluation_cible +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					Math.Round(GameController.Jeu.Temps_Mis_Pour_Tirer[i], 2) +
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre le bon temps pour evaluer (Math round 2 comme ci-dessus)
-					"</Data></Cell>" +
-					"<Cell><Data ss:Type=\"String\">";
-			if (GameController.Jeu.Reussiste_Tirs[i] == true) 
+				GameController.Jeu.Tirs_Realises [i].Taille_Cible +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				GameController.Jeu.Tirs_Realises [i].Position_Cible.DistanceX +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				GameController.Jeu.Tirs_Realises [i].Position_Cible.DistanceY +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				GameController.Jeu.Tirs_Realises [i].Projectile.Taille +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				GameController.Jeu.Tirs_Realises [i].Projectile.Poids +
+				"</Data></Cell>";
+			if (prise_en_compte_score == true) {
+				passation += "<Cell><Data ss:Type=\"Number\">";
+				if (GameController.Jeu.Reussiste_Tirs [i] == true) 
+					passation += nb_points_gagnes_par_cible;
+				else
+					passation += "-" + nb_points_perdus_par_cible;
+				passation += "</Data></Cell>";
+			}
+			passation += "<Cell><Data ss:Type=\"Number\">" +
+				GameController.Jeu.Config.Delai_lancer_projectile +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				GameController.Jeu.Config.Delai_evaluation_cible +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				Math.Round (GameController.Jeu.Temps_Mis_Pour_Tirer [i], 2) +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				"1" + // Mettre le bon temps pour evaluer (Math round 2 comme ci-dessus)
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">";
+			if (GameController.Jeu.Reussiste_Tirs [i] == true) 
 				passation += "Touche";
 			else 
 				passation += "Manque";
 			passation += "</Data></Cell>" +
 				"<Cell><Data ss:Type=\"Number\">" +
-					"1" + // Mettre la bonne evaluation
-					"</Data></Cell>" +
-					"</Row>";
+				"1" + // Mettre la bonne evaluation
+				"</Data></Cell>" +
+				"</Row>";
 		}
 		passation += "<Row></Row>" +
 			"<Row>" +
-				"<Cell></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
+			"<Cell></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Moyenne" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Moyenne" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Moyenne" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Moyenne" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Moyenne" +
+			"</Data></Cell>";
+		if (prise_en_compte_score == true) {
+			passation += "<Cell><Data ss:Type=\"String\">" +
 				"Moyenne" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Moyenne" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Moyenne" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Moyenne" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Moyenne" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Moyenne" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Moyenne" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Moyenne" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Moyenne" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Moyenne" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Taux de reussite" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Moyenne" +
-				"</Data></Cell>" +
-				"</Row>" +
-				"<Row><Cell></Cell>" +
-				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"</Data></Cell>";
+		}
+			passation += "<Cell><Data ss:Type=\"String\">" +
+			"Moyenne" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Moyenne" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Moyenne" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Moyenne" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Taux de reussite" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Moyenne" +
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row><Cell></Cell>" +
+			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>";
+				if (prise_en_compte_score == true)
+					passation += "<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>";
+			passation += "<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
