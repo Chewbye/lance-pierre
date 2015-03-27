@@ -35,6 +35,17 @@ public class Results : MonoBehaviour {
 	public Text delai_avant_evaluation_cible;
 	public Text intitule_delai_avant_disparition_cible;
 	public Text intitule_delai_avant_evaluation_cible;
+	public Toggle prise_en_compte_score;
+	public Text hauteur_lance_pierre;
+	public Text position_X_LP;
+	public Text position_Y_LP;
+	public Text nom_config;
+	public Text num_participant;
+	public Text age_participant;
+	public Text sexe_participant;
+	public Text main_forte_participant;
+	public Text exp_participant;
+
 	public GameObject bg_delai_avant_disparition_cible;
 	public GameObject bg_delai_avant_evaluation_cible;
 	public GameObject position_gravite;
@@ -52,6 +63,16 @@ public class Results : MonoBehaviour {
 	public GameObject position_delai_validation_mesure;
 	public GameObject position_marge_stabilisation_leap;
 	public GameObject position_condition_test;
+	public GameObject position_prise_en_compte_score;
+	public GameObject position_hauteur_lance_pierre;
+	public GameObject position_position_X_LP;
+	public GameObject position_position_Y_LP;
+	public GameObject position_nom_config;
+	public GameObject position_num_participant;
+	public GameObject position_age_participant;
+	public GameObject position_sexe_participant;
+	public GameObject position_main_forte_participant;
+	public GameObject position_exp_participant;
 	
 	//Récapitulatif
 	public Text score_final;
@@ -104,6 +125,16 @@ public class Results : MonoBehaviour {
 		delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
 		delai_validation_mesure.text = Convert.ToString (GameController.Jeu.Config.Delai_validation_mesure_cible);
 		marge_stabilisation_leap.text = Convert.ToString (GameController.Jeu.Config.Marge_stabilisation_validation_cible);
+		prise_en_compte_score.isOn = GameController.Jeu.Config.Prise_en_compte_du_score;
+		hauteur_lance_pierre.text = Convert.ToString (GameController.Jeu.Config.Taille_Hauteur_Catapulte);
+		position_X_LP.text = Convert.ToString (GameController.Jeu.Config.Distance_X_Catapulte);
+		position_Y_LP.text = Convert.ToString (GameController.Jeu.Config.Distance_Y_Catapulte);
+		nom_config.text = Convert.ToString (GameController.Jeu.Config.Name);
+		num_participant.text = Convert.ToString (GameController.Jeu.Participant.Numero);
+		age_participant.text = Convert.ToString (GameController.Jeu.Participant.Age);
+		sexe_participant.text = Convert.ToString (GameController.Jeu.Participant.Sexe);
+		main_forte_participant.text = Convert.ToString (GameController.Jeu.Participant.MainDominante);
+		exp_participant.text = Convert.ToString (GameController.Jeu.Participant.PratiqueJeuxVideo);
 		if (GameController.Jeu.Config.Condition_De_Memoire) {
 			condition_test.text = "M";
 			intitule_delai_avant_disparition_cible.text = "Délai avant disparition de la cible :";
@@ -114,6 +145,7 @@ public class Results : MonoBehaviour {
 		else {
 			bg_delai_avant_disparition_cible.SetActive(false);
 			bg_delai_avant_evaluation_cible.SetActive(false);
+
 			int y_modif = 25;
 			Vector3 v = position_gravite.transform.position;
 			position_gravite.transform.position = new Vector3(v.x, v.y-y_modif);

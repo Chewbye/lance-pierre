@@ -7,8 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 public class FinDeTest : MonoBehaviour {
-
-	//Enlever ce qui ne sert à rien pour l'XML !
+	
 	//Configuration
 	private string nom_configuration;
 	private string gravite;
@@ -31,6 +30,10 @@ public class FinDeTest : MonoBehaviour {
 	private string sexeParticipant;
 	private string mainForteParticipant;
 	private string experienceJeuxVideosParticipant;
+	private bool prise_en_compte_score;
+	private string hauteurLancePierre;
+	private string positionXLP;
+	private string positionYLP;
 
 	string fichierCourant;
 
@@ -97,6 +100,10 @@ public class FinDeTest : MonoBehaviour {
 		sexeParticipant = Convert.ToString (GameController.Jeu.Participant.Sexe);
 		mainForteParticipant = Convert.ToString (GameController.Jeu.Participant.MainDominante);
 		experienceJeuxVideosParticipant = Convert.ToString (GameController.Jeu.Participant.PratiqueJeuxVideo);
+		prise_en_compte_score = GameController.Jeu.Config.Prise_en_compte_du_score;
+		hauteurLancePierre = Convert.ToString (GameController.Jeu.Config.Taille_Hauteur_Catapulte);
+		positionXLP = Convert.ToString (GameController.Jeu.Config.Distance_X_Catapulte);
+		positionYLP = Convert.ToString (GameController.Jeu.Config.Distance_Y_Catapulte);
 		
 		writeXML ();
 	}
@@ -189,27 +196,52 @@ public class FinDeTest : MonoBehaviour {
 		}
 		Config += "</Row>" +
 			"<Row>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Nombre de series de lancers" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"Number\">" +
-				nb_series + 
-				"</Data></Cell>" +
-				"</Row>" +
-				"<Row>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Gravite" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"Number\">" +
-				gravite + 
-				"</Data></Cell>" +
-				"</Row>" +
-				"<Row>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Rigidite du Lance-Pierre" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"Number\">" +
-				rigidite_lancepierre + 
+			"<Cell><Data ss:Type=\"String\">" +
+			"Nombre de series de lancers" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			nb_series + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Gravite" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			gravite + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Rigidite du Lance-Pierre" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			rigidite_lancepierre + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Hauteur du Lance-Pierre" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			hauteurLancePierre + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Distance X du Lance-Pierre" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			positionXLP + 
+			"</Data></Cell>" +
+			"</Row>" +
+			"<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Distance Y du Lance-Pierre" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"Number\">" +
+			positionYLP + 
 				"</Data></Cell>" +
 				"</Row>" +
 				"<Row>" +
@@ -218,6 +250,18 @@ public class FinDeTest : MonoBehaviour {
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"String\">";
 		if (afficher_le_score == true) {
+			Config += "Oui";
+		} else {
+			Config += "Non";
+		}
+		Config += "</Data></Cell>" +
+			"</Row>" +
+				"<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Prise en compte du score" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">";
+		if (prise_en_compte_score == true) {
 			Config += "Oui";
 		} else {
 			Config += "Non";
