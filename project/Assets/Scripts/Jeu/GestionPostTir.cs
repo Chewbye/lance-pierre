@@ -15,7 +15,14 @@ public class GestionPostTir : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		tempsRestant = 2;
+		if(GameController.Jeu.Config.Condition_De_Controle)
+		{
+			tempsRestant = GameController.Jeu.Config.Delai_avant_disparition_cible;
+		}
+		else
+		{
+			tempsRestant = 2;
+		}
 		sonDejaJoue = false;
 	}
 
@@ -102,10 +109,25 @@ public class GestionPostTir : MonoBehaviour
 			Application.LoadLevel (Application.loadedLevel);
 		}
 		// Si nous sommes en condition de Memoire
-		else if (GameController.Jeu.Config.Condition_De_Memoire)
+		else if (GameController.Jeu.Config.Condition_De_Memoire && GameController.Jeu.Delai_Apres_Evaluation <= 0.0f)
 		{
-			// On indique que le tir courant est termine
-			GameController.Jeu.Tir_Fini = true;
+			// On indique que le tir courant est reussi
+			GameController.Jeu.Reussiste_Tirs.Add(true);
+			
+			// On augmente le score
+			GameController.Jeu.Score = GameController.Jeu.Score + GameController.Jeu.Config.Nb_points_gagnes_par_cible;
+			
+			//On recharge la meme scène
+			GameController.Jeu.Evaluation_Effectuee = false;
+			GameController.Jeu.Evaluation_En_Cours = false;
+			GameController.Jeu.Tir_Effectue = false;
+			GameController.Jeu.Tir_Fini = false;
+			GameController.Jeu.Cible_Touchee = false;
+			GameController.Jeu.Cible_Manquee = false;
+			GameController.Jeu.Delai_Avant_Evaluation = 2;
+			GameController.Jeu.Delai_Apres_Evaluation = 2;
+			
+			Application.LoadLevel (Application.loadedLevel);;
 		}
 		// Si nous sommes en condition de Perception
 		else if (GameController.Jeu.Config.Condition_De_Perception && GameController.Jeu.Delai_Apres_Evaluation <= 0.0f)
@@ -163,9 +185,35 @@ public class GestionPostTir : MonoBehaviour
 			Application.LoadLevel (Application.loadedLevel);
 		}
 		// Si nous sommes en condition de Memoire
-		else if (GameController.Jeu.Config.Condition_De_Memoire)
+		else if (GameController.Jeu.Config.Condition_De_Memoire && GameController.Jeu.Delai_Apres_Evaluation <= 0.0f)
 		{
-
+			// Si l'evaluation est finie et le delai passe
+			if(GameController.Jeu.Delai_Apres_Evaluation <= 0.0f)
+			{
+				// On indique que le tir courant est manqué
+				GameController.Jeu.Reussiste_Tirs.Add(false);
+				
+				if (GameController.Jeu.Temps_Restant_Courant <= 0.0f)
+				{
+					// On indique le temps mis par le joueur pour tirer (ici -1 car le joueur n'a pas tiré)
+					GameController.Jeu.Temps_Mis_Pour_Tirer.Add(-1);
+				}
+				
+				// On baisse le score
+				GameController.Jeu.Score = GameController.Jeu.Score - GameController.Jeu.Config.Nb_points_perdus_par_cible_manque;
+				
+				//On recharge la meme scène
+				GameController.Jeu.Evaluation_Effectuee = false;
+				GameController.Jeu.Evaluation_En_Cours = false;
+				GameController.Jeu.Tir_Effectue = false;
+				GameController.Jeu.Tir_Fini = false;
+				GameController.Jeu.Cible_Touchee = false;
+				GameController.Jeu.Cible_Manquee = false;
+				GameController.Jeu.Delai_Avant_Evaluation = 2;
+				GameController.Jeu.Delai_Apres_Evaluation = 2;
+				
+				Application.LoadLevel (Application.loadedLevel);
+			}
 		}
 		// Si nous sommes en condition de Perception
 		else if (GameController.Jeu.Config.Condition_De_Perception && GameController.Jeu.Delai_Apres_Evaluation <= 0.0f)

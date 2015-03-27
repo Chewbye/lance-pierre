@@ -16,6 +16,11 @@ public class GestionTemps : MonoBehaviour
 		// On simule un temps d'evaluation de 5s
 		simulationEvaluation = 5;
 		GameController.Jeu.Temps_Restant_Courant = GameController.Jeu.Config.Delai_lancer_projectile;
+
+		if(GameController.Jeu.Config.Condition_De_Memoire)
+		{
+			GameController.Jeu.Delai_Avant_Evaluation = GameController.Jeu.Config.Delai_avant_evaluation_cible;
+		}
 	}
 	
 	// Update is called once per frame
@@ -31,9 +36,9 @@ public class GestionTemps : MonoBehaviour
 			}
 
 			// SIMULATION EVALUATION
-			if(GameController.Jeu.Delai_Avant_Evaluation <= 0.0f)
+			if(GameController.Jeu.Delai_Avant_Evaluation <= 0.0f) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
 			{
-				GameController.Jeu.Evaluation_En_Cours = true;
+				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
 				simulationEvaluation -= Time.deltaTime;
 				if (simulationEvaluation <= 0.0f)
 				{
@@ -73,10 +78,10 @@ public class GestionTemps : MonoBehaviour
 			}
 
 			// On attend puis l'evaluation commence
-			if(GameController.Jeu.Tir_Fini)
+			if(GameController.Jeu.Tir_Fini) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
 			{
-				// SIMULATION EVALUATION
-				GameController.Jeu.Evaluation_En_Cours = true;
+				// SIMULATION EVALUATION 
+				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
 				simulationEvaluation -= Time.deltaTime;
 				if (simulationEvaluation <= 0.0f)
 				{
@@ -103,6 +108,30 @@ public class GestionTemps : MonoBehaviour
 				{
 					Conclure();
 				}
+			}
+
+			// On attend puis on fait disparaitre la cible et la catapulte
+			if(GameController.Jeu.Tir_Fini)
+			{
+				GameController.Jeu.Delai_Avant_Evaluation -= Time.deltaTime;
+			}
+			// On attend et on commence l'evaluation
+			if(GameController.Jeu.Delai_Avant_Evaluation <= 0.0f) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
+			{
+				// SIMULATION EVALUATION
+				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
+				simulationEvaluation -= Time.deltaTime;
+				if (simulationEvaluation <= 0.0f)
+				{
+					GameController.Jeu.Evaluation_En_Cours = false;
+					GameController.Jeu.Evaluation_Effectuee = true;
+				}
+			}
+
+			// Apres l'evaluation, on attend 2sec pour commencer un nouveau tir
+			if(GameController.Jeu.Evaluation_Effectuee)
+			{
+				GameController.Jeu.Delai_Apres_Evaluation -= Time.deltaTime;
 			}
 		}
 	}
