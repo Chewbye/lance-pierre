@@ -79,8 +79,6 @@ public class MenuTableManager : MonoBehaviour {
 				break;
 			}
 		}
-
-		Debug.Log (GameController.Jeu.Config);
 	}
 
 	/**
@@ -93,8 +91,6 @@ public class MenuTableManager : MonoBehaviour {
 		if (float.TryParse (Table_tailles_cibles.transform.GetChild (row).gameObject.transform.GetChild(col).gameObject.transform.GetChild(0).GetComponent<InputField>().text, out value)) {
 			GameController.Jeu.Config.Tailles_Cibles[row-1] = value;
 		}
-		
-		Debug.Log (GameController.Jeu.Config);
 	}
 
 	/**
@@ -115,8 +111,6 @@ public class MenuTableManager : MonoBehaviour {
 				break;
 			}
 		}
-		
-		Debug.Log (GameController.Jeu.Config);
 	}
 
 	/** 
@@ -197,7 +191,7 @@ public class MenuTableManager : MonoBehaviour {
 		for (int i=1; i<row.gameObject.transform.childCount - 1; i++) {
 			int colnum = i;
 			int rownum = row.GetSiblingIndex() + decallage;
-			Debug.Log(rownum + " " + row.GetSiblingIndex());
+
 			InputField.OnChangeEvent submitEvent = new InputField.OnChangeEvent ();
 			submitEvent.AddListener (delegate {
 				fieldChangeMethod (rownum, colnum);

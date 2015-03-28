@@ -26,6 +26,7 @@ public class UIManagerScript : MonoBehaviour {
 	/* Onglet Cibles */
 	public InputField IF_Nb_points_gagnes_par_cible;
 	public InputField IF_Nb_points_perdus_par_cible_manque;
+	public GameObject Liste_de_couleurs;
 
 
 	/* Onglet Lance-pierre */
@@ -83,6 +84,17 @@ public class UIManagerScript : MonoBehaviour {
 			GameController.Jeu.Config.Projectiles.Add (new Projectile (1, 1));
 		}
 
+		//Ajout des listener à chaque toggle pour la couleur de la cible
+		Toggle[] Toggles_couleurs = Liste_de_couleurs.GetComponentsInChildren<Toggle> ();
+		for (int i=0; i<Toggles_couleurs.Length; i++) {
+			string couleur = Toggles_couleurs[i].GetComponentInChildren<Text>().text;
+			Toggle currentToggle = Toggles_couleurs[i];
+			Toggle.ToggleEvent onToggleChangeEvent = new Toggle.ToggleEvent();
+			onToggleChangeEvent.AddListener(delegate {
+				onValueChangeCouleurCible (couleur, currentToggle);
+			});
+			Toggles_couleurs[i].onValueChanged = onToggleChangeEvent;
+		}
 
 		refreshGUIFields ();
 
@@ -182,6 +194,17 @@ public class UIManagerScript : MonoBehaviour {
 		IF_Distance_Y_lancepierre.text = Convert.ToString (GameController.Jeu.Config.Distance_Y_Catapulte);
 		onValueChangeToggleCondition ();
 		onValueChangeToggleAffichage_barre_progression ();
+
+
+		//Cochage de la bonne case de couleur
+		Toggle[] Toggles_couleurs = Liste_de_couleurs.GetComponentsInChildren<Toggle> ();
+		for (int i=0; i<Toggles_couleurs.Length; i++) {
+			Toggle currentToggle = Toggles_couleurs[i];
+			if(currentToggle.GetComponentInChildren<Text>().text.Equals(GameController.Jeu.Config.Couleur_cible)){
+				Toggles_couleurs[i].isOn = true;
+				break;
+			}
+		}
 	}
 
 	public void onValueChangeGravite(){
@@ -390,6 +413,11 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void CallbackConfExistsDialog(DialogResult result){
 		Debug.Log (result.ToString ());
+	}
+
+	public void onValueChangeCouleurCible(string couleur, Toggle toggle){
+		if (toggle.isOn)
+			GameController.Jeu.Config.Couleur_cible = couleur;
 	}
 
 	/**

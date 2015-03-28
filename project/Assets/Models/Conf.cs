@@ -308,6 +308,17 @@ public class Conf{
 		}
 	}
 
+	public string _Couleur_cible;
+
+	public string Couleur_cible {
+		get {
+			return _Couleur_cible;
+		}
+		set {
+			_Couleur_cible = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Conf à partir d'un fichier de configuation
 	 */
@@ -350,6 +361,7 @@ public class Conf{
 		_Affichage_barre_progression = true;
 		_Largeur_barre_progression = 512;
 		_Hauteur_barre_progression = 256;
+		_Couleur_cible = "Rouge";
 	}
 	
 	
@@ -379,6 +391,7 @@ public class Conf{
 		res += "_Affichage_barre_progression: " + Convert.ToString(_Affichage_barre_progression) + System.Environment.NewLine;
 		res += "_Largeur_barre_progression: " + Convert.ToString(_Largeur_barre_progression) + System.Environment.NewLine;
 		res += "_Hauteur_barre_progression: " + Convert.ToString(_Hauteur_barre_progression) + System.Environment.NewLine;
+		res += "_Couleur_cible: " + Convert.ToString(_Couleur_cible) + System.Environment.NewLine;
 
 		foreach (PositionCible poscible in _Positions_Cibles) {
 			res += "POSITION CIBLE: " + System.Environment.NewLine;
