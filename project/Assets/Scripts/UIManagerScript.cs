@@ -27,7 +27,7 @@ public class UIManagerScript : MonoBehaviour {
 	public InputField IF_Nb_points_gagnes_par_cible;
 	public InputField IF_Nb_points_perdus_par_cible_manque;
 	public GameObject Liste_de_couleurs;
-
+	public Boolean Liste_de_couleurs_listeners_set = false;
 
 	/* Onglet Lance-pierre */
 	public InputField IF_Rigidite_lancepierre;
@@ -84,18 +84,6 @@ public class UIManagerScript : MonoBehaviour {
 			GameController.Jeu.Config.Projectiles.Add (new Projectile (1, 1));
 		}
 
-		//Ajout des listener à chaque toggle pour la couleur de la cible
-		Toggle[] Toggles_couleurs = Liste_de_couleurs.GetComponentsInChildren<Toggle> ();
-		for (int i=0; i<Toggles_couleurs.Length; i++) {
-			string couleur = Toggles_couleurs[i].GetComponentInChildren<Text>().text;
-			Toggle currentToggle = Toggles_couleurs[i];
-			Toggle.ToggleEvent onToggleChangeEvent = new Toggle.ToggleEvent();
-			onToggleChangeEvent.AddListener(delegate {
-				onValueChangeCouleurCible (couleur, currentToggle);
-			});
-			Toggles_couleurs[i].onValueChanged = onToggleChangeEvent;
-		}
-
 		//Affiche la liste des fichiers de configurations déja sauvegardés à l'ouverture de l'application
 		foreach (Conf conf in GameController.Jeu.ConfigsList) {
 			UnityEngine.UI.Button newConfigButton = CreateButton (prefabBoutonConfig, Configs_List_Panel, new Vector2 (0, 0), new Vector2 (0, 0));
@@ -110,7 +98,20 @@ public class UIManagerScript : MonoBehaviour {
 	}
 	
 	void Update () {
-	
+		if (Liste_de_couleurs_listeners_set == false) {
+			//Ajout des listener à chaque toggle pour la couleur de la cible
+			Toggle[] Toggles_couleurs = Liste_de_couleurs.GetComponentsInChildren<Toggle> ();
+			for (int i=0; i<Toggles_couleurs.Length; i++) {
+				string couleur = Toggles_couleurs [i].GetComponentInChildren<Text> ().text;
+				Toggle currentToggle = Toggles_couleurs [i];
+				Toggle.ToggleEvent onToggleChangeEvent = new Toggle.ToggleEvent ();
+				onToggleChangeEvent.AddListener (delegate {
+					onValueChangeCouleurCible (couleur, currentToggle);
+				});
+				Toggles_couleurs [i].onValueChanged = onToggleChangeEvent;
+				Liste_de_couleurs_listeners_set = true;
+			}
+		}
 	}
 
 	void OnGUI() {
