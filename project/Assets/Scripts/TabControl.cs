@@ -49,6 +49,8 @@ public class TabControl : MonoBehaviour
 
 		panels [tabPos].SetActive (true);
 		panels [currentPanel].SetActive (false);
+		tabs [tabPos].interactable = false;
+		tabs [currentPanel].interactable = true;
 		currentPanel = tabPos;
 
 		if(tabPos == 3) //Onglet calibrage
