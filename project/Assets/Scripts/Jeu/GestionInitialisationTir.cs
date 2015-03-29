@@ -22,20 +22,20 @@ public class GestionInitialisationTir : MonoBehaviour
 	private float circleRadius;
 	private bool clickedOn;
 	private Vector2 prevVelocity;
-
+	
 	private double ratioEchelle;
 	private double ratioCalibrage;
-
+	
 	private TripletTirs tirAFaire;
-
+	
 	private bool catapulteActivee;
-
+	
 	void Awake () 
 	{
 		spring = GetComponent <SpringJoint2D> ();
 		catapult = spring.connectedBody.transform;
 	}
-
+	
 	void Start () 
 	{
 		ratioCalibrage = 4;
@@ -50,6 +50,11 @@ public class GestionInitialisationTir : MonoBehaviour
 		
 		diametreProjectile = renderer.bounds.size.x * GameController.Jeu.Config.Ratio_echelle;
 		Vector3 positionCatapulte = catapulte.transform.position;
+		
+		//CHANGEMENT DE LA COULEUR DE LA CIBLE
+		string DossierCible = UnityEngine.Application.dataPath;
+		SpriteRenderer spriteRendererCible = cible.GetComponent<SpriteRenderer>();
+		spriteRendererCible.sprite = Resources.Load<Sprite>(GameController.Jeu.Config.Couleur_cible);
 		
 		// CHANGEMENT DE LA TAILLE DE LA CATAPULTE
 		ChangerTailleCatapulte();
@@ -100,21 +105,21 @@ public class GestionInitialisationTir : MonoBehaviour
 			// On reactive la catapulte et le projectile
 			ActiverCatapulteModeControle();
 		}
-
+		
 		// Si nous sommes en mode Condtion de Perception
 		if(GameController.Jeu.Config.Condition_De_Perception)
 		{
 			// On desactive la catapulte et le projectile
 			DesactiverCatapulteModePerception();
 		}
-
+		
 		// Si nous sommes en mode Condtion de Memoire
 		if(GameController.Jeu.Config.Condition_De_Memoire)
 		{
 			// On desactive la catapulte et le projectile
 			DesactiverCatapulteCibleModeMemoire();
 		}
-
+		
 		// Si le joueur clique sur le projectile
 		if (clickedOn)
 		{
@@ -133,7 +138,7 @@ public class GestionInitialisationTir : MonoBehaviour
 			{
 				prevVelocity = rigidbody2D.velocity;
 			}
-
+			
 			LineRendererUpdate ();	
 		} 
 		else 
@@ -142,7 +147,7 @@ public class GestionInitialisationTir : MonoBehaviour
 			catapultLineBack.enabled = false;
 		}
 	}
-
+	
 	void ActiverCatapulteModeControle()
 	{
 		if(!catapulteActivee && GameController.Jeu.Evaluation_Effectuee && (GameController.Jeu.Delai_Apres_Evaluation <= 0.0f))
@@ -155,11 +160,11 @@ public class GestionInitialisationTir : MonoBehaviour
 			
 			// On active le projectile
 			projectile.renderer.enabled = true;
-
+			
 			catapulteActivee = true;
 		}
 	}
-
+	
 	void DesactiverCatapulteCibleModeMemoire()
 	{
 		if(GameController.Jeu.Tir_Fini)
@@ -172,12 +177,12 @@ public class GestionInitialisationTir : MonoBehaviour
 			
 			// On desactive le projectile
 			projectile.renderer.enabled = false;
-
+			
 			// On desactive la cible
 			cible.renderer.enabled = false;
 		}
 	}
-
+	
 	void DesactiverCatapulteModePerception()
 	{
 		if(GameController.Jeu.Tir_Fini)
@@ -215,7 +220,7 @@ public class GestionInitialisationTir : MonoBehaviour
 						GameController.Jeu.Tirs_A_Realiser.Add(new TripletTirs(GameController.Jeu.Config.Projectiles[l],
 						                                                       GameController.Jeu.Config.Positions_Cibles[j],
 						                                                       GameController.Jeu.Config.Tailles_Cibles[k]));
-
+						
 						nbCombinaisonsGenerees++;
 					}
 				}
@@ -247,34 +252,34 @@ public class GestionInitialisationTir : MonoBehaviour
 		
 		// CHANGEMENT DE LA POSITION ET DE LA TAILLE DE LA CIBLE
 		ChangerProprieteCible();
-
+		
 		// CHANGEMENT DE LA TAILLE ET DU POIDS DU PROJECTILE
 		ChangerProprieteProjectile();
-
+		
 	}
-
+	
 	void ChangerProprieteCible()
 	{
 		// Conversion des positions X Y Z en centimetres vers l'unite de Unity
 		float positionXCible = catapulte.transform.position.x + (tirAFaire.Position_Cible.DistanceX * (float)(diametreProjectile / ratioCalibrage));
 		float positionYCible = catapulte.transform.position.y + (tirAFaire.Position_Cible.DistanceY * (float)(diametreProjectile / ratioCalibrage));
 		float positionZCible = cible.transform.position.z * (float)(diametreProjectile / ratioCalibrage);
-
+		
 		cible.transform.position = new Vector3(positionXCible, positionYCible, positionZCible);
-
+		
 		// Conversion de la taille en centimetres vers l'unite de Unity
 		// La cible doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
 		float tailleXYZCible = tirAFaire.Taille_Cible * (float)(GameController.Jeu.Config.Ratio_echelle * cible.transform.localScale.x / ratioCalibrage); 
-
+		
 		cible.transform.localScale = new Vector3(tailleXYZCible, tailleXYZCible, tailleXYZCible);
 	}
-
+	
 	void ChangerProprieteProjectile()
 	{
 		// Conversion des positions X Y Z en centimetres vers l'unite de Unity
 		float tailleXYZProjectile = (float) (tirAFaire.Projectile.Taille / ratioCalibrage);
 		transform.localScale = new Vector3((float) ratioEchelle* tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile);
-
+		
 		// On cree le rendu de la corde
 		LineRendererSetup ();
 		rayToMouse = new Ray(catapult.position, Vector3.zero);
@@ -286,7 +291,7 @@ public class GestionInitialisationTir : MonoBehaviour
 		// On change la gravite du projectile
 		rigidbody2D.gravityScale = tirAFaire.Projectile.Poids * GameController.Jeu.Config.Gravite;
 	}
-
+	
 	void ChangerTailleCatapulte()
 	{
 		// Conversion de la taille en centimetres vers l'unite de Unity
@@ -297,21 +302,21 @@ public class GestionInitialisationTir : MonoBehaviour
 				* catapulte.transform.localScale.x / ratioCalibrage; 
 		catapulte.transform.localScale = new Vector3((float) hauteurCatapulte, (float) hauteurCatapulte, (float)hauteurCatapulte);
 	}
-
+	
 	void ChangerPositionCatapulte()
 	{
 		// Conversion des positions X Y Z en centimetres vers l'unite de Unity
 		float positionXCatapulte = (float) (GameController.Jeu.Config.Distance_X_Catapulte * diametreProjectile / ratioCalibrage);
 		float positionYCatapulte = (float) (GameController.Jeu.Config.Distance_Y_Catapulte * diametreProjectile / ratioCalibrage);
 		float positionZCatapulte = catapulte.transform.position.z * (float)(diametreProjectile / ratioCalibrage);
-
+		
 		catapulte.transform.position = new Vector3(positionXCatapulte, positionYCatapulte, positionZCatapulte);
-
+		
 		// On adapte la position du projectile en fonction de la taille de la catapulte
 		float positionXProjectile = (float) ((GameController.Jeu.Config.Distance_X_Catapulte * diametreProjectile + (-1 * diametreProjectile)) / ratioCalibrage);
 		float positionYProjectile = (float) ((GameController.Jeu.Config.Distance_Y_Catapulte * diametreProjectile + (-1 * diametreProjectile)) / ratioCalibrage);
 		float positionZProjectile = transform.position.z * (float)(diametreProjectile / ratioCalibrage);
-
+		
 		transform.position = new Vector3(positionXProjectile, positionYProjectile, positionZProjectile);
 	}
 	
@@ -367,7 +372,7 @@ public class GestionInitialisationTir : MonoBehaviour
 		catapultLineFront.sortingOrder = 3;
 		catapultLineBack.sortingOrder = 1;
 	}
-
+	
 	// Le joueur clique sur le projectile
 	void OnMouseDown() 
 	{
@@ -382,7 +387,7 @@ public class GestionInitialisationTir : MonoBehaviour
 			rigidbody2D.isKinematic = true;
 		}
 	}
-
+	
 	// Le joueur lache le projectile
 	void OnMouseUp() 
 	{
@@ -425,7 +430,7 @@ public class GestionInitialisationTir : MonoBehaviour
 		Vector2 catapultToProjectile = transform.position - catapultLineFront.transform.position;
 		leftCatapultToProjectile.direction = catapultToProjectile;
 		Vector3 holdPoint = leftCatapultToProjectile.GetPoint(catapultToProjectile.magnitude + circleRadius);
-
+		
 		catapultLineFront.SetPosition(1, holdPoint);
 		catapultLineBack.SetPosition(1, holdPoint);
 	}
