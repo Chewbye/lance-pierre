@@ -116,7 +116,7 @@ public class GestionAffichageInfoEcran : MonoBehaviour
 			textMesh.text = "-" + GameController.Jeu.Config.Nb_points_perdus_par_cible_manque + " points";
 		}
 
-		if((GameController.Jeu.Evaluation_En_Cours || GameController.Jeu.Evaluation_Effectuee) && !GameController.Jeu.Config.Condition_De_Controle)
+		if(GameController.Jeu.Tir_Fini)
 		{
 			cible.renderer.enabled = true;
 			TextMesh textMesh = infoGagnePerdu.GetComponent(typeof(TextMesh)) as TextMesh;
