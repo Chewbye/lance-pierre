@@ -22,9 +22,9 @@ public class MenuSecondaire : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GameController.Jeu.Participant.Sexe = "homme";
-		GameController.Jeu.Participant.MainDominante = "droite";
-		GameController.Jeu.Participant.PratiqueJeuxVideo = "oui";
+		GameController.Jeu.Participant.Sexe = "Homme";
+		GameController.Jeu.Participant.MainDominante = "Droite";
+		GameController.Jeu.Participant.PratiqueJeuxVideo = "Oui";
 		erreur = false;
 		typeErreur = "";
 		this.largeurPopup = 150;
@@ -59,21 +59,21 @@ public class MenuSecondaire : MonoBehaviour {
 	public void onChangeToggleSexeHomme()
 	{
 		if (T_Homme.isOn) {
-			GameController.Jeu.Participant.Sexe = "homme";
+			GameController.Jeu.Participant.Sexe = "Homme";
 		}
 	}
 
 	public void onChangeToggleSexeFemme()
 	{
 		if (T_Femme.isOn) {
-			GameController.Jeu.Participant.Sexe = "femme";
+			GameController.Jeu.Participant.Sexe = "Femme";
 		}
 	}
 
 	public void onChangeToggleMainDominanteGauche()
 	{
 		if (T_Gauche.isOn) {
-			GameController.Jeu.Participant.MainDominante = "gauche";
+			GameController.Jeu.Participant.MainDominante = "Gauche";
 		}
 
 	}
@@ -81,21 +81,21 @@ public class MenuSecondaire : MonoBehaviour {
 	public void onChangeToggleMainDominanteDroite()
 	{
 		if (T_Droite.isOn) {
-			GameController.Jeu.Participant.MainDominante = "droite";
+			GameController.Jeu.Participant.MainDominante = "Droite";
 		}
 	}
 
 	public void onChangeToggleJVOui()
 	{
 		if (T_Oui.isOn) {
-			GameController.Jeu.Participant.PratiqueJeuxVideo = "oui";
+			GameController.Jeu.Participant.PratiqueJeuxVideo = "Oui";
 		}
 	}
 
 	public void onChangeToggleJVNon()
 	{
 		if (T_Non.isOn) {
-			GameController.Jeu.Participant.PratiqueJeuxVideo = "non";
+			GameController.Jeu.Participant.PratiqueJeuxVideo = "Non";
 		}
 	}
 
@@ -107,14 +107,14 @@ public class MenuSecondaire : MonoBehaviour {
 				Debug.Log(GameController.Jeu.Participant.ToString()+ "\n");
 				UnityEngine.Application.LoadLevel ("Jeu");
 			} else {
-				Debug.Log("age invalide \n");
+				Debug.Log("Age invalide \n");
 				erreur = true;
-				typeErreur = "age invalide";
+				typeErreur = "Age invalide";
 			}
 		} else {
-			Debug.Log("numero invalide \n");
+			Debug.Log("Numéro invalide \n");
 			erreur = true;
-			typeErreur = "numero invalide";
+			typeErreur = "Numéro invalide";
 
 		}
 
