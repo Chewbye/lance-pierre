@@ -96,8 +96,6 @@ public class UIManagerScript : MonoBehaviour {
 			Toggles_couleurs[i].onValueChanged = onToggleChangeEvent;
 		}
 
-		refreshGUIFields ();
-
 		//Affiche la liste des fichiers de configurations déja sauvegardés à l'ouverture de l'application
 		foreach (Conf conf in GameController.Jeu.ConfigsList) {
 			UnityEngine.UI.Button newConfigButton = CreateButton (prefabBoutonConfig, Configs_List_Panel, new Vector2 (0, 0), new Vector2 (0, 0));
@@ -107,6 +105,7 @@ public class UIManagerScript : MonoBehaviour {
 			AddListener(newConfigButton, conf.Name);
 		}		
 
+		refreshGUIFields ();
 		menuTableManager.refreshGUITables();
 	}
 	
@@ -203,6 +202,17 @@ public class UIManagerScript : MonoBehaviour {
 			if(currentToggle.GetComponentInChildren<Text>().text.Equals(GameController.Jeu.Config.Couleur_cible)){
 				Toggles_couleurs[i].isOn = true;
 				break;
+			}
+		}
+
+		//Coloration du bouton correspondant au fichier selectionné
+		UnityEngine.UI.Button[] ConfigsList = Configs_List_Panel.transform.GetComponentsInChildren<UnityEngine.UI.Button> ();
+		foreach(UnityEngine.UI.Button configButton in ConfigsList){
+			if(configButton.GetComponentInChildren<Text>().text.Equals(GameController.Jeu.AppConfig.LastConfName)){
+				
+				configButton.interactable = false;
+			} else{
+				configButton.interactable = true;
 			}
 		}
 	}
@@ -382,6 +392,15 @@ public class UIManagerScript : MonoBehaviour {
 		launchGame ("menu");
 	}
 
+	public void CallbackConfExistsDialog(DialogResult result){
+		Debug.Log (result.ToString ());
+	}
+	
+	public void onValueChangeCouleurCible(string couleur, Toggle toggle){
+		if (toggle.isOn)
+			GameController.Jeu.Config.Couleur_cible = couleur;
+	}
+
 	/**
 	 * Lance la scene du jeu en fonction de son nom sceneName
 	 */
@@ -393,38 +412,27 @@ public class UIManagerScript : MonoBehaviour {
 	 * Charge un fichier de configuration 
 	 */
 	public void chargerFichierConfiguration(string filename){
-		Debug.Log ("Modifier!");
-
 		string saveDirectory = UnityEngine.Application.dataPath;
 
 		//Chargement du fichier
 		GameController.Jeu.loadConfig(saveDirectory + "/" + filename + ".xml");
-		
+
+		//Mise à jour du dernier fichier de configuration utilisé par l'application
+		GameController.Jeu.AppConfig.LastConfName = filename;
+		GameController.Jeu.AppConfig.saveConfig (UnityEngine.Application.dataPath + "/app.conf");
+
 		//Mis à jour du GUI avec la nouvelle config
 		refreshGUIFields ();
 
 		//Mise à jour des tableaux
 		menuTableManager.refreshGUITables();
-
-		//Mise à jour du dernier fichier de configuration utilisé par l'application
-		GameController.Jeu.AppConfig.LastConfName = filename;
-		GameController.Jeu.AppConfig.saveConfig (UnityEngine.Application.dataPath + "/app.conf");
 	}
 
-	public void CallbackConfExistsDialog(DialogResult result){
-		Debug.Log (result.ToString ());
-	}
-
-	public void onValueChangeCouleurCible(string couleur, Toggle toggle){
-		if (toggle.isOn)
-			GameController.Jeu.Config.Couleur_cible = couleur;
-	}
 
 	/**
 	 * Sauvegarde la configuration actuelle dans  un fichier de configuration 
 	 */
 	public void onClickParamsSauvegarder(){
-		Debug.Log ("Sauvegarder!" + UnityEngine.Application.dataPath + "/" + newConfigName + ".xml");
 		string saveDirectory = UnityEngine.Application.dataPath;
 
 		/** Vérifie si un fichier de conf avec ce nom n'existe pas déja **/
