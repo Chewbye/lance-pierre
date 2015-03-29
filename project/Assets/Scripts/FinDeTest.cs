@@ -34,9 +34,12 @@ public class FinDeTest : MonoBehaviour {
 	private string hauteurLancePierre;
 	private string positionXLP;
 	private string positionYLP;
-	public string delai_avant_disparition_cible;
-	public string delai_avant_evaluation_cible;
-	public bool afficher_barre_progression;
+	private string delai_avant_disparition_cible;
+	private string delai_avant_evaluation_cible;
+	private bool afficher_barre_progression;
+	private string couleurCible;
+	private string hauteurBarreProgression;
+	private string largeurBarreProgression;
 
 	string fichierCourant;
 
@@ -108,8 +111,11 @@ public class FinDeTest : MonoBehaviour {
 		positionXLP = Convert.ToString (GameController.Jeu.Config.Distance_X_Catapulte);
 		positionYLP = Convert.ToString (GameController.Jeu.Config.Distance_Y_Catapulte);
 		delai_avant_disparition_cible = Convert.ToString (GameController.Jeu.Config.Delai_avant_disparition_cible);
-		delai_avant_evaluation_cible = Convert.ToString (GameController.Jeu.Config.Delai_evaluation_cible);
+		delai_avant_evaluation_cible = Convert.ToString (GameController.Jeu.Config.Delai_avant_evaluation_cible);
 		afficher_barre_progression = GameController.Jeu.Config.Affichage_barre_progression;
+		couleurCible = Convert.ToString (GameController.Jeu.Config.Couleur_cible);
+     	hauteurBarreProgression = Convert.ToString (GameController.Jeu.Config.Hauteur_barre_progression);
+        largeurBarreProgression = Convert.ToString (GameController.Jeu.Config.Largeur_barre_progression);
 		
 		writeXML ();
 	}
@@ -330,36 +336,55 @@ public class FinDeTest : MonoBehaviour {
 				"</Data></Cell>" +
 				"</Row>";
 			if (condition_test == "Memoire") {
-			Config += "<Row>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Delai avant disparition de la cible" +
-				"</Data></Cell>" +
+				Config += "<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Delai avant disparition de la cible" +
+					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-				delai_avant_disparition_cible +
-				"</Data></Cell>" +
-				"</Row>" +
-				"<Row>" +
-				"<Cell><Data ss:Type=\"String\">" +
-				"Delai avant evaluation de la cible" +
-				"</Data></Cell>" +
+					delai_avant_disparition_cible +
+					"</Data></Cell>" +
+					"</Row>" +
+					"<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Delai avant evaluation de la cible" +
+					"</Data></Cell>" +
 					"<Cell><Data ss:Type=\"Number\">" +
-				delai_avant_evaluation_cible +
-				"</Data></Cell>" +
-				"</Row>" +
-				"<Row>" +
+					delai_avant_evaluation_cible +
+					"</Data></Cell>" +
+					"</Row>";
+			}
+				
+		Config += "<Row>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Affichage barre de progression" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">";
+		if (afficher_barre_progression == true) {
+			Config += "Oui</Data></Cell></Row><Row>" +
 				"<Cell><Data ss:Type=\"String\">" +
-				"Affichage barre de progression" +
+				"Hauteur de la barre de progression" +
 				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">";
-			if (afficher_barre_progression == true) {
-				Config += "Oui";
-			} else {
-				Config += "Non";
-			}
-			Config += "</Data></Cell>" +
-				"</Row>";
-			}
-			Config +="</Table>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				hauteurBarreProgression + 
+				"</Data></Cell></Row><Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Largeur de la barre de progression" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				largeurBarreProgression + 
+				"</Data></Cell>";
+		} else {
+			Config += "Non</Data></Cell>";
+		}
+		Config += "</Row>";
+			Config +="<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Couleur de la cible" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				couleurCible +
+				"</Data></Cell>" +
+				"</Row></Table>" +
 				"</Worksheet>";
 
 		return Config;

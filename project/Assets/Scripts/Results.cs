@@ -46,37 +46,16 @@ public class Results : MonoBehaviour {
 	public Text main_forte_participant;
 	public Text exp_participant;
 	public Toggle afficher_barre_progression;
-	public Text intitule_afficher_barre_progression;
+	public Text couleur_cible;
+	public Text hauteur_barre_progression;
+	public Text intitule_hauteur_barre_progression;
+	public Text largeur_barre_progression;
+	public Text intitule_largeur_barre_progression;
 
 	public GameObject bg_delai_avant_disparition_cible;
 	public GameObject bg_delai_avant_evaluation_cible;
-	public GameObject position_gravite;
-	public GameObject poition_rigidite_lancepierre;
-	public GameObject position_nb_lancers;
-	public GameObject position_nb_series;
-	public GameObject position_nb_positions;
-	public GameObject position_nb_tailles_cibles;
-	public GameObject position_nb_tailles_projectiles;
-	public GameObject position_afficher_le_score;
-	public GameObject position_nb_points_gagnes_par_cible;
-	public GameObject position_nb_points_perdus_par_cible;
-	public GameObject position_delai_lancer_projectile;
-	public GameObject position_delai_evaluation_cible;
-	public GameObject position_delai_validation_mesure;
-	public GameObject position_marge_stabilisation_leap;
-	public GameObject position_condition_test;
-	public GameObject position_prise_en_compte_score;
-	public GameObject position_hauteur_lance_pierre;
-	public GameObject position_position_X_LP;
-	public GameObject position_position_Y_LP;
-	public GameObject position_nom_config;
-	public GameObject position_num_participant;
-	public GameObject position_age_participant;
-	public GameObject position_sexe_participant;
-	public GameObject position_main_forte_participant;
-	public GameObject position_exp_participant;
-	public GameObject position_afficher_barre_progression;
-	public GameObject bg_afficher_barre_progression;
+	public GameObject bg_hauteur_barre_progression;
+	public GameObject bg_largeur_barre_progression;
 	
 	//Récapitulatif
 	public Text score_final;
@@ -139,66 +118,28 @@ public class Results : MonoBehaviour {
 		sexe_participant.text = Convert.ToString (GameController.Jeu.Participant.Sexe);
 		main_forte_participant.text = Convert.ToString (GameController.Jeu.Participant.MainDominante);
 		exp_participant.text = Convert.ToString (GameController.Jeu.Participant.PratiqueJeuxVideo);
+		couleur_cible.text = Convert.ToString (GameController.Jeu.Config.Couleur_cible);
+		afficher_barre_progression.isOn = GameController.Jeu.Config.Affichage_barre_progression;
+		if (afficher_barre_progression.isOn == true) {
+			intitule_hauteur_barre_progression.text = "Hauteur de la barre de progression :";
+			hauteur_barre_progression.text = Convert.ToString (GameController.Jeu.Config.Hauteur_barre_progression);
+			intitule_largeur_barre_progression.text = "Largeur de la barre de progression :";
+			largeur_barre_progression.text = Convert.ToString (GameController.Jeu.Config.Largeur_barre_progression);
+		} else {
+			bg_hauteur_barre_progression.SetActive(false);
+			bg_largeur_barre_progression.SetActive(false);
+		}
 		if (GameController.Jeu.Config.Condition_De_Memoire) {
 			condition_test.text = "M";
 			intitule_delai_avant_disparition_cible.text = "Délai avant disparition de la cible :";
 			intitule_delai_avant_evaluation_cible.text = "Délai avant évaluation de la cible :";
 			delai_avant_disparition_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_disparition_cible);
 			delai_avant_evaluation_cible.text = Convert.ToString (GameController.Jeu.Config.Delai_avant_evaluation_cible);
-			intitule_afficher_barre_progression.text = "Afficher la barre de progression :";
-			afficher_barre_progression.isOn = GameController.Jeu.Config.Affichage_barre_progression;
 		}
 		else {
 			bg_delai_avant_disparition_cible.SetActive(false);
 			bg_delai_avant_evaluation_cible.SetActive(false);
-			bg_afficher_barre_progression.SetActive(false);
 
-			/*int y_modif = 25;
-			Vector3 v = position_gravite.transform.position;
-			position_gravite.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = poition_rigidite_lancepierre.transform.position;
-			poition_rigidite_lancepierre.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = position_nb_lancers.transform.position;
-			position_nb_lancers.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = position_nb_series.transform.position;
-			position_nb_series.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = position_nb_positions.transform.position;
-			position_nb_positions.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = position_nb_tailles_cibles.transform.position;
-			position_nb_tailles_cibles.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = position_nb_tailles_projectiles.transform.position;
-			position_nb_tailles_projectiles.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = position_afficher_le_score.transform.position;
-			position_afficher_le_score.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = position_nb_points_gagnes_par_cible.transform.position;
-			position_nb_points_gagnes_par_cible.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = position_nb_points_perdus_par_cible.transform.position;
-			position_nb_points_perdus_par_cible.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = position_delai_lancer_projectile.transform.position;
-			position_delai_lancer_projectile.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = position_delai_evaluation_cible.transform.position;
-			position_delai_evaluation_cible.transform.position = new Vector3(v.x, v.y-y_modif);
-			
-			v = position_delai_validation_mesure.transform.position;
-			position_delai_validation_mesure.transform.position = new Vector3(v.x, v.y-y_modif);
-			
-			v = position_marge_stabilisation_leap.transform.position;
-			position_marge_stabilisation_leap.transform.position = new Vector3(v.x, v.y-y_modif);
-
-			v = position_condition_test.transform.position;
-			position_condition_test.transform.position = new Vector3(v.x, v.y-y_modif);
-		*/
 			if (GameController.Jeu.Config.Condition_De_Controle) {
 				condition_test.text = "C";
 			} else if (GameController.Jeu.Config.Condition_De_Perception) {
