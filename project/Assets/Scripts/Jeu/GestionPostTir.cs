@@ -15,7 +15,7 @@ public class GestionPostTir : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		if(GameController.Jeu.Config.Condition_De_Controle)
+		if(GameController.Jeu.Config.Condition_De_Memoire)
 		{
 			tempsRestant = GameController.Jeu.Config.Delai_avant_disparition_cible;
 		}
@@ -43,13 +43,13 @@ public class GestionPostTir : MonoBehaviour
 				sonDejaJoue =  true;
 			}
 
-			// On desactive l'affichage de la cible
+			/*// On desactive l'affichage de la cible
 			cible.rigidbody2D.isKinematic = true;
 			cible.renderer.enabled = false;
 			if(GameController.Jeu.Config.Condition_De_Perception && GameController.Jeu.Tir_Fini)
 			{
 				cible.renderer.enabled = true;
-			}
+			}*/
 
 			// On desactive l'affichage du projectile
 			projectile.rigidbody2D.isKinematic = true;
