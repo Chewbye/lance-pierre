@@ -175,8 +175,8 @@ public class BarreProgression{
 
 	public void Show(int x, int y)
 	{
-		GUI.DrawTexture (new Rect ((x-this.largeur)/2, (y-this.hauteur)/2, this.largeur, this.hauteur), this.cadre);
-		GUI.DrawTexture (new Rect ((x-this.largeur)/2, (y-this.hauteur)/2, this.largeur, this.hauteur), this.affichage);
+		GUI.DrawTexture (new Rect ((x-this.largeur)/2, ((y-this.hauteur)/2) + (y/4), this.largeur, this.hauteur), this.cadre);
+		GUI.DrawTexture (new Rect ((x-this.largeur)/2, ((y-this.hauteur)/2) + (y/4), this.largeur, this.hauteur), this.affichage);
 	}
 
 
