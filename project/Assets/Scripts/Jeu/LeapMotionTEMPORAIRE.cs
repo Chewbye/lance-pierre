@@ -41,8 +41,12 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 		{
 			if(GameController.Jeu.Delai_Avant_Evaluation <= 0.0f && !GameController.Jeu.Evaluation_Effectuee) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
 			{
-				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
+				if (!GameController.Jeu.Evaluation_En_Cours)
+				{
+					lm = new LeapMeasure(); 
+				}
 
+				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
 				Evaluation();
 			}
 		}
@@ -52,8 +56,12 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 		{
 			if(GameController.Jeu.Tir_Fini) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
 			{
-				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
+				if (!GameController.Jeu.Evaluation_En_Cours)
+				{
+					lm = new LeapMeasure(); 
+				}
 
+				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
 				Evaluation();
 			}
 		}
@@ -62,8 +70,12 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 		{
 			if(GameController.Jeu.Delai_Avant_Evaluation <= 0.0f) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
 			{
-				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
+				if (!GameController.Jeu.Evaluation_En_Cours)
+				{
+					lm = new LeapMeasure(); 
+				}
 
+				GameController.Jeu.Evaluation_En_Cours = true; // POUR AXEL, PASSER LE BOOLEAN A TRUE
 				Evaluation();
 			}
 		}
@@ -91,7 +103,8 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 				if (done) {
 					print ("**** distance evalué à : " + distance + " mm ****\n");
 					GameController.Jeu.Mesures_Taille_Cible.Add(distance);
-					// **** passage à la scene suivante
+					GameController.Jeu.Evaluation_En_Cours = false; // SUPER IMPORTANT
+					GameController.Jeu.Evaluation_Effectuee = true; // SUPER IMPORTANT
 				}
 			} else {
 				lm.PremierMesure = true;
@@ -113,54 +126,53 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 
 	void OnGUI()
 	{
-		if (GameController.Jeu.Config.Affichage_barre_progression) 
+
+		if(bp != null)
 		{
-			if(bp != null)
+			// Si nous sommes en CONDITION DE CONTROLE
+			if(GameController.Jeu.Config.Condition_De_Controle)
 			{
-				// Si nous sommes en CONDITION DE CONTROLE
-				if(GameController.Jeu.Config.Condition_De_Controle)
+				if(GameController.Jeu.Evaluation_En_Cours) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
 				{
-					if(GameController.Jeu.Delai_Avant_Evaluation <= 0.0f) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
-					{
-						if (GameController.Jeu.Config.Affichage_barre_progression) {
-							bp.Valeur = lm.calculNbSecondesEcoule ();
-							bp.Update (true);
-							bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
-						}
+					if (GameController.Jeu.Config.Affichage_barre_progression) {
+						bp.Valeur = lm.calculNbSecondesEcoule ();
+						bp.Update (true);
+						bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
 					}
-				}
-				
-				// Si nous sommes en CONDITION DE PERCEPTION
-				if(GameController.Jeu.Config.Condition_De_Perception)
-				{
-					if(GameController.Jeu.Tir_Fini) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
-					{
-						if (GameController.Jeu.Config.Affichage_barre_progression) {
-							bp.Valeur = lm.calculNbSecondesEcoule ();
-							bp.Update (true);
-							bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
-						}
-					}
-				}
-				// Si nous sommes en CONDITION DE MEMOIRE
-				if(GameController.Jeu.Config.Condition_De_Memoire)
-				{
-					if(GameController.Jeu.Delai_Avant_Evaluation <= 0.0f) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
-					{
-						if (GameController.Jeu.Config.Affichage_barre_progression) {
-							bp.Valeur = lm.calculNbSecondesEcoule ();
-							bp.Update (true);
-							bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
-						}
-					}
-				}
-				
-				if(GameController.Jeu.Evaluation_Effectuee)
-				{
-					bp = null;
 				}
 			}
+			
+			// Si nous sommes en CONDITION DE PERCEPTION
+			if(GameController.Jeu.Config.Condition_De_Perception)
+			{
+				if(GameController.Jeu.Tir_Fini) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
+				{
+					if (GameController.Jeu.Config.Affichage_barre_progression) {
+						bp.Valeur = lm.calculNbSecondesEcoule ();
+						bp.Update (true);
+						bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
+					}
+				}
+			}
+			// Si nous sommes en CONDITION DE MEMOIRE
+			if(GameController.Jeu.Config.Condition_De_Memoire)
+			{
+				if(GameController.Jeu.Evaluation_En_Cours) // POUR AXEL, SI CETTE COND ALORS COMMENCER EVALUATION
+				{
+					if (GameController.Jeu.Config.Affichage_barre_progression) {
+						bp.Valeur = lm.calculNbSecondesEcoule ();
+						bp.Update (true);
+						bp.Show (UnityEngine.Screen.width, UnityEngine.Screen.height);
+					}
+				}
+			}
+			
+			if(GameController.Jeu.Evaluation_Effectuee)
+			{
+				bp = null;
+			}
 		}
+
 	}
 
 
