@@ -245,6 +245,13 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void onValueChangePrise_en_compte_du_score(){
 		GameController.Jeu.Config.Prise_en_compte_du_score = T_Prise_en_compte_du_score.isOn;
+		//Déscativation de la case afficher le score si le score n'est pas pris en compte
+		if (!T_Prise_en_compte_du_score.isOn) {
+			T_Afficher_le_score.isOn = false;
+			T_Afficher_le_score.interactable = false;
+		} else {
+			T_Afficher_le_score.interactable = true;
+		}
 	}
 
 	public void onValueChangeNb_points_gagnes_par_cible(){
