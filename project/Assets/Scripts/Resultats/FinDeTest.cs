@@ -636,6 +636,7 @@ public class FinDeTest : MonoBehaviour {
 			"<Table ss:ExpandedColumnCount=\"2\" ss:ExpandedRowCount=\"1\" x:FullColumns=\"1\" " +
 				"x:FullRows=\"1\" ss:DefaultRowHeight=\"15\">" +
 				"<Row>" +
+				"<Cell ss:Formula=\"=Passation1!R[18]C[1]\"><Data ss:Type=\"Number\"></Data></Cell>" +
 				"</Row>" +
 				"</Table>" +
 				"</Worksheet>" +
