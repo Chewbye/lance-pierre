@@ -112,7 +112,7 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 			}
 		} else {
 
-			GameController.Jeu.Mesures_Taille_Cible.Add(-1);
+			GameController.Jeu.Mesures_Taille_Cible.Add(-99);
 
 			lm.PremierMesure = true;
 			lm.Timer = DateTime.Now;
