@@ -20,7 +20,9 @@ public class CalibrageEcran : MonoBehaviour {
 				tailleSlider = tempSlider.GetComponent<Slider>();
 				if (tailleSlider != null)
 				{
-					ratioEchelle = tailleSlider.value;
+					ratioEchelle = GameController.Jeu.Config.Ratio_echelle;
+					tailleSlider.value = (float) ratioEchelle;
+					balle.transform.localScale = new Vector3((float) ratioEchelle, (float)ratioEchelle, (float)ratioEchelle);
 					//Debug.Log(ratioEchelle);
 				}
 				else
