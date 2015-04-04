@@ -85,7 +85,11 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 	{
 		if (tempsRestantPourEvaluer >= 0.0f) 
 		{
-			tempsRestantPourEvaluer -= Time.deltaTime;
+
+			if (GameController.Jeu.Config.Delai_evaluation_cible > 0.0f)
+			{
+				tempsRestantPourEvaluer -= Time.deltaTime;
+			}
 
 			Frame frame = controller.Frame (); // on récupère les données du leap motion
 			

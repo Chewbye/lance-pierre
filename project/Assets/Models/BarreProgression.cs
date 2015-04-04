@@ -129,12 +129,16 @@ public class BarreProgression{
 
 		this.memoireRemplissage = new Color[this.sizeX, this.sizeY];
 
+		Color c = new Color (0, 0, 0);
+
 		for (int j=0; j<this.sizeY; j++) {
 			for (int i=0; i<this.sizeX; i++)
 			{
 				this.memoireRemplissage[i,j] = this.remplissage.GetPixel(i,j);
 			}
 		}
+
+
 
 		this.Update (true);
 	}
@@ -175,8 +179,8 @@ public class BarreProgression{
 
 	public void Show(int x, int y)
 	{
-		GUI.DrawTexture (new Rect ((x-this.largeur)/2, ((y-this.hauteur)/2) + (y/4), this.largeur, this.hauteur), this.cadre);
-		GUI.DrawTexture (new Rect ((x-this.largeur)/2, ((y-this.hauteur)/2) + (y/4), this.largeur, this.hauteur), this.affichage);
+		GUI.DrawTexture (new Rect ((x-this.largeur)/2, ((y-this.hauteur)/2) + (y/3) + (y/10), this.largeur, this.hauteur), this.cadre);
+		GUI.DrawTexture (new Rect ((x-this.largeur)/2, ((y-this.hauteur)/2) + (y/3) + (y/10), this.largeur, this.hauteur), this.affichage);
 	}
 
 

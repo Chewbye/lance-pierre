@@ -85,12 +85,12 @@ public class Participant {
 
 	public bool numeroValide()
 	{
-		return (this.numero > 0);
+		return this.numero >= 0;
 	}
 
 	public bool ageValide()
 	{
-		return this.age > 0;
+		return this.age >= 0;
 	}
 
 	public bool sexeValide()

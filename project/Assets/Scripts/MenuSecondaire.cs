@@ -42,7 +42,7 @@ public class MenuSecondaire : MonoBehaviour {
 		if (int.TryParse(IF_numero.text,out res)) {
 			GameController.Jeu.Participant.Numero = res;
 		} else {
-			GameController.Jeu.Participant.Numero = 0;
+			GameController.Jeu.Participant.Numero = -1;
 		}
 	}
 
@@ -52,7 +52,7 @@ public class MenuSecondaire : MonoBehaviour {
 		if (int.TryParse (IF_age.text, out res)) {
 			GameController.Jeu.Participant.Age = res;
 		} else {
-			GameController.Jeu.Participant.Age = 0;
+			GameController.Jeu.Participant.Age = -1;
 		}
 	}
 
