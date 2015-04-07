@@ -62,7 +62,7 @@ public class GestionAffichageInfoEcran : MonoBehaviour
 		}
 
 		// MODE DEBUG TEMPORAIRE
-		if(GameController.Jeu.Config.Condition_De_Controle)
+		/*if(GameController.Jeu.Config.Condition_De_Controle)
 		{
 			Text txt = infoPhaseJeu.GetComponent<Text>(); 
 			txt.text= "DEBUG CONTROLE : ";
@@ -91,7 +91,7 @@ public class GestionAffichageInfoEcran : MonoBehaviour
 		{
 			Text txt = infoPhaseJeu.GetComponent<Text>(); 
 			txt.text += "EVALUATION NON ENCORE EFFECTUEE";
-		}
+		}*/
 
 		// MISE A JOUR DU TEXTE AFFICHANT LES POINTS PERDUS OU GAGNES
 		Vector3 positionCible = cible.transform.position;
