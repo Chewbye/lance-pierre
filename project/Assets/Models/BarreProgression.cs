@@ -129,7 +129,7 @@ public class BarreProgression{
 
 		this.memoireRemplissage = new Color[this.sizeX, this.sizeY];
 
-		Color c = new Color (0, 0, 0);
+		Color c = new Color (0,0,0,0);
 
 		for (int j=0; j<this.sizeY; j++) {
 			for (int i=0; i<this.sizeX; i++)

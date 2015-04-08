@@ -362,7 +362,7 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void onClickButtonReglagesCouleurBarre()
 	{
-		//lancer la scène réglage de la couleur
+		launchGame ("reglageCouleurBarre");
 	}
 
 	public void onValueChangeHauteur_lancepierre(){
