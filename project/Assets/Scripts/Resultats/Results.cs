@@ -61,14 +61,13 @@ public class Results : MonoBehaviour {
 	public Text score_final;
 	public Text nombre_cibles_touchees;
 	public Text nombre_cibles_manquees;
-	/*public Text nombre_evaluations_moins_1cm;
-	public Text nombre_evaluations_environ_2cm;
-	public Text nombre_evaluations_environ_3cm;
-	public Text nombre_evaluations_environ_4cm;
-	public Text nombre_evaluations_environ_5cm;
-	public Text nombre_evaluations_sup_5cm_inf_10cm;
-	public Text nombre_evaluations_sup_10cm;
-	public Text temps_evaluation_cible;*/
+	public Text reussis_nombre_evaluations_plus_ou_moins_25mm;
+	public Text reussis_nombre_evaluations_plus_ou_moins_50mm;
+	public Text reussis_nombre_evaluations_plus_ou_moins_150mm;
+	public Text manques_nombre_evaluations_plus_ou_moins_25mm;
+	public Text manques_nombre_evaluations_plus_ou_moins_50mm;
+	public Text manques_nombre_evaluations_plus_ou_moins_150mm;
+	//public Text temps_evaluation_cible;
 
 	string fichierCourant;
 	
@@ -159,23 +158,56 @@ public class Results : MonoBehaviour {
 		}
 		nombre_cibles_touchees.text = Convert.ToString (nbReussie);
 		nombre_cibles_manquees.text = Convert.ToString (nbManquee);
-		//Ici on comptera le nombre de valeurs correspondantes
-		/*nombre_evaluations_moins_1cm.text = "2"; //- 1cm
-		nombre_evaluations_environ_2cm.text = "5"; //entre 1 et 2,4cm
-		nombre_evaluations_environ_3cm.text = "10"; //entre 2,5 et 3,4cm
-		nombre_evaluations_environ_4cm.text = "3"; //entre 3,5 et 4,4cm
-		nombre_evaluations_environ_5cm.text = "0"; //entre 4,5 et 4,9cm
-		nombre_evaluations_sup_5cm_inf_10cm.text = "0"; //entre 5 et 9,9cm
-		nombre_evaluations_sup_10cm.text = "0"; //+ 10cm
-		temps_evaluation_cible.text = "2"; //Ici on fera une moyenne des temps*/
+
+		int reussisNbEvalPlusOuMoins25mm = 0;
+		int reussisNbEvalPlusOuMoins50mm = 0;
+		int reussisNbEvalPlusOuMoins150mm = 0;
+		int manquesNbEvalPlusOuMoins25mm = 0;
+		int manquesNbEvalPlusOuMoins50mm = 0;
+		int manquesNbEvalPlusOuMoins150mm = 0;
+
+		for (int i = 0; i < GameController.Jeu.Mesures_Taille_Cible.Count; i++) {
+			double evalCourante = Math.Round((GameController.Jeu.Mesures_Taille_Cible[i] / 10), 2);
+			float tailleCourante = GameController.Jeu.Tirs_Realises[i].Taille_Cible;
+			double diffCourante = evalCourante - tailleCourante;
+
+			UnityEngine.Debug.Log (diffCourante);
+
+			if ((((diffCourante <= 0.25) & diffCourante >= 0) | ((diffCourante >= -0.25) & diffCourante <= 0)) & (GameController.Jeu.Reussiste_Tirs[i] == true)) {
+				reussisNbEvalPlusOuMoins25mm++;
+			}
+			else if ((((diffCourante <= 0.50) & (diffCourante >= 0)) | (diffCourante >= -0.50 & diffCourante <= 0))  & (GameController.Jeu.Reussiste_Tirs[i] == true)) {
+				reussisNbEvalPlusOuMoins50mm++;
+			}
+			else if (GameController.Jeu.Reussiste_Tirs[i] == true) {
+				reussisNbEvalPlusOuMoins150mm++;
+			}
+			else if ((((diffCourante <= 0.25) & (diffCourante >= 0)) | (diffCourante >= -0.25 & diffCourante <= 0)) & (GameController.Jeu.Reussiste_Tirs[i] == false)) {
+				manquesNbEvalPlusOuMoins25mm++;
+			}
+			else if ((((diffCourante <= 0.50) & (diffCourante >= 0))  | (diffCourante >= -0.50 & diffCourante <= 0)) & (GameController.Jeu.Reussiste_Tirs[i] == false)) {
+				manquesNbEvalPlusOuMoins50mm++;
+			}
+			else {
+				manquesNbEvalPlusOuMoins150mm++;
+			}
+		}
+
+		reussis_nombre_evaluations_plus_ou_moins_25mm.text = Convert.ToString (reussisNbEvalPlusOuMoins25mm);
+		reussis_nombre_evaluations_plus_ou_moins_50mm.text = Convert.ToString (reussisNbEvalPlusOuMoins50mm);
+		reussis_nombre_evaluations_plus_ou_moins_150mm.text = Convert.ToString (reussisNbEvalPlusOuMoins150mm);
+		manques_nombre_evaluations_plus_ou_moins_25mm.text = Convert.ToString (manquesNbEvalPlusOuMoins25mm);
+		manques_nombre_evaluations_plus_ou_moins_50mm.text = Convert.ToString (manquesNbEvalPlusOuMoins50mm);
+		manques_nombre_evaluations_plus_ou_moins_150mm.text = Convert.ToString (manquesNbEvalPlusOuMoins150mm);
+		//temps_evaluation_cible.text = "2"; //Ici on fera une moyenne des temps*/
 	}
 
 	public void onClickOpenXML() {
 		Process.Start (fichierCourant);
 	}
 	
-	public void onClickOpenAllXML() {
-		Process.Start (fichierCourant); // à modifier par la suite
+	public void onClickResultsAccess() {
+		System.Diagnostics.Process.Start( ".");
 	}
 	
 	public void onMenu() {

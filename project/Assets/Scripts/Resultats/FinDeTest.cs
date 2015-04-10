@@ -408,13 +408,13 @@ public class FinDeTest : MonoBehaviour {
 		String passation = "<Worksheet ss:Name=\"Passation" + nbPassation + "\">" + 
 			"<Table>" +
 			"<Column ss:Width=\"170\"/><Column ss:Width=\"130\"/><Column ss:Width=\"110\"/><Column ss:Width=\"110\"/>" +
-			"<Column ss:Width=\"110\"/><Column ss:Width=\"110\"/>";
+				"<Column ss:Width=\"110\"/><Column ss:Width=\"110\"/>";
 
 		if (prise_en_compte_score == true) 
 			passation += "<Column ss:Width=\"95\"/>";
 
 		passation += "<Column ss:Width=\"140\"/><Column ss:Width=\"150\"/>" +
-			"<Column ss:Width=\"80\"/><Column ss:Width=\"100\"/><Column ss:Width=\"110\"/><Column ss:Width=\"75\"/>" +
+			"<Column ss:Width=\"80\"/><Column ss:Width=\"100\"/><Column ss:Width=\"110\"/><Column ss:Width=\"75\"/><Column ss:Width=\"180\"/>" +
 			"<Row>" +
 			"<Cell><Data ss:Type=\"String\">" +
 			"Date" + 
@@ -505,6 +505,9 @@ public class FinDeTest : MonoBehaviour {
 			"<Cell><Data ss:Type=\"String\">" +
 			"Evaluation" +
 			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Difference (Evaluation - Taille reelle)" +
+			"</Data></Cell>" +
 			"</Row>";
 		for (int i = 0; i < nb_lancers_int; i++) {
 			passation += "<Row>" +
@@ -544,7 +547,7 @@ public class FinDeTest : MonoBehaviour {
 				Math.Round (GameController.Jeu.Temps_Mis_Pour_Tirer [i], 2) +
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"Number\">" +
-				"1" + // Mettre le bon temps pour evaluer (Math round 2 comme ci-dessus)
+				1 + // Mettre le bon temps pour evaluer (Math round 2 comme ci-dessus)
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"String\">";
 			if (GameController.Jeu.Reussiste_Tirs [i] == true) 
@@ -553,7 +556,10 @@ public class FinDeTest : MonoBehaviour {
 				passation += "Manque";
 			passation += "</Data></Cell>" +
 				"<Cell><Data ss:Type=\"Number\">" +
-				"1" + // Mettre la bonne evaluation
+				Math.Round ((GameController.Jeu.Mesures_Taille_Cible [i] / 10), 2) +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				(Math.Round ((GameController.Jeu.Mesures_Taille_Cible [i] / 10), 2) - GameController.Jeu.Tirs_Realises [i].Taille_Cible) +
 				"</Data></Cell>" +
 				"</Row>";
 		}
@@ -598,6 +604,9 @@ public class FinDeTest : MonoBehaviour {
 			"<Cell><Data ss:Type=\"String\">" +
 			"Moyenne" +
 			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Moyenne" +
+			"</Data></Cell>" +
 			"</Row>" +
 			"<Row><Cell></Cell>" +
 			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
@@ -610,6 +619,7 @@ public class FinDeTest : MonoBehaviour {
 			passation += "<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
 				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
 				"<Cell><Data ss:Type=\"Number\">";
 		if (nbManque == 0) {
