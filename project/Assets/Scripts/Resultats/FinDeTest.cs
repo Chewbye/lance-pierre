@@ -42,11 +42,13 @@ public class FinDeTest : MonoBehaviour {
 	private string largeurBarreProgression;
 
 	string fichierCourant;
+	ArrayList storedPassations = new ArrayList (); // Numéros de passations existants (feuillets) => Pour prendre en compte les suppressions de feuillets
 
 	// Use this for initialization
 	void Start () {
 		if (GameController.Jeu == null) 
 			GameController.Jeu = new Jeu ();
+
 		setFields ();
 	}
 	
@@ -620,7 +622,6 @@ public class FinDeTest : MonoBehaviour {
 				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
 				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
 				"<Cell><Data ss:Type=\"Number\">";
 		if (nbManque == 0) {
 			passation += nbReussi;
@@ -632,26 +633,113 @@ public class FinDeTest : MonoBehaviour {
 		}
 		passation += "</Data></Cell>" +
 			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-				"</Row>" +
-				"</Table>" +
-				"</Worksheet>";
+			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+			"</Row>" +
+			"</Table>" +
+			"</Worksheet>";
 
 		return passation;
 	}
 
-	public String writeStats () {
-		//Somme à garder pour les stats !!!
-		//"<Cell ss:Formula=\"=SUM(RC[-1],R[3]C[-1])\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+	public String writeStats (int lastInserted) {
 		String stats = "<Worksheet ss:Name=\"Statistiques\">" + 
-			"<Table ss:ExpandedColumnCount=\"2\" ss:ExpandedRowCount=\"1\" x:FullColumns=\"1\" " +
-				"x:FullRows=\"1\" ss:DefaultRowHeight=\"15\">" +
+			"<Table><Column ss:Width=\"140\"/><Column ss:Width=\"90\"/>";
+		if (prise_en_compte_score == true)
+			stats += "<Column ss:Width=\"90\"/>";
+				
+			stats += "<Column ss:Width=\"130\"/><Column ss:Width=\"140\"/><Column ss:Width=\"70\"/><Column ss:Width=\"90\"/>" +
+				"<Column ss:Width=\"100\"/><Column ss:Width=\"70\"/><Column ss:Width=\"190\"/><Column ss:Width=\"190\"/>" +
 				"<Row>" +
-				"<Cell ss:Formula=\"=Passation1!R[18]C[1]\"><Data ss:Type=\"Number\"></Data></Cell>" +
-				"</Row>" +
-				"</Table>" +
-				"</Worksheet>" +
-				"</Workbook>";
+				"<Cell></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Taille de la cible" +
+				"</Data></Cell>";
+		if (prise_en_compte_score == true) {
+			stats += "<Cell><Data ss:Type=\"String\">" +
+				"Points obtenus" +
+				"</Data></Cell>";
+		}
+				
+			stats += "<Cell><Data ss:Type=\"String\">" +
+				"Delai imparti pour lancer" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Delai imparti pour evaluer" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Delai lancer" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Delai evaluation" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Resultat du lancer" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Evaluation" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Difference (Evaluation - Taille reelle)" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Ecart-type des valeurs de difference" +
+				"</Data></Cell>" +
+				"</Row>";
 
+		int nb_lancers_int = Convert.ToInt32 (nb_lancers);
+		String moyennes = Convert.ToString (9 + nb_lancers_int);
+		int premierLancerInt = 7;
+		String premierLancer = Convert.ToString (premierLancerInt);
+		String secondLancer = Convert.ToString (premierLancerInt + 1);
+	
+		//Cas d'une seule passation
+		if (storedPassations.Count == 0) {
+			stats += "<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Passation 1 " +
+				"</Data></Cell>" +
+				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[0]\"><Data ss:Type=\"Number\"></Data></Cell>";
+			if (prise_en_compte_score == true) 
+				stats += "<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>";
+				
+			stats += "<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>";
+				if (nb_lancers_int == 1) 
+					stats += "<Cell ss:Formula=\"=(Passation1!R[" + premierLancer + "]C[3] - RC[-1])\"><Data ss:Type=\"Number\"></Data></Cell>";
+				else { // ça cloche ici (Erreur dans le fichier Excel :/)
+				stats += "<Cell ss:Formula=\"=SUM((Passation1!R[" + premierLancer + "]C[3] - RC[-1]);(Passation1!R[" + secondLancer + "]C[3] - RC[-1]))\"><Data ss:Type=\"Number\"></Data></Cell>";
+				//stats += "<Cell ss:Formula=\"=((SUM(POWER((Passation1!R[" + premierLancer + "]C[3] - RC[-1]); 2) (POWER((Passation1!R[" + (premierLancer + 1) + "]C[3] - RC[-1]); 2) )) / " + nb_lancers_int + ")\"><Data ss:Type=\"Number\"></Data></Cell>";
+			}
+				//=((SUM(POWER((Passation1!N9-J2);2))) / 1)
+					
+				stats += "</Row>";
+		} else {
+			for (int i = 0; i < storedPassations.Count; i++) {
+				stats += "<Row>" +
+					"<Cell><Data ss:Type=\"String\">" +
+					"Passation " + storedPassations [i] +
+					"</Data></Cell>" +
+				//"<Cell ss:Formula=\"=Passation1!R[18]C[1]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+					"</Row>";
+			}
+
+			stats += "<Row>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				"Passation " + lastInserted +
+				"</Data></Cell>" +
+				//"<Cell ss:Formula=\"=Passation1!R[18]C[1]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+				"</Row>";
+		}
+
+		stats += "</Table>" +
+			"</Worksheet>" +
+			"</Workbook>";
+		
 		return stats;
 	}
 	
@@ -672,7 +760,7 @@ public class FinDeTest : MonoBehaviour {
 			
 			text += writePassation(1);
 			
-			text += writeStats();
+			text += writeStats(1);
 			
 			Byte[] info = new UTF8Encoding (true).GetBytes (text);
 			fs.Write (info, 0, text.Length);
@@ -696,10 +784,8 @@ public class FinDeTest : MonoBehaviour {
 			lines[(lines.Length - 2)] += "</Worksheet>";
 
 			textToWrite += writePassation(numPassation);
-			
-			textToWrite += lines[(lines.Length - 2)] + lines[(lines.Length - 1)];
-			
-			//UnityEngine.Debug.Log(textToWrite);
+
+			textToWrite += writeStats(numPassation);
 			
 			FileStream fs = File.Open (fichierCourant, FileMode.Create);
 			
@@ -711,21 +797,20 @@ public class FinDeTest : MonoBehaviour {
 	}
 
 	public int getNumPassation(String contenu) {
-		int nbPassations = 1;
-		
-		Boolean exists = true;
+		int nbPassations = 0;
+
 		String basis = "Passation";
-		
-		while (exists) {
-			basis += nbPassations;
-			if (contenu.Contains(basis)) {
-				nbPassations++;
-				basis = "Passation";
+
+		for (int i = 1; i <= 1000; i++) {
+			basis += i;
+			if (contenu.Contains (basis)) {
+				storedPassations.Add(i);
+				nbPassations = i;
 			}
-			else
-				exists = false;
+
+			basis = "Passation";
 		}
 		
-		return nbPassations;
+		return (nbPassations + 1);
 	}
 }

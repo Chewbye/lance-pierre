@@ -146,18 +146,24 @@ public class Results : MonoBehaviour {
 			}
 		}
 
-		//Assignation des valeurs par traitement des résultats obtenus durant la partie
-		score_final.text = Convert.ToString(GameController.Jeu.Score); 
-		int nbReussie = 0;
-		int nbManquee = 0;
-		foreach (bool essai in GameController.Jeu.Reussiste_Tirs) {
-			if (essai == true)
-				nbReussie++;
-			else
-				nbManquee++;
+		if (prise_en_compte_score.isOn == true) {
+			//Assignation des valeurs par traitement des résultats obtenus durant la partie
+			score_final.text = Convert.ToString (GameController.Jeu.Score); 
+			int nbReussie = 0;
+			int nbManquee = 0;
+			foreach (bool essai in GameController.Jeu.Reussiste_Tirs) {
+				if (essai == true)
+					nbReussie++;
+				else
+					nbManquee++;
+			}
+			nombre_cibles_touchees.text = Convert.ToString (nbReussie);
+			nombre_cibles_manquees.text = Convert.ToString (nbManquee);
+		} else {
+			score_final.text = Convert.ToString (0);
+			nombre_cibles_manquees.text = Convert.ToString (0);
+			nombre_cibles_touchees.text = Convert.ToString (0);
 		}
-		nombre_cibles_touchees.text = Convert.ToString (nbReussie);
-		nombre_cibles_manquees.text = Convert.ToString (nbManquee);
 
 		int reussisNbEvalPlusOuMoins25mm = 0;
 		int reussisNbEvalPlusOuMoins50mm = 0;
@@ -170,8 +176,6 @@ public class Results : MonoBehaviour {
 			double evalCourante = Math.Round((GameController.Jeu.Mesures_Taille_Cible[i] / 10), 2);
 			float tailleCourante = GameController.Jeu.Tirs_Realises[i].Taille_Cible;
 			double diffCourante = evalCourante - tailleCourante;
-
-			UnityEngine.Debug.Log (diffCourante);
 
 			if ((((diffCourante <= 0.25) & diffCourante >= 0) | ((diffCourante >= -0.25) & diffCourante <= 0)) & (GameController.Jeu.Reussiste_Tirs[i] == true)) {
 				reussisNbEvalPlusOuMoins25mm++;
