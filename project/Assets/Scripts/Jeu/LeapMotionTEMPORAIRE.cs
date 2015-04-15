@@ -105,8 +105,11 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 				bool done = lm.measureDone (distance);
 				
 				if (done) {
+					TimeSpan tempsMisPourEvaluer = DateTime.Now - beginTimer;
+					print ("**** temps mis pour evaluer cible : " + (float)tempsMisPourEvaluer.TotalSeconds + " s ****\n");
 					print ("**** distance evalué à : " + distance + " mm ****\n");
 					GameController.Jeu.Mesures_Taille_Cible.Add(distance);
+					GameController.Jeu.Temps_Mis_Pour_Evaluer.Add((float)tempsMisPourEvaluer.TotalSeconds);
 					GameController.Jeu.Evaluation_En_Cours = false; // SUPER IMPORTANT
 					GameController.Jeu.Evaluation_Effectuee = true; // SUPER IMPORTANT
 				}
@@ -117,6 +120,7 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 		} else {
 
 			GameController.Jeu.Mesures_Taille_Cible.Add(-99);
+			GameController.Jeu.Temps_Mis_Pour_Evaluer.Add(-1f);
 
 			lm.PremierMesure = true;
 			lm.Timer = DateTime.Now;

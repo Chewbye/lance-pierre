@@ -129,16 +129,21 @@ public class BarreProgression{
 
 		this.memoireRemplissage = new Color[this.sizeX, this.sizeY];
 
-		Color c = new Color (0,0,0,0);
+		Color c = new Color32(95, 222, 95, 0);
 
 		for (int j=0; j<this.sizeY; j++) {
 			for (int i=0; i<this.sizeX; i++)
 			{
-				this.memoireRemplissage[i,j] = this.remplissage.GetPixel(i,j);
+				if (!remplissage.GetPixel(i,j).Equals(c))
+				{
+					this.memoireRemplissage[i,j] = GameController.Jeu.Config.Couleur_barre;
+				}
+				else
+				{
+					this.memoireRemplissage[i,j] = this.remplissage.GetPixel(i,j);
+				}
 			}
 		}
-
-
 
 		this.Update (true);
 	}

@@ -290,6 +290,17 @@ public class Jeu{
 		}
 	}
 
+	// Liste contenant le temps mis par le joueur à évaluer pour chacun des tirs
+	private List<float> _Temps_Mis_Pour_Evaluer;
+	public List<float> Temps_Mis_Pour_Evaluer {
+		get {
+			return _Temps_Mis_Pour_Evaluer;
+		}
+		set {
+			_Temps_Mis_Pour_Evaluer = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Jeu à partir d'un fichier de configuation
 	 */
@@ -344,6 +355,8 @@ public class Jeu{
 		_Mesures_Taille_Cible = new List<float> ();
 		_isPretest = false;
 		_isEntrainement = false;
+		_participant = new Participant ();
+		_Temps_Mis_Pour_Evaluer = new List<float> ();
 	}
 	
 
