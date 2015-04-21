@@ -31,9 +31,12 @@ public class GestionCollisionCible : MonoBehaviour
 		}
 		else if (!particuleDejaJouee)
 		{
-			// Affichage des particules autour de la cible
-			particleSystem.Play();
-			particuleDejaJouee = true;
+			if(GameController.Jeu.Config.Afficher_effet_destruction_cible)
+			{
+				// Affichage des particules autour de la cible
+				particleSystem.Play();
+				particuleDejaJouee = true;
+			}
 		}
 	}
 }
