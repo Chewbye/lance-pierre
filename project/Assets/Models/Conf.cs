@@ -330,6 +330,17 @@ public class Conf{
 		}
 	}
 
+	private bool _Afficher_effet_destruction_cible;
+	
+	public bool Afficher_effet_destruction_cible {
+		get {
+			return _Afficher_effet_destruction_cible;
+		}
+		set {
+			_Afficher_effet_destruction_cible = value;
+		}
+	}
+
 	/**
 	 * Créé un modèle Conf à partir d'un fichier de configuation
 	 */
@@ -374,6 +385,7 @@ public class Conf{
 		_Hauteur_barre_progression = 256;
 		_Couleur_cible = "Rouge";
 		_Couleur_barre = new Color32(95, 222, 95, 255);
+		_Afficher_effet_destruction_cible = false;
 	}
 	
 	
@@ -405,6 +417,7 @@ public class Conf{
 		res += "_Hauteur_barre_progression: " + Convert.ToString(_Hauteur_barre_progression) + System.Environment.NewLine;
 		res += "_Couleur_cible: " + Convert.ToString(_Couleur_cible) + System.Environment.NewLine;
 		res += "_Couleur_barre: " + Convert.ToString(_Couleur_barre) + System.Environment.NewLine;
+		res += "_Afficher_effet_destruction_cible: " + Convert.ToString(_Afficher_effet_destruction_cible) + System.Environment.NewLine;
 
 		foreach (PositionCible poscible in _Positions_Cibles) {
 			res += "POSITION CIBLE: " + System.Environment.NewLine;

@@ -26,6 +26,7 @@ public class UIManagerScript : MonoBehaviour {
 	/* Onglet Cibles */
 	public InputField IF_Nb_points_gagnes_par_cible;
 	public InputField IF_Nb_points_perdus_par_cible_manque;
+	public Toggle T_Afficher_effet_destruction;
 	public GameObject Liste_de_couleurs;
 	public Boolean Liste_de_couleurs_listeners_set = false;
 
@@ -177,6 +178,7 @@ public class UIManagerScript : MonoBehaviour {
 		T_Afficher_le_score.isOn = GameController.Jeu.Config.Afficher_le_score;
 		T_Prise_en_compte_du_score.isOn = GameController.Jeu.Config.Prise_en_compte_du_score;
 		IF_Nb_points_gagnes_par_cible.text = Convert.ToString(GameController.Jeu.Config.Nb_points_gagnes_par_cible);
+		T_Afficher_effet_destruction.isOn = GameController.Jeu.Config.Afficher_effet_destruction_cible;
 		IF_Delai_lancer_projectile.text = Convert.ToString(GameController.Jeu.Config.Delai_lancer_projectile);
 		IF_Delai_evaluation_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_evaluation_cible);
 		IF_Delai_validation_mesure_cible.text = Convert.ToString(GameController.Jeu.Config.Delai_validation_mesure_cible);
@@ -384,6 +386,10 @@ public class UIManagerScript : MonoBehaviour {
 		if (float.TryParse (IF_Distance_Y_lancepierre.text, out res)) {
 			GameController.Jeu.Config.Distance_Y_Catapulte = res;
 		}
+	}
+
+	public void onValueChangeAfficher_effet_destruction_cible(){
+		GameController.Jeu.Config.Afficher_effet_destruction_cible = T_Afficher_effet_destruction.isOn;
 	}
 
 	/**
