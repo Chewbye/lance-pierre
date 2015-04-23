@@ -760,8 +760,8 @@ public class FinDeTest : MonoBehaviour {
 			for (int j = 0; j < storedPassations.Count; j++) {
 				String nomPassation = "Passation " + Convert.ToString(storedPassations [j]);
 				String nomPassationSansEspace = "Passation" + Convert.ToString(storedPassations [j]);
-				moyennes = Convert.ToString ((9 + nb_lancers_int) - (j - 1));
-				premierLancerInt = (premierLancerInt - (j - (j - 1))) + 1;
+				moyennes = Convert.ToString ((9 + nb_lancers_int) - j);
+				premierLancerInt = 7 - j;
 				premierLancer = Convert.ToString (premierLancerInt);
 
 				stats += "<Row>" +
@@ -806,7 +806,8 @@ public class FinDeTest : MonoBehaviour {
 
 			String nomPassationLast = "Passation " + Convert.ToString(lastInserted);
 			String nomPassationLastSansEspace = "Passation" + Convert.ToString(lastInserted);
-
+			moyennes = Convert.ToString ((9 + nb_lancers_int) - storedPassations.Count);
+			premierLancerInt = 7 - storedPassations.Count;
 			premierLancer = Convert.ToString (premierLancerInt);
 
 			stats += "<Row>" +
