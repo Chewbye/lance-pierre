@@ -116,6 +116,7 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 			} else {
 				lm.PremierMesure = true;
 				lm.Timer = DateTime.Now;
+				beginTimer = DateTime.Now;
 			}
 		} else {
 
