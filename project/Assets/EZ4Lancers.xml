@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <_Couleur_cible>Rose</_Couleur_cible>
-  <Name>EZ</Name>
+  <Name>EZ4Lancers</Name>
   <Gravite>1</Gravite>
   <Rigidite_lancepierre>10</Rigidite_lancepierre>
-  <Nb_lancers>1</Nb_lancers>
-  <Afficher_le_score>false</Afficher_le_score>
-  <Prise_en_compte_du_score>false</Prise_en_compte_du_score>
+  <Nb_lancers>4</Nb_lancers>
+  <Afficher_le_score>true</Afficher_le_score>
+  <Prise_en_compte_du_score>true</Prise_en_compte_du_score>
   <Nb_points_gagnes_par_cible>2</Nb_points_gagnes_par_cible>
   <Nb_points_perdus_par_cible_manque>1</Nb_points_perdus_par_cible_manque>
   <Delai_lancer_projectile>20</Delai_lancer_projectile>
@@ -18,9 +18,14 @@
       <DistanceX>15</DistanceX>
       <DistanceY>10</DistanceY>
     </PositionCible>
+    <PositionCible>
+      <DistanceX>10</DistanceX>
+      <DistanceY>10</DistanceY>
+    </PositionCible>
   </Positions_Cibles>
   <Tailles_Cibles>
     <float>1</float>
+    <float>2</float>
   </Tailles_Cibles>
   <Projectiles>
     <Projectile>
@@ -28,7 +33,7 @@
       <Poids>1</Poids>
     </Projectile>
   </Projectiles>
-  <Ratio_echelle>1.8839161396026611</Ratio_echelle>
+  <Ratio_echelle>1.503496527671814</Ratio_echelle>
   <Taille_Hauteur_Catapulte>3</Taille_Hauteur_Catapulte>
   <Distance_X_Catapulte>-15</Distance_X_Catapulte>
   <Distance_Y_Catapulte>-3.75</Distance_Y_Catapulte>
@@ -43,10 +48,10 @@
   <Hauteur_barre_progression>289</Hauteur_barre_progression>
   <Couleur_cible>Rose</Couleur_cible>
   <Couleur_barre>
-    <r>232</r>
-    <g>66</g>
+    <r>31</r>
+    <g>212</g>
     <b>95</b>
     <a>255</a>
   </Couleur_barre>
-  <Afficher_effet_destruction_cible>true</Afficher_effet_destruction_cible>
+  <Afficher_effet_destruction_cible>false</Afficher_effet_destruction_cible>
 </Conf>

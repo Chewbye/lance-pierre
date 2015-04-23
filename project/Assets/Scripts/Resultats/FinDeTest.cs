@@ -416,7 +416,7 @@ public class FinDeTest : MonoBehaviour {
 			passation += "<Column ss:Width=\"95\"/>";
 
 		passation += "<Column ss:Width=\"140\"/><Column ss:Width=\"150\"/>" +
-			"<Column ss:Width=\"80\"/><Column ss:Width=\"100\"/><Column ss:Width=\"110\"/><Column ss:Width=\"75\"/><Column ss:Width=\"180\"/>" +
+			"<Column ss:Width=\"80\"/><Column ss:Width=\"100\"/><Column ss:Width=\"110\"/><Column ss:Width=\"75\"/><Column ss:Width=\"180\"/><Column ss:Width=\"165\"/>" +
 			"<Row>" +
 			"<Cell><Data ss:Type=\"String\">" +
 			"Date" + 
@@ -510,6 +510,9 @@ public class FinDeTest : MonoBehaviour {
 			"<Cell><Data ss:Type=\"String\">" +
 			"Difference (Evaluation - Taille reelle)" +
 			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">" +
+			"Valeur absolue de la difference" +
+			"</Data></Cell>" +
 			"</Row>";
 		for (int i = 0; i < nb_lancers_int; i++) {
 			passation += "<Row>" +
@@ -549,7 +552,7 @@ public class FinDeTest : MonoBehaviour {
 				Math.Round (GameController.Jeu.Temps_Mis_Pour_Tirer [i], 2) +
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"Number\">" +
-				1 + // Mettre le bon temps pour evaluer (Math round 2 comme ci-dessus)
+				Math.Round (GameController.Jeu.Temps_Mis_Pour_Evaluer [i], 2) +
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"String\">";
 			if (GameController.Jeu.Reussiste_Tirs [i] == true) 
@@ -562,6 +565,9 @@ public class FinDeTest : MonoBehaviour {
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"Number\">" +
 				(Math.Round ((GameController.Jeu.Mesures_Taille_Cible [i] / 10), 2) - GameController.Jeu.Tirs_Realises [i].Taille_Cible) +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">" +
+				(Math.Abs(Math.Round ((GameController.Jeu.Mesures_Taille_Cible [i] / 10), 2) - GameController.Jeu.Tirs_Realises [i].Taille_Cible)) +
 				"</Data></Cell>" +
 				"</Row>";
 		}
@@ -606,6 +612,7 @@ public class FinDeTest : MonoBehaviour {
 			"<Cell><Data ss:Type=\"String\">" +
 			"Moyenne" +
 			"</Data></Cell>" +
+			"<Cell></Cell>" +
 			"<Cell><Data ss:Type=\"String\">" +
 			"Moyenne" +
 			"</Data></Cell>" +
@@ -633,6 +640,7 @@ public class FinDeTest : MonoBehaviour {
 		}
 		passation += "</Data></Cell>" +
 			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+			"<Cell></Cell>" +
 			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
 			"</Row>" +
 			"</Table>" +
@@ -642,13 +650,25 @@ public class FinDeTest : MonoBehaviour {
 	}
 
 	public String writeStats (int lastInserted) {
+		int nb_lancers_int = Convert.ToInt32 (nb_lancers);
+		String moyennes = Convert.ToString (9 + nb_lancers_int);
+		int premierLancerInt = 7;
+		String premierLancer = Convert.ToString (premierLancerInt);
+
 		String stats = "<Worksheet ss:Name=\"Statistiques\">" + 
 			"<Table><Column ss:Width=\"140\"/><Column ss:Width=\"90\"/>";
 		if (prise_en_compte_score == true)
 			stats += "<Column ss:Width=\"90\"/>";
 				
 			stats += "<Column ss:Width=\"130\"/><Column ss:Width=\"140\"/><Column ss:Width=\"70\"/><Column ss:Width=\"90\"/>" +
-				"<Column ss:Width=\"100\"/><Column ss:Width=\"70\"/><Column ss:Width=\"190\"/><Column ss:Width=\"190\"/>" +
+				"<Column ss:Width=\"100\"/><Column ss:Width=\"70\"/><Column ss:Width=\"190\"/>";
+			if (nb_lancers_int > 1) {
+				for (int i = 0; i < nb_lancers_int; i++) {
+					stats += "<Column ss:Width=\"270\"/>";	
+				}
+				stats += "<Column ss:Width=\"130\"/>";
+			}
+			stats += "<Column ss:Width=\"185\"/>" +
 				"<Row>" +
 				"<Cell></Cell>" +
 				"<Cell><Data ss:Type=\"String\">" +
@@ -680,17 +700,21 @@ public class FinDeTest : MonoBehaviour {
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"String\">" +
 				"Difference (Evaluation - Taille reelle)" +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"String\">" +
+				"</Data></Cell>";
+				if (nb_lancers_int > 1) {
+					for (int i = 1; i <= nb_lancers_int; i++) {
+						stats += "<Cell><Data ss:Type=\"String\">" +
+							"Carre de (Difference Lancer" + i + " - Moyenne des differences)" +
+							"</Data></Cell>";
+					}
+					stats += "<Cell><Data ss:Type=\"String\">" +
+						"Somme de tous ces carres" +
+						"</Data></Cell>";
+				}
+				stats += "<Cell><Data ss:Type=\"String\">" +
 				"Ecart-type des valeurs de difference" +
 				"</Data></Cell>" +
 				"</Row>";
-
-		int nb_lancers_int = Convert.ToInt32 (nb_lancers);
-		String moyennes = Convert.ToString (9 + nb_lancers_int);
-		int premierLancerInt = 7;
-		String premierLancer = Convert.ToString (premierLancerInt);
-		String secondLancer = Convert.ToString (premierLancerInt + 1);
 	
 		//Cas d'une seule passation
 		if (storedPassations.Count == 0) {
@@ -708,32 +732,121 @@ public class FinDeTest : MonoBehaviour {
 				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
 				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
 				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
-				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>";
+				"<Cell ss:Formula=\"=Passation1!R[" + moyennes + "]C[5]\"><Data ss:Type=\"Number\"></Data></Cell>";
 				if (nb_lancers_int == 1) 
-					stats += "<Cell ss:Formula=\"=(Passation1!R[" + premierLancer + "]C[3] - RC[-1])\"><Data ss:Type=\"Number\"></Data></Cell>";
-				else { // ça cloche ici (Erreur dans le fichier Excel :/)
-				stats += "<Cell ss:Formula=\"=SUM((Passation1!R[" + premierLancer + "]C[3] - RC[-1]);(Passation1!R[" + secondLancer + "]C[3] - RC[-1]))\"><Data ss:Type=\"Number\"></Data></Cell>";
-				//stats += "<Cell ss:Formula=\"=((SUM(POWER((Passation1!R[" + premierLancer + "]C[3] - RC[-1]); 2) (POWER((Passation1!R[" + (premierLancer + 1) + "]C[3] - RC[-1]); 2) )) / " + nb_lancers_int + ")\"><Data ss:Type=\"Number\"></Data></Cell>";
-			}
-				//=((SUM(POWER((Passation1!N9-J2);2))) / 1)
+					stats += "<Cell ss:Formula=\"=(Passation1!R[" + premierLancer + "]C[4] - RC[-1])\"><Data ss:Type=\"Number\"></Data></Cell>";
+				else {
+					String lancerSuivant = premierLancer;
+					Int32 lancerSuivantInt = premierLancerInt;
+					for (int i = 0; i < nb_lancers_int; i++) {
+						String c = Convert.ToString (4 - i);
+						String rc = Convert.ToString (-1 - i);
+						stats += "<Cell ss:Formula=\"=ROUND((Passation1!R[" + lancerSuivant + "]C[" + c + "] - RC[" + rc + "]) * (Passation1!R[" + lancerSuivant + "]C[" + c + "] - RC[" + rc + "]), 2)\"><Data ss:Type=\"Number\"></Data></Cell>";
+						lancerSuivantInt = lancerSuivantInt + 1;
+						lancerSuivant = Convert.ToString (lancerSuivantInt);
+					}
+
+					stats += "<Cell ss:Formula=\"=RC[-1]";
+					for (int i = 1; i < nb_lancers_int; i++) {
+						String rc = Convert.ToString(-1 - i);
+						stats += " + RC[" + rc + "]";
+					}
+					stats += "\"><Data ss:Type=\"Number\"></Data></Cell>";
+					stats += "<Cell ss:Formula=\"=RC[-1] / " + nb_lancers_int + "\"><Data ss:Type=\"Number\"></Data></Cell>";
+				}
 					
 				stats += "</Row>";
 		} else {
-			for (int i = 0; i < storedPassations.Count; i++) {
+			for (int j = 0; j < storedPassations.Count; j++) {
+				String nomPassation = "Passation " + Convert.ToString(storedPassations [j]);
+				String nomPassationSansEspace = "Passation" + Convert.ToString(storedPassations [j]);
+				moyennes = Convert.ToString ((9 + nb_lancers_int) - (j - 1));
+				premierLancerInt = (premierLancerInt - (j - (j - 1))) + 1;
+				premierLancer = Convert.ToString (premierLancerInt);
+
 				stats += "<Row>" +
 					"<Cell><Data ss:Type=\"String\">" +
-					"Passation " + storedPassations [i] +
+					nomPassation + 
 					"</Data></Cell>" +
-				//"<Cell ss:Formula=\"=Passation1!R[18]C[1]\"><Data ss:Type=\"Number\"></Data></Cell>" +
-					"</Row>";
+						"<Cell ss:Formula=\"=" + nomPassationSansEspace + "!R[" + moyennes + "]C[0]\"><Data ss:Type=\"Number\"></Data></Cell>";
+				if (prise_en_compte_score == true) 
+					stats += "<Cell ss:Formula=\"=" + nomPassationSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>";
+				
+				stats += "<Cell ss:Formula=\"=" + nomPassationSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+					"<Cell ss:Formula=\"=" + nomPassationSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+						"<Cell ss:Formula=\"=" + nomPassationSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+						"<Cell ss:Formula=\"=" + nomPassationSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+						"<Cell ss:Formula=\"=" + nomPassationSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+						"<Cell ss:Formula=\"=" + nomPassationSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+						"<Cell ss:Formula=\"=" + nomPassationSansEspace + "!R[" + moyennes + "]C[5]\"><Data ss:Type=\"Number\"></Data></Cell>";
+				if (nb_lancers_int == 1) 
+					stats += "<Cell ss:Formula=\"=(" + nomPassationSansEspace + "!R[" + premierLancer + "]C[4] - RC[-1])\"><Data ss:Type=\"Number\"></Data></Cell>";
+				else {
+					String lancerSuivant = premierLancer;
+					Int32 lancerSuivantInt = premierLancerInt;
+					for (int i = 0; i < nb_lancers_int; i++) {
+						String c = Convert.ToString (4 - i);
+						String rc = Convert.ToString (-1 - i);
+						stats += "<Cell ss:Formula=\"=ROUND((" + nomPassationSansEspace + "!R[" + lancerSuivant + "]C[" + c + "] - RC[" + rc + "]) * (" + nomPassationSansEspace + "!R[" + lancerSuivant + "]C[" + c + "] - RC[" + rc + "]), 2)\"><Data ss:Type=\"Number\"></Data></Cell>";
+						lancerSuivantInt = lancerSuivantInt + 1;
+						lancerSuivant = Convert.ToString (lancerSuivantInt);
+					}
+					
+					stats += "<Cell ss:Formula=\"=RC[-1]";
+					for (int i = 1; i < nb_lancers_int; i++) {
+						String rc = Convert.ToString(-1 - i);
+						stats += " + RC[" + rc + "]";
+					}
+					stats += "\"><Data ss:Type=\"Number\"></Data></Cell>";
+					stats += "<Cell ss:Formula=\"=RC[-1] / " + nb_lancers_int + "\"><Data ss:Type=\"Number\"></Data></Cell>";
+				}
+				
+				stats += "</Row>";
 			}
+
+			String nomPassationLast = "Passation " + Convert.ToString(lastInserted);
+			String nomPassationLastSansEspace = "Passation" + Convert.ToString(lastInserted);
+
+			premierLancer = Convert.ToString (premierLancerInt);
 
 			stats += "<Row>" +
 				"<Cell><Data ss:Type=\"String\">" +
-				"Passation " + lastInserted +
+				nomPassationLast +
 				"</Data></Cell>" +
-				//"<Cell ss:Formula=\"=Passation1!R[18]C[1]\"><Data ss:Type=\"Number\"></Data></Cell>" +
-				"</Row>";
+				"<Cell ss:Formula=\"=" + nomPassationLastSansEspace + "!R[" + moyennes + "]C[0]\"><Data ss:Type=\"Number\"></Data></Cell>";
+			if (prise_en_compte_score == true) 
+				stats += "<Cell ss:Formula=\"=" + nomPassationLastSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>";
+			
+			stats += "<Cell ss:Formula=\"=" + nomPassationLastSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+				"<Cell ss:Formula=\"=" + nomPassationLastSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+					"<Cell ss:Formula=\"=" + nomPassationLastSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+					"<Cell ss:Formula=\"=" + nomPassationLastSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+					"<Cell ss:Formula=\"=" + nomPassationLastSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+					"<Cell ss:Formula=\"=" + nomPassationLastSansEspace + "!R[" + moyennes + "]C[4]\"><Data ss:Type=\"Number\"></Data></Cell>" +
+					"<Cell ss:Formula=\"=" + nomPassationLastSansEspace + "!R[" + moyennes + "]C[5]\"><Data ss:Type=\"Number\"></Data></Cell>";
+			if (nb_lancers_int == 1) 
+				stats += "<Cell ss:Formula=\"=(" + nomPassationLastSansEspace + "!R[" + premierLancer + "]C[4] - RC[-1])\"><Data ss:Type=\"Number\"></Data></Cell>";
+			else {
+				String lancerSuivant = premierLancer;
+				Int32 lancerSuivantInt = premierLancerInt;
+				for (int i = 0; i < nb_lancers_int; i++) {
+					String c = Convert.ToString (4 - i);
+					String rc = Convert.ToString (-1 - i);
+					stats += "<Cell ss:Formula=\"=ROUND((" + nomPassationLastSansEspace + "!R[" + lancerSuivant + "]C[" + c + "] - RC[" + rc + "]) * (" + nomPassationLastSansEspace + "!R[" + lancerSuivant + "]C[" + c + "] - RC[" + rc + "]), 2)\"><Data ss:Type=\"Number\"></Data></Cell>";
+					lancerSuivantInt = lancerSuivantInt + 1;
+					lancerSuivant = Convert.ToString (lancerSuivantInt);
+				}
+				
+				stats += "<Cell ss:Formula=\"=RC[-1]";
+				for (int i = 1; i < nb_lancers_int; i++) {
+					String rc = Convert.ToString(-1 - i);
+					stats += " + RC[" + rc + "]";
+				}
+				stats += "\"><Data ss:Type=\"Number\"></Data></Cell>";
+				stats += "<Cell ss:Formula=\"=RC[-1] / " + nb_lancers_int + "\"><Data ss:Type=\"Number\"></Data></Cell>";
+			}
+			
+			stats += "</Row>";
 		}
 
 		stats += "</Table>" +
