@@ -19,7 +19,6 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 	public Controller controller;
 	public LeapMeasure lm;
 	public BarreProgression bp;
-	public DateTime beginTimer;
 	public TimeSpan diffTime;
 
 	private float tempsRestantPourEvaluer;
@@ -29,9 +28,7 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 		controller = new Controller();
 		lm = new LeapMeasure(); 
 		bp = new BarreProgression ("BarreVide", "Remplissage", 0, lm.TimerMax);
-		beginTimer = DateTime.Now;
 		tempsRestantPourEvaluer = GameController.Jeu.Config.Delai_evaluation_cible;
-		//diffTime = DateTime.Now - beginTimer;
 	}
 	
 	void Update ()
@@ -105,7 +102,7 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 				bool done = lm.measureDone (distance);
 				
 				if (done) {
-					TimeSpan tempsMisPourEvaluer = DateTime.Now - beginTimer;
+					TimeSpan tempsMisPourEvaluer = DateTime.Now - lm.Timer;
 					print ("**** temps mis pour evaluer cible : " + (float)tempsMisPourEvaluer.TotalSeconds + " s ****\n");
 					print ("**** distance evalué à : " + distance + " mm ****\n");
 					GameController.Jeu.Mesures_Taille_Cible.Add(distance);
@@ -116,7 +113,6 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 			} else {
 				lm.PremierMesure = true;
 				lm.Timer = DateTime.Now;
-				beginTimer = DateTime.Now;
 			}
 		} else {
 
@@ -125,7 +121,6 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 
 			lm.PremierMesure = true;
 			lm.Timer = DateTime.Now;
-			beginTimer = DateTime.Now;
 
 			GameController.Jeu.Evaluation_En_Cours = false; // SUPER IMPORTANT
 			GameController.Jeu.Evaluation_Effectuee = true; // SUPER IMPORTANT
