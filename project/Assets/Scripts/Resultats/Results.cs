@@ -51,11 +51,15 @@ public class Results : MonoBehaviour {
 	public Text intitule_hauteur_barre_progression;
 	public Text largeur_barre_progression;
 	public Text intitule_largeur_barre_progression;
+	public Toggle afficher_effet_destruct;
+	public Text intitule_couleur_barre_progression;
+	public Text couleur_barre_progression;
 
 	public GameObject bg_delai_avant_disparition_cible;
 	public GameObject bg_delai_avant_evaluation_cible;
 	public GameObject bg_hauteur_barre_progression;
 	public GameObject bg_largeur_barre_progression;
+	public GameObject bg_couleur_barre_progression;
 	
 	//Récapitulatif
 	public Text score_final;
@@ -119,14 +123,19 @@ public class Results : MonoBehaviour {
 		exp_participant.text = Convert.ToString (GameController.Jeu.Participant.PratiqueJeuxVideo);
 		couleur_cible.text = Convert.ToString (GameController.Jeu.Config.Couleur_cible);
 		afficher_barre_progression.isOn = GameController.Jeu.Config.Affichage_barre_progression;
+		afficher_effet_destruct.isOn = GameController.Jeu.Config.Afficher_effet_destruction_cible;
+
 		if (afficher_barre_progression.isOn == true) {
 			intitule_hauteur_barre_progression.text = "Hauteur de la barre de progression :";
 			hauteur_barre_progression.text = Convert.ToString (GameController.Jeu.Config.Hauteur_barre_progression);
 			intitule_largeur_barre_progression.text = "Largeur de la barre de progression :";
 			largeur_barre_progression.text = Convert.ToString (GameController.Jeu.Config.Largeur_barre_progression);
+			intitule_couleur_barre_progression.text = "Couleur de la barre :";
+			couleur_barre_progression.text = Convert.ToString(GameController.Jeu.Config.Couleur_barre.r) + ", " + Convert.ToString(GameController.Jeu.Config.Couleur_barre.g) + ", " + Convert.ToString(GameController.Jeu.Config.Couleur_barre.b) + ", " + Convert.ToString(GameController.Jeu.Config.Couleur_barre.a);
 		} else {
 			bg_hauteur_barre_progression.SetActive(false);
 			bg_largeur_barre_progression.SetActive(false);
+			bg_couleur_barre_progression.SetActive(false);
 		}
 		if (GameController.Jeu.Config.Condition_De_Memoire) {
 			condition_test.text = "M";

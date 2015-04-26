@@ -32,12 +32,18 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void Awake () 
 	{
+		if (GameController.Jeu.Tirs_Realises.Count >= GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		spring = GetComponent <SpringJoint2D> ();
 		catapult = spring.connectedBody.transform;
 	}
 	
 	void Start () 
 	{
+		if (GameController.Jeu.Tirs_Realises.Count >= GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		ratioCalibrage = 4;
 		// INITIALISATION DES ATTRIBUTS DANS JEU
 		ratioEchelle = GameController.Jeu.Config.Ratio_echelle;
@@ -99,6 +105,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		// Si nous sommes en mode Condtion de Controle
 		if(GameController.Jeu.Config.Condition_De_Controle)
 		{
@@ -150,6 +159,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void ActiverCatapulteModeControle()
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		if(!catapulteActivee && GameController.Jeu.Evaluation_Effectuee && (GameController.Jeu.Delai_Apres_Evaluation <= 0.0f))
 		{
 			// On active la catapulte
@@ -167,6 +179,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void DesactiverCatapulteCibleModeMemoire()
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		if(GameController.Jeu.Tir_Fini)
 		{
 			// On desactive la catapulte
@@ -185,6 +200,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void DesactiverCatapulteModePerception()
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		if(GameController.Jeu.Tir_Fini)
 		{
 			// On desactive la catapulte
@@ -200,6 +218,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void GenererTirs()
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		Debug.Log("Génération des combinaisons des tirs ...");
 		Debug.Log("Nombre de lancers : " + GameController.Jeu.Nb_lancers);
 		int nbCombinaisonsGenerees = 0;
@@ -231,6 +252,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void ChoisirTirJeu()
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		// CHANGEMENT DE LA RIGIDITE DU LANCE PIERRE
 		rigidite = GameController.Jeu.Config.Rigidite_lancepierre;
 		
@@ -260,6 +284,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void ChangerProprieteCible()
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		// Conversion des positions X Y Z en centimetres vers l'unite de Unity
 		float positionXCible = catapulte.transform.position.x + (tirAFaire.Position_Cible.DistanceX * (float)(diametreProjectile / ratioCalibrage));
 		float positionYCible = catapulte.transform.position.y + (tirAFaire.Position_Cible.DistanceY * (float)(diametreProjectile / ratioCalibrage));
@@ -276,6 +303,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void ChangerProprieteProjectile()
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		// Conversion des positions X Y Z en centimetres vers l'unite de Unity
 		float tailleXYZProjectile = (float) (tirAFaire.Projectile.Taille / ratioCalibrage);
 		transform.localScale = new Vector3((float) ratioEchelle* tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile, (float)ratioEchelle*tailleXYZProjectile);
@@ -294,6 +324,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void ChangerTailleCatapulte()
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		// Conversion de la taille en centimetres vers l'unite de Unity
 		// La catapulte doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
 		double hauteurCatapulteCm = GameController.Jeu.Config.Taille_Hauteur_Catapulte;
@@ -305,6 +338,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void ChangerPositionCatapulte()
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		// Conversion des positions X Y Z en centimetres vers l'unite de Unity
 		float positionXCatapulte = (float) (GameController.Jeu.Config.Distance_X_Catapulte * diametreProjectile / ratioCalibrage);
 		float positionYCatapulte = (float) (GameController.Jeu.Config.Distance_Y_Catapulte * diametreProjectile / ratioCalibrage);
@@ -363,6 +399,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void LineRendererSetup() 
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		catapultLineFront.SetPosition(0, catapultLineFront.transform.position);
 		catapultLineBack.SetPosition(0, catapultLineBack.transform.position);
 		
@@ -376,6 +415,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	// Le joueur clique sur le projectile
 	void OnMouseDown() 
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		if(!GameController.Jeu.Cible_Manquee)
 		{
 			spring.enabled = false;
@@ -391,6 +433,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	// Le joueur lache le projectile
 	void OnMouseUp() 
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		if(!GameController.Jeu.Cible_Manquee)
 		{
 			spring.enabled = true;
@@ -412,6 +457,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void Dragging() 
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		Vector3 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		Vector2 catapultToMouse = mouseWorldPoint - catapult.position;
 		
@@ -427,6 +475,9 @@ public class GestionInitialisationTir : MonoBehaviour
 	
 	void LineRendererUpdate() 
 	{
+		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
+			Application.LoadLevel("finDeTest");
+		}
 		Vector2 catapultToProjectile = transform.position - catapultLineFront.transform.position;
 		leftCatapultToProjectile.direction = catapultToProjectile;
 		Vector3 holdPoint = leftCatapultToProjectile.GetPoint(catapultToProjectile.magnitude + circleRadius);

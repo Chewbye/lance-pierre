@@ -281,6 +281,17 @@ public class FinDeTest : MonoBehaviour {
 		}
 		Config += "</Data></Cell>" +
 			"</Row>" +
+			"<Row><Cell><Data ss:Type=\"String\">" +
+			"Affichage des effets de destruction" +
+			"</Data></Cell>" +
+			"<Cell><Data ss:Type=\"String\">";
+		if (GameController.Jeu.Config.Afficher_effet_destruction_cible == true) {
+			Config += "Oui";
+		} else {
+			Config += "Non";
+		}
+		Config += "</Data></Cell>" +
+			"</Row>" +
 				"<Row>" +
 				"<Cell><Data ss:Type=\"String\">" +
 				"Nombre de points gagnes par cible" +
@@ -355,7 +366,8 @@ public class FinDeTest : MonoBehaviour {
 					"</Data></Cell>" +
 					"</Row>";
 			}
-				
+			
+		String couleurBarreProgression = Convert.ToString(GameController.Jeu.Config.Couleur_barre.r) + ", " + Convert.ToString(GameController.Jeu.Config.Couleur_barre.g) + ", " + Convert.ToString(GameController.Jeu.Config.Couleur_barre.b) + ", " + Convert.ToString(GameController.Jeu.Config.Couleur_barre.a);
 		Config += "<Row>" +
 			"<Cell><Data ss:Type=\"String\">" +
 			"Affichage barre de progression" +
@@ -374,6 +386,12 @@ public class FinDeTest : MonoBehaviour {
 				"</Data></Cell>" +
 				"<Cell><Data ss:Type=\"Number\">" +
 				largeurBarreProgression + 
+				"</Data></Cell></Row><Row>" + 
+				"<Cell><Data ss:Type=\"String\">" +
+				"Couleur de la barre de progression" +
+				"</Data></Cell>" +
+				"<Cell><Data ss:Type=\"String\">" +
+				couleurBarreProgression +
 				"</Data></Cell>";
 		} else {
 			Config += "Non</Data></Cell>";
