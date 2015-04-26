@@ -119,9 +119,9 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 				lm.Timer = DateTime.Now;
 			}
 		} else {
-
-			GameController.Jeu.Mesures_Taille_Cible.Add(-99);
-			GameController.Jeu.Temps_Mis_Pour_Evaluer.Add(-1f);
+			GameController.Jeu.Mesures_Taille_Cible.Add(99);
+			float tempPourEvalMax = GameController.Jeu.Config.Delai_evaluation_cible;
+			GameController.Jeu.Temps_Mis_Pour_Evaluer.Add(tempPourEvalMax);
 
 			lm.PremierMesure = true;
 			lm.Timer = DateTime.Now;

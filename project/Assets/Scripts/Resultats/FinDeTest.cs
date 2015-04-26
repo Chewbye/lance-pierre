@@ -397,12 +397,19 @@ public class FinDeTest : MonoBehaviour {
 		int nb_lancers_int = Convert.ToInt32 (nb_lancers);
 		int nbReussi = 0;
 		int nbManque = 0;
+		bool aucunLancerAvecEval = true;
 
 		for (int i = 0; i < GameController.Jeu.Reussiste_Tirs.Count; i++) {
 			if (GameController.Jeu.Reussiste_Tirs [i] == true) 
 				nbReussi++;
 			else 
 				nbManque++;
+
+			if (aucunLancerAvecEval == true) {
+				if (GameController.Jeu.Mesures_Taille_Cible[i] != 99f) {
+					aucunLancerAvecEval = false;
+				}
+			}
 		}
 
 		int dernierLancer = -3;
@@ -559,17 +566,19 @@ public class FinDeTest : MonoBehaviour {
 				passation += "Touche";
 			else 
 				passation += "Manque";
-			passation += "</Data></Cell>" +
-				"<Cell><Data ss:Type=\"Number\">" +
-				Math.Round ((GameController.Jeu.Mesures_Taille_Cible [i] / 10), 2) +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"Number\">" +
-				(Math.Round ((GameController.Jeu.Mesures_Taille_Cible [i] / 10), 2) - GameController.Jeu.Tirs_Realises [i].Taille_Cible) +
-				"</Data></Cell>" +
-				"<Cell><Data ss:Type=\"Number\">" +
-				(Math.Abs(Math.Round ((GameController.Jeu.Mesures_Taille_Cible [i] / 10), 2) - GameController.Jeu.Tirs_Realises [i].Taille_Cible)) +
-				"</Data></Cell>" +
-				"</Row>";
+			passation += "</Data></Cell>";
+			if (GameController.Jeu.Mesures_Taille_Cible [i] != 99f) {
+				passation += "<Cell><Data ss:Type=\"Number\">" +
+					Math.Round ((GameController.Jeu.Mesures_Taille_Cible [i] / 10), 2) +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					(Math.Round ((GameController.Jeu.Mesures_Taille_Cible [i] / 10), 2) - GameController.Jeu.Tirs_Realises [i].Taille_Cible) +
+					"</Data></Cell>" +
+					"<Cell><Data ss:Type=\"Number\">" +
+					(Math.Abs(Math.Round ((GameController.Jeu.Mesures_Taille_Cible [i] / 10), 2) - GameController.Jeu.Tirs_Realises [i].Taille_Cible)) +
+					"</Data></Cell>";
+			}
+			passation += "</Row>";
 		}
 		passation += "<Row></Row>" +
 			"<Row>" +
@@ -638,13 +647,24 @@ public class FinDeTest : MonoBehaviour {
 			double nL = Convert.ToDouble(nb_lancers_int);
 			passation += Math.Round(nR/nL, 2);
 		}
-		passation += "</Data></Cell>" +
-			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
-			"<Cell></Cell>" +
-			"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
-			"</Row>" +
-			"</Table>" +
-			"</Worksheet>";
+		if (!aucunLancerAvecEval) {
+			passation += "</Data></Cell>" +
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" + 
+				"<Cell></Cell>" +
+				"<Cell ss:Formula=\"=ROUND(AVERAGE(R[" + premierLancer + "]C:R[" + dernierLancer + "]C), 2)\"><Data ss:Type=\"Number\"></Data> </Cell>" +
+				"</Row>" +
+				"</Table>" +
+				"</Worksheet>";
+		}
+		else {
+			passation += "</Data></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">0</Data></Cell>" + 
+				"<Cell></Cell>" +
+				"<Cell><Data ss:Type=\"Number\">0</Data></Cell>" +
+				"</Row>" +
+				"</Table>" +
+				"</Worksheet>";
+		}
 
 		return passation;
 	}
