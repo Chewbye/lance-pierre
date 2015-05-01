@@ -16,8 +16,11 @@ public class LeapMeasure {
 	protected float ancienneDistance; // variable qui contiendra l'ancienne distance mesure 
 	protected float timerMax; // temps maximum pour effectuer la mesure
 	protected float borne; // marge de stabilisation max autorisé 
-	protected bool premierMesure; // 
-	
+	protected bool premierMesure; // variable qui permettra de vérifier si c'est la premier mesure de l'utilisateur
+
+	/*
+	 * ** ACCESSEURS en consultations/modifications **
+	 */
 	public float TimerMax {
 		get {
 			return timerMax;
@@ -60,7 +63,10 @@ public class LeapMeasure {
 			premierMesure = value;
 		}
 	}
-	
+
+	/*
+	 * ** CONSTRUCTEUR **
+	 */
 	public LeapMeasure()
 	{
 		timer = DateTime.Now;
@@ -71,7 +77,9 @@ public class LeapMeasure {
 	}
 	
 	/*
-	 * Retourne la liste des indices des doigts "étendus"
+	 * ** fingersMeasure **
+	 * 
+	 * Retourne vrai si le pouce et l'index sont "étendus"
 	 */
 	public bool fingersMeasure(Frame frame)
 	{
@@ -79,6 +87,8 @@ public class LeapMeasure {
 	}
 	
 	/*
+	 * ** getDistance **
+	 * 
 	 * Retourne la distance (en mm) entre deux doigts
 	 */
 	public float getDistance(Frame frame)
@@ -89,12 +99,14 @@ public class LeapMeasure {
 	}
 	
 	/*
+	 * ** measureDone **
+	 * 
 	 * Retourne vrai si la mesure de l'utilisateur est définitive
 	 * Faux sinon et RAZ du timer
 	 */
 	public bool measureDone(float distance)
 	{
-		if (premierMesure)
+		if (premierMesure) // si c'est la première mesure, on initialise l'ancienne distancte par rapport à la distance mesure 
 		{
 			ancienneDistance = distance;
 			premierMesure = false;
@@ -103,13 +115,13 @@ public class LeapMeasure {
 		}
 		else
 		{
-			if (ancienneDistance - borne <= distance && distance <= ancienneDistance + borne)
+			if (ancienneDistance - borne <= distance && distance <= ancienneDistance + borne) // si l'écart max entre la distance actuellement mesuré et l'ancienne, on regarde le timer 
 			{
 				ancienneDistance = distance;
 
 				TimeSpan diffTime = DateTime.Now - timer;
 
-				if (diffTime.TotalSeconds >= timerMax)
+				if (diffTime.TotalSeconds >= timerMax) //si on dépasse le temps max pour mesure, on valide la mesure
 				{
 					return true;
 				}
@@ -127,6 +139,11 @@ public class LeapMeasure {
 		}
 	}
 
+	/*
+	 * ** calculNbSecondesEcoule **
+	 * 
+	 * Retourne le nombre de secondes du timer
+	 */
 	public float calculNbSecondesEcoule()
 	{
 		TimeSpan diffTime = DateTime.Now - timer;
