@@ -3,35 +3,44 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 
+/*
+ * ** ReglageCouleurBarre **
+ * 
+ * Classe qui permet d'agir sur la scène de configuration de la couleur de la barre de progression
+ */
+
 public class ReglageCouleurBarre : MonoBehaviour {
 
-	public Slider S_R;
-	public Slider S_G;
-	public Slider S_B;
-	public Slider S_A;
+	public Slider S_R; // slider permettant de régler le niveau de rouge
+	public Slider S_G; // slider permettant de régler le niveau de vert
+	public Slider S_B; // slider permettant de régler le niveau de bleue
+	public Slider S_A; // slider permettant de régler le niveau de radiation alpha
 
-	public Text Text_R;
-	public Text Text_G;
-	public Text Text_B;
-	public Text Text_A;
+	public Text Text_R; // libelle du slider de niveau de rouge
+	public Text Text_G; // libelle du slider de niveau de vert
+	public Text Text_B; // libelle du slider de niveau de bleue
+	public Text Text_A; // libelle du slider de niveau de radiation alpha
 
-	public Texture2D pickColor;
-	public Texture2D pickAlpha;
+	public Texture2D pickColor; // texture correspondant à l'ensemble des couleurs que l'on peut choisir
+	public Texture2D pickAlpha; // texture correspondant à l'ensemble des radiations alpha
 
-	public Color couleurBarre;
-	public Color couleurBarreDefault;
+	public Color couleurBarre; // variable qui contiendra la couleur de la barre
+	public Color couleurBarreDefault; // couleur de la barre par default
 
-	public Texture2D cadre;
-	public Texture2D remplissage;
-	public Texture2D textureDeFond;
+	public Texture2D cadre; // texture du contour de la barre de progression
+	public Texture2D remplissage; // texture du contenu de la barre de progression
+	public Texture2D textureDeFond; // texture de fond de la barre de progression
 
-	public int posX;
-	public int posY;
-	public int largeur;
-	public int hauteurPickColor;
-	public int hauteurPickAlpha;
-
+	public int posX; // position x de la texture pickColor
+	public int posY; // position y de la texture pickColor
+	public int largeur; // largeur de la texture pickColor
+	public int hauteurPickColor; // hauteur de la texture pickColor
+	public int hauteurPickAlpha; // hauteur de la texture pickAlpha
+	
 	// Use this for initialization
+	/*
+	 * Création et initilisation des différents attributs et composants
+	 */ 
 	void Start () {
 	
 		S_R.value = GameController.Jeu.Config.Couleur_barre.r;
@@ -64,23 +73,33 @@ public class ReglageCouleurBarre : MonoBehaviour {
 	
 	}
 
+	/*
+	 * Création graphique des textures et gestion des evenements sur le clique sur les textures pickColor ou pickAlpha
+	 */
 	void OnGUI()
 	{
-		changeColor ();
-		Show (Screen.width, Screen.height, Screen.width, Screen.height/2);
+		changeColor (); // Application du changement de couleur fait précédemment
 
+		Show (Screen.width, Screen.height, Screen.width, Screen.height/2); // création graphique de la barre de progression
+
+		// création graphique des textures pickColor et pickAlpha
 		GUI.DrawTexture (new Rect (posX, posY, largeur, hauteurPickColor), pickColor);
 		GUI.DrawTexture (new Rect (posX, posY + hauteurPickColor, largeur, hauteurPickAlpha), pickAlpha);
 
+		// on sauvegarde l'evenement courant
 		Event e = Event.current;
 		bool isLeftMBtnClicked = e.type == EventType.mouseUp;
 
+		// on verifie que c'est bien un clique gauche sur la souris qui a été detecté
 		if (isLeftMBtnClicked) {
+
+			// on prend la position de ce clique
 			Vector2 v = e.mousePosition;
 
 			int vx = (int)v.x;
 			int vy = (int)v.y;
 
+			// si le clique s'est fait sur la texture pickAlpha alors on traite juste le niveau de radiation alpha de la couleur
 			if (clickOnPickAlpha(v))
 			{
 				Color couleurAlpha = pickAlpha.GetPixel(vx - posX,hauteurPickAlpha - (vy - (posY + hauteurPickColor)));
@@ -91,7 +110,7 @@ public class ReglageCouleurBarre : MonoBehaviour {
 
 				S_A.value = (int) Math.Round((double)codeCorrespondant);
 			}
-			else if (clickOnPickColor(v))
+			else if (clickOnPickColor(v)) // si le clique s'est fait sur la texture pickColor alors on traite juste les niveaux R, G et B 
 			{
 				Color couleurColor = pickColor.GetPixel(vx - posX,hauteurPickColor - (vy - posY));
 
@@ -101,8 +120,6 @@ public class ReglageCouleurBarre : MonoBehaviour {
 				float codeCorrespondantG = couleurColor.g * 255f;
 				float codeCorrespondantB = couleurColor.b * 255f;
 
-				//Debug.Log(codeCorrespondantR.ToString() + " " + codeCorrespondantG.ToString() + " " + codeCorrespondantB.ToString());
-				
 				S_R.value = (int) Math.Round((double)codeCorrespondantR);
 				S_G.value = (int) Math.Round((double)codeCorrespondantG);
 				S_B.value = (int) Math.Round((double)codeCorrespondantB);
@@ -110,20 +127,27 @@ public class ReglageCouleurBarre : MonoBehaviour {
 			else{
 				Debug.Log("clockOn Other - " + v.ToString());
 			}
-
-			//Debug.Log(v.ToString());
 		}
 	}
 
+	/*
+	 * ** changeColor **
+	 * 
+	 * Changement graphique de la couleur de la barre 
+	 */
 	public void changeColor()
 	{
-
 		textureDeFond.SetPixel (0, 0, cadre.GetPixel (0, 0));
 		remplissage.SetPixel (0, 0, couleurBarre);
 		textureDeFond.Apply ();
 		remplissage.Apply ();
 	}
 
+	/*
+	 * ** Show **
+	 * 
+	 * Création graphique de la barre de progression
+	 */
 	public void Show(int x,int y,int tailleTextureWidth,int tailleTextureHeight)
 	{
 		int largeur = 512;
@@ -134,16 +158,29 @@ public class ReglageCouleurBarre : MonoBehaviour {
 		GUI.DrawTexture (new Rect ((x-largeur)/2, ((y-hauteur)/2) + (y/4), largeur, hauteur), cadre);
 	}
 
+	/*
+	 * ** clickOnPickColor **
+	 * 
+	 * Retourne vrai si la position du clique se trouve sur la zone de la texture pickColor
+	 */
 	public Boolean clickOnPickColor(Vector2 v)
 	{
 		return ((v.x >= posX && v.x <= posX + largeur) && (v.y >= posY && v.y <= posY + hauteurPickColor)); 
 	}
 
+	/*
+	 * ** clickOnPickAlpha **
+	 * 
+	 * Retourne vrai si la position du clique se trouve sur la zone de la texture pickAlpha
+	 */
 	public Boolean clickOnPickAlpha(Vector2 v)
 	{
 		return ((v.x >= posX && v.x <= posX + largeur) && (v.y >= posY + hauteurPickColor && v.y <= posY + hauteurPickColor + hauteurPickAlpha)); 
 	}
 
+	/*
+	 * ** GESTION DES EVENEMENTS SUR LES SLIDERS R, G, B et A **
+	 */
 	public void onChangeValueS_R()
 	{
 		Text_R.text = "R : " + (int)S_R.value;
@@ -172,6 +209,10 @@ public class ReglageCouleurBarre : MonoBehaviour {
 		couleurBarre.a = (float)Math.Round(AValue,3,MidpointRounding.AwayFromZero);
 	}
 
+	/*
+	 * ** GESTION DU CLIQUE SUR LE BOUTON "couleur par default" **
+	 * 
+	 */ 
 	public void onClickButtonColorDefault()
 	{
 		couleurBarre = couleurBarreDefault;
@@ -182,6 +223,10 @@ public class ReglageCouleurBarre : MonoBehaviour {
 		S_A.value = GameController.Jeu.Config.Couleur_barre.a;
 	}
 
+	/*
+	 * ** GESTION DU CLIQUE SUR LE BOUTON "retour au menu" **
+	 * 
+	 */ 
 	public void onClickButtonRetourMenu()
 	{
 		GameController.Jeu.Config.Couleur_barre = couleurBarre;

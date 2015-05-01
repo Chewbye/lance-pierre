@@ -2,28 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using Leap;
+using System;
 
 /*
- * Classe contenant une liste de méthode permettant l'evaluation de la cible
+ * ** LeapMeasure **
  * 
- * Contient :
- * - un attribut timer (ou tick) 
- * - un attribut ancienneDistance qui represente la distance mesurée au tick précédant et
- * comparer celle-ci avec la distance actuellement mesurée
- * - un attribut statique TIMER_MAX representant le délai au cours duquel la personne donne 
- * une mesure définitive
- * - un attribut statique BORNE permettant de borner la distance actuellement mesurée avec
- * l'ancienne distance
+ * Classe contenant une liste de méthode permettant l'evaluation de la taille de la cible
  */
-using System;
 
 public class LeapMeasure {
 	
-	protected DateTime timer;
-	protected float ancienneDistance;
-	protected float timerMax;
-	protected float borne;
-	protected bool premierMesure;
+	protected DateTime timer; // timer qui mesure le temps mis pour effectuer la mesure
+	protected float ancienneDistance; // variable qui contiendra l'ancienne distance mesure 
+	protected float timerMax; // temps maximum pour effectuer la mesure
+	protected float borne; // marge de stabilisation max autorisé 
+	protected bool premierMesure; // 
 	
 	public float TimerMax {
 		get {

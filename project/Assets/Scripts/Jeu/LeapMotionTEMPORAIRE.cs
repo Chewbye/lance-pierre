@@ -6,25 +6,24 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
 /*
- * Classe associée à la scene du lancé de projectile et de la mesure de cible
+ * ** LeapMotionTEMPORAIRE **
  * 
- * Contient :
- * - un attribut de type Controlleur permettant d'obtenir les actions (les données) du 
- * leap motion
- * - un attribut de type LeapMeasure qui contient des méthodes pour la mesure de la cible
+ * Classe associée à la scene de la mesure de cible
  */
 
 public class LeapMotionTEMPORAIRE : MonoBehaviour {
 	
-	public Controller controller;
-	public LeapMeasure lm;
-	public BarreProgression bp;
-	public TimeSpan diffTime;
+	public Controller controller; // controleur permettant d'accéder aux données en temps réel du leap motion
+	public LeapMeasure lm; // variable de type leapMesure qui contient l'ensemble des méthodes permettant la mesure de la taille de la cible
+	public BarreProgression bp; // variable de type BarreProgression qui permet la création de la barre de progression
 
-	private float tempsMisPourEvaluer;
+	private float tempsMisPourEvaluer; // temps mis pour evaluer la taille de la cible
 
-	private float tempsRestantPourEvaluer;
-	
+	private float tempsRestantPourEvaluer; // temps restant pour evaluer la taille de la cible
+
+	/*
+	 * Création et initilisation des différents attributs et composants
+	 */ 
 	void Start ()
 	{
 		controller = new Controller();
@@ -81,13 +80,18 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 		}
 	}
 
+	/*
+	 * ** Evaluation **
+	 * 
+	 * Procédure d'evaluation de la cible
+	 */ 
 	void Evaluation()
 	{
-		if (tempsRestantPourEvaluer >= 0.0f) 
+		if (tempsRestantPourEvaluer >= 0.0f) // si il reste du temps pour évaluer
 		{
-			tempsMisPourEvaluer = tempsMisPourEvaluer + Time.deltaTime;
+			tempsMisPourEvaluer = tempsMisPourEvaluer + Time.deltaTime; 
 
-			if (GameController.Jeu.Config.Delai_evaluation_cible > 0.0f)
+			if (GameController.Jeu.Config.Delai_evaluation_cible > 0.0f) // si on a configuré un délais pour l'évaluation
 			{
 				tempsRestantPourEvaluer -= Time.deltaTime;
 			}
@@ -104,9 +108,8 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 				
 				// si le timer atteind le délais de mesure alors la mesure est faite
 				bool done = lm.measureDone (distance);
-				
+
 				if (done) {
-					//TimeSpan tempsMisPourEvaluer = DateTime.Now - lm.Timer;
 					print ("**** temps mis pour evaluer cible : " + tempsMisPourEvaluer + " s ****\n");
 					print ("**** distance evalué à : " + distance + " mm ****\n");
 					GameController.Jeu.Mesures_Taille_Cible.Add(distance);
@@ -131,7 +134,9 @@ public class LeapMotionTEMPORAIRE : MonoBehaviour {
 		}
 	}
 
-
+	/*
+	 * Création graphique des textures.
+	 */
 	void OnGUI()
 	{
 

@@ -2,25 +2,34 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/*
+ * ** MenuSecondaire **
+ * 
+ * Classe associée à la scene du formulaire du participant
+ */
+
 public class MenuSecondaire : MonoBehaviour {
 
-	public InputField IF_numero;
-	public InputField IF_age;
-	public Toggle T_Homme;
-	public Toggle T_Femme;
-	public Toggle T_Gauche;
-	public Toggle T_Droite;
-	public Toggle T_Oui;
-	public Toggle T_Non;
+	public InputField IF_numero; // champs du numero du participant
+	public InputField IF_age; // champs de l'age du participant
+	public Toggle T_Homme; // checkbox choix "homme" pour question sur sexe
+	public Toggle T_Femme; // checkbox choix "femme" pour question sur sexe
+	public Toggle T_Gauche; // checkbox choix "gauche" pour question sur main dominante
+	public Toggle T_Droite; // checkbox choix "droite" pour question sur main dominante
+	public Toggle T_Oui; // checkbox choix "oui" pour question sur pratique courante jeux video
+	public Toggle T_Non; // checkbox choix "non" pour question sur pratique courante jeux video
 
-	public bool erreur;
-	public string typeErreur;
-	public int largeurPopup;
-	public int hauteurPopup;
+	public bool erreur; // variable qui permet de signaler une erreur de saisie
+	public string typeErreur; // variable qui stocke le type d'erreur signalé
+	public int largeurPopup; // largeur de la pop-up d'erreur
+	public int hauteurPopup; // hauteur de la pop-up d'erreur
 
 
 
 	// Use this for initialization
+	/*
+	 * Création et initilisation des différents attributs et composants
+	 */ 
 	void Start () {
 		GameController.Jeu.Participant.Sexe = "Homme";
 		GameController.Jeu.Participant.MainDominante = "Droite";
@@ -36,6 +45,9 @@ public class MenuSecondaire : MonoBehaviour {
 	
 	}
 
+	/*
+	 * ** GESTION DES EVENEMENTS SUR LES CHAMPS ET LES CHECKBOXS **
+	 */
 	public void onChangeValueNumero()
 	{
 		int res = 0;
@@ -99,9 +111,12 @@ public class MenuSecondaire : MonoBehaviour {
 		}
 	}
 
-
+	/*
+	 * ** GESTION DU CLIQUE SUR LE BOUTON "lancer le test" **
+	 */
 	public void onClickButtonLancerTest()
 	{
+		// verifications de la validité des champs
 		if (GameController.Jeu.Participant.numeroValide ()) {
 			if (GameController.Jeu.Participant.ageValide ()) {
 				Debug.Log(GameController.Jeu.Participant.ToString()+ "\n");
@@ -120,12 +135,18 @@ public class MenuSecondaire : MonoBehaviour {
 
 	}
 
+	/*
+	 * ** GESTION DU CLIQUE SUR LE BOUTON "revenir au menu" **
+	 */
 	public void onClickButtonRevenirMenu()
 	{
 		GameController.Jeu.isPretest = true;
 		UnityEngine.Application.LoadLevel ("menu");
 	}
 
+	/*
+	 * Création graphique de la pop-up d'erreur si erreur.
+	 */
 	void OnGUI()
 	{
 		if (erreur) {
@@ -135,6 +156,9 @@ public class MenuSecondaire : MonoBehaviour {
 
 	}
 
+	/*
+	 * POP-UP
+	 */
 	void DoMyWindows (int id)
 	{
 		if (GUI.Button (new Rect ((largeurPopup-80)/2, (hauteurPopup-20)/2, 80, 20), "OK")) {
