@@ -61,38 +61,6 @@ public class GestionAffichageInfoEcran : MonoBehaviour
 			txt.text= "";
 		}
 
-		// MODE DEBUG TEMPORAIRE
-		/*if(GameController.Jeu.Config.Condition_De_Controle)
-		{
-			Text txt = infoPhaseJeu.GetComponent<Text>(); 
-			txt.text= "DEBUG CONTROLE : ";
-		}
-		if(GameController.Jeu.Config.Condition_De_Perception)
-		{
-			Text txt = infoPhaseJeu.GetComponent<Text>(); 
-			txt.text= "DEBUG PERCEPTION : ";
-		}
-		if(GameController.Jeu.Config.Condition_De_Memoire)
-		{
-			Text txt = infoPhaseJeu.GetComponent<Text>(); 
-			txt.text= "DEBUG MEMOIRE : ";
-		}
-		if(GameController.Jeu.Evaluation_En_Cours)
-		{
-			Text txt = infoPhaseJeu.GetComponent<Text>(); 
-			txt.text += "EVALUATION EN COURS";
-		}
-		else if(GameController.Jeu.Evaluation_Effectuee)
-		{
-			Text txt = infoPhaseJeu.GetComponent<Text>(); 
-			txt.text += "EVALUATION EFFECTUEE";
-		}
-		else if(!GameController.Jeu.Evaluation_Effectuee)
-		{
-			Text txt = infoPhaseJeu.GetComponent<Text>(); 
-			txt.text += "EVALUATION NON ENCORE EFFECTUEE";
-		}*/
-
 		// MISE A JOUR DU TEXTE AFFICHANT LES POINTS PERDUS OU GAGNES
 		Vector3 positionCible = cible.transform.position;
 		double diametreCible = cible.renderer.bounds.size.x;

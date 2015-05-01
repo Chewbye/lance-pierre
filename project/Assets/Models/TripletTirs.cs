@@ -4,6 +4,7 @@ using System.IO;
 using System;
 using System.Reflection;
 
+// Classe utilisee dans le script GestionInitialisationTir pour stocker les tirs a effectuer lors d'une partie
 public class TripletTirs
 {
 	private Projectile _Projectile;

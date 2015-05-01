@@ -2,6 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
+// Classe utilisee pour gerer le jeu une fois que le joueur a tire
 public class GestionPostTir : MonoBehaviour 
 {
 	public GameObject projectile;
@@ -42,14 +43,6 @@ public class GestionPostTir : MonoBehaviour
 				audio.PlayOneShot(sonReussite, 1);
 				sonDejaJoue =  true;
 			}
-
-			/*// On desactive l'affichage de la cible
-			cible.rigidbody2D.isKinematic = true;
-			cible.renderer.enabled = false;
-			if(GameController.Jeu.Config.Condition_De_Perception && GameController.Jeu.Tir_Fini)
-			{
-				cible.renderer.enabled = true;
-			}*/
 
 			// On desactive l'affichage du projectile
 			projectile.rigidbody2D.isKinematic = true;
