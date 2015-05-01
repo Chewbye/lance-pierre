@@ -408,6 +408,7 @@ public class Jeu{
 		_AppConfig = getAppConfigFile (path);
 	}
 
+	/* Retourne une instance de type Conf pour le fichier de configuration situé à l'adresse path */
 	public Conf getConfigFile(string path){
 		Conf res = null;
 		XmlSerializer xs = new XmlSerializer(typeof(Conf));
@@ -418,6 +419,9 @@ public class Jeu{
 		return res;
 	}
 
+	/* Retourne une instance de type AppConf pour récupérer le nom du dernier fichier de configuration utilisé
+	 * Ce fichier se trouve à l'adresse path et sera créé si il n'existe pas
+	 */
 	public AppConf getAppConfigFile(string path){
 		//Création du fichier de configuration de l'application la première fois
 		if (!File.Exists (path)) {
