@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
 /*
- * ** LeapMotionTEMPORAIRE **
+ * ** LeapMotion **
  * 
  * Classe associée à la scene de la mesure de cible
  */
 
-public class LeapMotionTEMPORAIRE : MonoBehaviour {
+public class LeapMotion : MonoBehaviour {
 	
 	public Controller controller; // controleur permettant d'accéder aux données en temps réel du leap motion
 	public LeapMeasure lm; // variable de type leapMesure qui contient l'ensemble des méthodes permettant la mesure de la taille de la cible
