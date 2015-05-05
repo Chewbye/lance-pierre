@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 public class FinDeTest : MonoBehaviour {
 	
-	//Configuration
+	// Informations à récupérer afin de les stocker dans le fichier XML
 	private string nom_configuration;
 	private string gravite;
 	private string rigidite_lancepierre;
@@ -41,7 +41,7 @@ public class FinDeTest : MonoBehaviour {
 	private string hauteurBarreProgression;
 	private string largeurBarreProgression;
 
-	string fichierCourant;
+	string fichierCourant; // Nom du fichier XML
 	ArrayList storedPassations = new ArrayList (); // Numéros de passations existants (feuillets) => Pour prendre en compte les suppressions de feuillets
 
 	// Use this for initialization
@@ -57,21 +57,25 @@ public class FinDeTest : MonoBehaviour {
 	
 	}
 
+	// Bouton sujet suivant => Chargement de la scène "menuSecondaire" et fin du preTest + réinitialisation des champs
 	public void onSujetSuivant() {
 		resetAll ();
 		GameController.Jeu.isPretest = false;
 		Application.LoadLevel ("menuSecondaire");
 	}
 
+	// Réinitialisation des champs
 	public void resetAll() {
 		GameController.Jeu.newGame ();
 	}
 
+	// Bouton menu => Chargement de la scène "menu" et fin du preTest 
 	public void onMenu() {
 		GameController.Jeu.isPretest = false;
 		Application.LoadLevel ("menu");
 	}
 
+	// Bouton menu => Chargement de la scène "results"
 	public void onResultats() {
 		Application.LoadLevel ("results");
 	}
@@ -80,7 +84,7 @@ public class FinDeTest : MonoBehaviour {
 	 * Met à jour les champs du menu principal avec la configuration actuelle du jeu 
 	 */
 	public void setFields(){
-		//Assignation des valeurs définies dans le fichier de config choisi initialement;
+		// Assignation des valeurs définies dans le fichier de config choisi initialement
 		nom_configuration = Convert.ToString (GameController.Jeu.Config.Name);
 		afficher_le_score = false;
 		gravite = Convert.ToString(GameController.Jeu.Config.Gravite);
@@ -122,6 +126,7 @@ public class FinDeTest : MonoBehaviour {
 		writeXML ();
 	}
 
+	// En-tete XML
 	public String writeHeader() {
 		String header = "<?xml version=\"1.0\"?>" +
 			"<?mso-application progid=\"Excel.Sheet\"?>" +
@@ -146,6 +151,7 @@ public class FinDeTest : MonoBehaviour {
 		return header;
 	}
 
+	// Ecriture dans le fichier XML de la configuration choisie
 	public String writeConfig() {
 		String Config = "<Worksheet ss:Name=\"Configuration\">" + 
 			"<Table>" +
@@ -410,6 +416,7 @@ public class FinDeTest : MonoBehaviour {
 		return Config;
 	}
 
+	// Ecriture dans le fichier XML de toutes les informations sur une passation (une série de lancers)
 	public String writePassation(int nbPassation) {
 		string date = "Le " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year + " a " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
 		int nb_lancers_int = Convert.ToInt32 (nb_lancers);
@@ -687,6 +694,7 @@ public class FinDeTest : MonoBehaviour {
 		return passation;
 	}
 
+	// Ecriture dans le fichier XML de l'ensemble des statistiques recueillies et calculables
 	public String writeStats (int lastInserted) {
 		int nb_lancers_int = Convert.ToInt32 (nb_lancers);
 		String moyennes = Convert.ToString (9 + nb_lancers_int);
@@ -754,7 +762,7 @@ public class FinDeTest : MonoBehaviour {
 				"</Data></Cell>" +
 				"</Row>";
 	
-		//Cas d'une seule passation
+		// Cas d'une seule passation
 		if (storedPassations.Count == 0) {
 			stats += "<Row>" +
 				"<Cell><Data ss:Type=\"String\">" +
@@ -894,7 +902,8 @@ public class FinDeTest : MonoBehaviour {
 		
 		return stats;
 	}
-	
+
+	// Ecriture dans le fichier XML de l'en-tete XML, de la configuration, de l'ensemble des passations et statistiques
 	public void writeXML() {
 		if (GameController.Jeu.isPretest) 
 			fichierCourant = nom_configuration + "_pretest.xml";
@@ -948,6 +957,7 @@ public class FinDeTest : MonoBehaviour {
 		}
 	}
 
+	// Récupération du numéro de passation courant (la passation à créer dans le fichier XML)
 	public int getNumPassation(String contenu) {
 		int nbPassations = 0;
 

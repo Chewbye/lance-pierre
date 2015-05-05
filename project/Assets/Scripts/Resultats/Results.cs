@@ -15,7 +15,7 @@ using System.Diagnostics;
 
 public class Results : MonoBehaviour {
 
-	//Configuration
+	// Variables utiles pour l'affichage des résultats dans la scène "results"
 	public Text gravite;
 	public Text rigidite_lancepierre;
 	public Text nb_lancers;
@@ -55,13 +55,14 @@ public class Results : MonoBehaviour {
 	public Text intitule_couleur_barre_progression;
 	public Text couleur_barre_progression;
 
+	// Cadre situé en arrière-plan de l'élément susnommé
 	public GameObject bg_delai_avant_disparition_cible;
 	public GameObject bg_delai_avant_evaluation_cible;
 	public GameObject bg_hauteur_barre_progression;
 	public GameObject bg_largeur_barre_progression;
 	public GameObject bg_couleur_barre_progression;
 	
-	//Récapitulatif
+	// Récapitulatif
 	public Text score_final;
 	public Text nombre_cibles_touchees;
 	public Text nombre_cibles_manquees;
@@ -71,7 +72,6 @@ public class Results : MonoBehaviour {
 	public Text manques_nombre_evaluations_plus_ou_moins_25mm;
 	public Text manques_nombre_evaluations_plus_ou_moins_50mm;
 	public Text manques_nombre_evaluations_plus_ou_moins_150mm;
-	//public Text temps_evaluation_cible;
 
 	string fichierCourant;
 	
@@ -95,6 +95,7 @@ public class Results : MonoBehaviour {
 		
 	}
 
+	// Création et modification des champs de la scène "results"
 	public void setFields(){
 		//Assignation des valeurs définies dans le fichier de config choisi initialement;
 		gravite.text = Convert.ToString(GameController.Jeu.Config.Gravite);
@@ -212,13 +213,13 @@ public class Results : MonoBehaviour {
 		manques_nombre_evaluations_plus_ou_moins_25mm.text = Convert.ToString (manquesNbEvalPlusOuMoins25mm);
 		manques_nombre_evaluations_plus_ou_moins_50mm.text = Convert.ToString (manquesNbEvalPlusOuMoins50mm);
 		manques_nombre_evaluations_plus_ou_moins_150mm.text = Convert.ToString (manquesNbEvalPlusOuMoins150mm);
-		//temps_evaluation_cible.text = "2"; //Ici on fera une moyenne des temps*/
 	}
 
 	public void onClickOpenXML() {
 		Process.Start (fichierCourant);
 	}
-	
+
+	// Bouton permettant d'accéder au répertoire contenant l'ensemble des résultats (il s'agit du répertoire courant)
 	public void onClickResultsAccess() {
 		System.Diagnostics.Process.Start( ".");
 	}
