@@ -59,7 +59,7 @@ public class ReglageCouleurBarre : MonoBehaviour {
 		textureDeFond = new Texture2D(1, 1, TextureFormat.ARGB32, false);
 
 		posX = 80;
-		posY = 10;
+		posY = 5;
 		largeur = pickColor.width;
 		hauteurPickColor = pickColor.height;
 		hauteurPickAlpha = pickAlpha.height;
