@@ -328,7 +328,6 @@ public class GestionInitialisationTir : MonoBehaviour
 		}
 		// Conversion de la taille en centimetres vers l'unite de Unity
 		// La catapulte doit avoir la meme taille --VISUELLEMENT-- que la balle dans l'IDE Unity
-		double hauteurCatapulteCm = GameController.Jeu.Config.Taille_Hauteur_Catapulte;
 		double hauteurCatapulte = GameController.Jeu.Config.Taille_Hauteur_Catapulte 
 			* (float)GameController.Jeu.Config.Ratio_echelle 
 				* catapulte.transform.localScale.x / ratioCalibrage; 
@@ -419,15 +418,20 @@ public class GestionInitialisationTir : MonoBehaviour
 		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
 			Application.LoadLevel("finDeTest");
 		}
+
+		// On calcule la position de la souris du joueur
 		Vector3 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		Vector2 catapultToMouse = mouseWorldPoint - catapult.position;
-		
+
+		// Si les cordes sont tendues au maximum
 		if (catapultToMouse.sqrMagnitude > maxStretchSqr) 
 		{
+			// On bloque le deplacement du projectile
 			rayToMouse.direction = catapultToMouse;
 			mouseWorldPoint = rayToMouse.GetPoint(rigidite);
 		}
-		
+
+		// On deplace le projectile
 		mouseWorldPoint.z = 0f;
 		transform.position = mouseWorldPoint;
 	}
@@ -437,10 +441,12 @@ public class GestionInitialisationTir : MonoBehaviour
 		if (GameController.Jeu.Tirs_Realises.Count > GameController.Jeu.Config.Nb_lancers) {
 			Application.LoadLevel("finDeTest");
 		}
+		// On calcule la position des cordes
 		Vector2 catapultToProjectile = transform.position - catapultLineFront.transform.position;
 		leftCatapultToProjectile.direction = catapultToProjectile;
 		Vector3 holdPoint = leftCatapultToProjectile.GetPoint(catapultToProjectile.magnitude + circleRadius);
-		
+
+		// On met à jour la position des cordes
 		catapultLineFront.SetPosition(1, holdPoint);
 		catapultLineBack.SetPosition(1, holdPoint);
 	}
