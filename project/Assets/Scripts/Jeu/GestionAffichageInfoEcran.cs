@@ -6,7 +6,6 @@ using System.Collections;
 public class GestionAffichageInfoEcran : MonoBehaviour 
 {
 	public GameObject infoScore;
-	public GameObject infoPhaseJeu;
 	public GameObject infoGagnePerdu;
 
 	public GameObject cible;
@@ -23,23 +22,6 @@ public class GestionAffichageInfoEcran : MonoBehaviour
 		else
 		{
 			Text txt = infoScore.GetComponent<Text>(); 
-			txt.text= "";
-		}
-
-		// INITIALISATION DU TEXTE AFFICHANT LA PHASE DE JEU
-		if(GameController.Jeu.isPretest)
-		{
-			Text txt = infoPhaseJeu.GetComponent<Text>(); 
-			txt.text= "PHASE DE TEST";
-		}
-		else if(GameController.Jeu.isEntrainement)
-		{
-			Text txt = infoPhaseJeu.GetComponent<Text>(); 
-			txt.text= "PHASE D'ENTRAINEMENT";
-		}
-		else
-		{
-			Text txt = infoPhaseJeu.GetComponent<Text>(); 
 			txt.text= "";
 		}
 

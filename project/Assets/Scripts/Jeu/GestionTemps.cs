@@ -5,13 +5,9 @@ using System.Collections;
 // Classe utilisee pour limiter le temps que peut mettre le joeur pour tirer
 public class GestionTemps : MonoBehaviour 
 {
-	private float simulationEvaluation;
-
 	// Use this for initialization
 	void Start () 
 	{
-		// On simule un temps d'evaluation de 5s
-		simulationEvaluation = 5;
 		GameController.Jeu.Temps_Restant_Courant = GameController.Jeu.Config.Delai_lancer_projectile;
 
 		if(GameController.Jeu.Config.Condition_De_Memoire)
