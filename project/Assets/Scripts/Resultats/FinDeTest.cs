@@ -122,8 +122,9 @@ public class FinDeTest : MonoBehaviour {
 		couleurCible = Convert.ToString (GameController.Jeu.Config.Couleur_cible);
      	hauteurBarreProgression = Convert.ToString (GameController.Jeu.Config.Hauteur_barre_progression);
         largeurBarreProgression = Convert.ToString (GameController.Jeu.Config.Largeur_barre_progression);
-		
-		writeXML ();
+
+		if (numParticipant != "0")
+			writeXML ();
 	}
 
 	// En-tete XML

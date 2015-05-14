@@ -73,6 +73,9 @@ public class Results : MonoBehaviour {
 	public Text manques_nombre_evaluations_plus_ou_moins_50mm;
 	public Text manques_nombre_evaluations_plus_ou_moins_150mm;
 
+	// Bouton AfficherLesResultats
+	public Button bouton_afficher_resultats;
+
 	string fichierCourant;
 	
 	// Use this for initialization
@@ -213,6 +216,10 @@ public class Results : MonoBehaviour {
 		manques_nombre_evaluations_plus_ou_moins_25mm.text = Convert.ToString (manquesNbEvalPlusOuMoins25mm);
 		manques_nombre_evaluations_plus_ou_moins_50mm.text = Convert.ToString (manquesNbEvalPlusOuMoins50mm);
 		manques_nombre_evaluations_plus_ou_moins_150mm.text = Convert.ToString (manquesNbEvalPlusOuMoins150mm);
+
+		if (GameController.Jeu.Participant.Numero == 0) {
+			bouton_afficher_resultats.interactable = false;
+		}
 	}
 
 	public void onClickOpenXML() {
