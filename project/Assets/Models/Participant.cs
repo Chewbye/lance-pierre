@@ -109,7 +109,7 @@ public class Participant {
 	 */
 	public bool ageValide()
 	{
-		return this.age >= 0;
+		return this.age > 0;
 	}
 
 	/*

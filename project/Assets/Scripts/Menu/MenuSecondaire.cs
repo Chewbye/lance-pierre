@@ -118,7 +118,7 @@ public class MenuSecondaire : MonoBehaviour {
 	{
 		// verifications de la validité des champs
 		if (GameController.Jeu.Participant.numeroValide ()) {
-			if (GameController.Jeu.Participant.ageValide ()) {
+			if (GameController.Jeu.Participant.ageValide () || GameController.Jeu.Participant.Numero == 0) {
 				Debug.Log(GameController.Jeu.Participant.ToString()+ "\n");
 				UnityEngine.Application.LoadLevel ("Jeu");
 			} else {
