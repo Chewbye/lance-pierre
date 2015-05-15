@@ -933,7 +933,7 @@ public class FinDeTest : MonoBehaviour {
 						stats += " + RC[" + rc + "]";
 					}
 					stats += "\"><Data ss:Type=\"Number\"></Data></Cell>";
-					stats += "<Cell ss:Formula=\"=RC[-1] / " + nb_lancers_int + "\"><Data ss:Type=\"Number\"></Data></Cell>";
+					stats += "<Cell ss:Formula=\"=SQRT(RC[-1] / " + nb_lancers_int + ")\"><Data ss:Type=\"Number\"></Data></Cell>";
 				}
 					
 				stats += "</Row>";
@@ -981,7 +981,7 @@ public class FinDeTest : MonoBehaviour {
 						stats += " + RC[" + rc + "]";
 					}
 					stats += "\"><Data ss:Type=\"Number\"></Data></Cell>";
-					stats += "<Cell ss:Formula=\"=RC[-1] / " + nb_lancers_int + "\"><Data ss:Type=\"Number\"></Data></Cell>";
+					stats += "<Cell ss:Formula=\"=SQRT(RC[-1] / " + nb_lancers_int + ")\"><Data ss:Type=\"Number\"></Data></Cell>";
 				}
 				
 				stats += "</Row>";
